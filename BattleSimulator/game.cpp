@@ -2,10 +2,16 @@
 #include <iostream>
 using namespace std;
 
-Game::Game() : isRunning(true) {}
+Game::Game() : isRunning(true) {
+	currentState = GameState::Menu;
+}
 
 void Game::Run()
 {
+	cout
+		<< "=====菜单=====\n"
+		<< "b.开始游戏\n"
+		<< "q.退出\n";
 	while (isRunning) {
 		Input();
 		if (Game::isRunning == false) {
@@ -27,16 +33,33 @@ void Game::Input()
 	if (command == 'q') {
 		isRunning = false;
 	}
+	else if (command == 'b') {
+		currentState = GameState::Battle;
+		cout << "进入战斗" << endl;
+	}
 }
 
 void Game::Update()
 {
 	// 更新游戏状态的逻辑
-	cout << "已更新逻辑" << endl;
+	if (currentState == GameState::Battle) {
+		cout << "战斗逻辑更新" << endl;
+	}
 }
 
 void Game::Render()
 {
 	// 渲染游戏画面的逻辑
-	cout << "已渲染画面" << endl;
+	if (currentState == GameState::Menu)
+	{
+		cout
+		<< "=====菜单=====\n"
+		<< "b.开始游戏\n"
+		<< "q.退出\n";
+	}
+	else if (currentState == GameState::Battle)
+	{
+		std::cout
+			<< "=====战斗中=====\n";
+	}
 }
