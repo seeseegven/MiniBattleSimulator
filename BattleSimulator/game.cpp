@@ -1,9 +1,12 @@
 #include "Game.h"
 #include <iostream>
+#include "Player.h"
+#include "Enemy.h"
+
 using namespace std;
 
 Game::Game() : isRunning(true) {
-	currentState = GameState::Menu;
+	CurrentState = GameState::Menu;
 }
 
 void Game::Run()
@@ -34,7 +37,7 @@ void Game::Input()
 		isRunning = false;
 	}
 	else if (command == 'b') {
-		currentState = GameState::Battle;
+		CurrentState = GameState::Battle;
 		cout << "进入战斗" << endl;
 	}
 }
@@ -42,22 +45,25 @@ void Game::Input()
 void Game::Update()
 {
 	// 更新游戏状态的逻辑
-	if (currentState == GameState::Battle) {
-		cout << "战斗逻辑更新" << endl;
+	if (CurrentState == GameState::Battle) {
+		Player player("Hero", 100);
+		Enemy enemy("Monster", 300);
+		player.Attack();
+		enemy.Attack();
 	}
 }
 
 void Game::Render()
 {
 	// 渲染游戏画面的逻辑
-	if (currentState == GameState::Menu)
+	if (CurrentState == GameState::Menu)
 	{
 		cout
 		<< "=====菜单=====\n"
 		<< "b.开始游戏\n"
 		<< "q.退出\n";
 	}
-	else if (currentState == GameState::Battle)
+	else if (CurrentState == GameState::Battle)
 	{
 		std::cout
 			<< "=====战斗中=====\n";
