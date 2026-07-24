@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Player.h"
 #include "Enemy.h"
+#include "ObjectManager.h"
 
 using namespace std;
 
@@ -30,15 +31,20 @@ void Game::Input()
 {
 	//处理输入的逻辑
 	char command;
-	cout << "请输入指令，q退出";
+	cout << "请输入指令，q退出\n";
 	cin >> command;
 
 	if (command == 'q') {
 		isRunning = false;
 	}
-	else if (command == 'b') {
+	else if (command == 'b' && CurrentState!=GameState::Battle) {
+		cout << "进入战斗\n" << "z退出" << endl;
+		EnterBattle();
 		CurrentState = GameState::Battle;
-		cout << "进入战斗" << endl;
+	}
+	else if (command == 'z' && CurrentState == GameState::Battle) {
+		CurrentState = GameState::Menu;
+		cout << "返回菜单\n";
 	}
 }
 
@@ -46,12 +52,7 @@ void Game::Update()
 {
 	// 更新游戏状态的逻辑
 	if (CurrentState == GameState::Battle) {
-		Player player("Hero", 100);
-		Enemy enemy("Monster", 300);
-		Character* playerPtr = &player;
-		Character* enemyPtr = &enemy;
-		playerPtr->Attack();
-		enemyPtr->Attack();
+		cout << "已更新游戏状态" << endl;
 	}
 }
 
@@ -70,4 +71,12 @@ void Game::Render()
 		std::cout
 			<< "=====战斗中=====\n";
 	}
+}
+
+void Game::EnterBattle()
+{
+	manager = std::make_unique<ObjectManager>();
+	manager->AddCharacter(std::make_unique<Player>("玩家", 100));
+	manager->AddCharacter(std::make_unique<Enemy>("敌人", 100));
+	manager->Update();
 }
