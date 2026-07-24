@@ -48,8 +48,10 @@ void Game::Update()
 	if (CurrentState == GameState::Battle) {
 		Player player("Hero", 100);
 		Enemy enemy("Monster", 300);
-		player.Attack();
-		enemy.Attack();
+		Character* playerPtr = &player;
+		Character* enemyPtr = &enemy;
+		playerPtr->Attack();
+		enemyPtr->Attack();
 	}
 }
 

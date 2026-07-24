@@ -8,5 +8,5 @@ Enemy::Enemy(std::string name, int hp)
 }
 
 void Enemy::Attack() {
-	cout << "MonsterËºÒ§¹¥»÷" << endl;
+	cout << Name << "ËºÒ§¹¥»÷" << endl;
 }
