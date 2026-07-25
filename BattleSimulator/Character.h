@@ -8,11 +8,12 @@ public:
 
 	void TakeDamage(int demage);
 
-    virtual void Attack();
+    virtual void Attack(Character& target);
 
 	bool IsDead();
 
 	virtual ~Character() = default;
+	void Print();
 protected:
 	std::string Name;
 

@@ -6,5 +6,5 @@ class Player : public Character
 public:
 	Player(std::string name, int hp);
 
-	void Attack() override;
+	void Attack(Character& target) override;
 };

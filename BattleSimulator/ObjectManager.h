@@ -8,8 +8,8 @@ class ObjectManager
 {
 public:
 	void AddCharacter(std::unique_ptr<Character> character);
-
-	void Update();
+	void PrintAll();
+	void Action();
 private:
 	std::vector<std::unique_ptr<Character>> characters;
 };

@@ -8,11 +8,15 @@ void Character::TakeDamage(int demage) {
 	HP -= demage;
 }
 
-void Character::Attack() {
+void Character::Attack(Character& target) {
 	// 默认攻击行为
-	std::cout << "默认攻击" << std::endl;
+	target.TakeDamage(10);
 }
 
 bool Character::IsDead() {
 	return HP <= 0;
+}
+
+void Character::Print() {
+	std::cout << "Name: " << Name << ", HP: " << HP << std::endl;
 }

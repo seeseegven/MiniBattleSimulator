@@ -78,5 +78,7 @@ void Game::EnterBattle()
 	manager = std::make_unique<ObjectManager>();
 	manager->AddCharacter(std::make_unique<Player>("Íæ¼Ò", 100));
 	manager->AddCharacter(std::make_unique<Enemy>("µÐÈË", 100));
-	manager->Update();
+	manager->PrintAll();
+	manager->Action();
+	manager->PrintAll();
 }
