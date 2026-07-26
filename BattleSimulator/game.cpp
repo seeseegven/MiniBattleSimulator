@@ -39,8 +39,10 @@ void Game::Input()
 	}
 	else if (command == 'b' && CurrentState!=GameState::Battle) {
 		cout << "进入战斗\n" << "z退出" << endl;
-		EnterBattle();
 		CurrentState = GameState::Battle;
+		battleManager = std::make_unique<BattleManager>();
+		EnterBattle();
+		CurrentState = GameState::Menu;
 	}
 	else if (command == 'z' && CurrentState == GameState::Battle) {
 		CurrentState = GameState::Menu;
@@ -75,10 +77,8 @@ void Game::Render()
 
 void Game::EnterBattle()
 {
-	manager = std::make_unique<ObjectManager>();
-	manager->AddCharacter(std::make_unique<Player>("玩家", 100));
-	manager->AddCharacter(std::make_unique<Enemy>("敌人", 100));
-	manager->PrintAll();
-	manager->Action();
-	manager->PrintAll();
+	battleManager->InitializeBattle();
+	battleManager->ManageBattle();
+	//battleManager->DisplayInfo();
+	battleManager.reset();
 }
