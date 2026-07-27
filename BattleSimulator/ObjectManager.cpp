@@ -1,6 +1,7 @@
 #include "ObjectManager.h"
 #include "Player.h"
 #include "Enemy.h"
+#include <iostream>
 
 void ObjectManager::AddCharacter(std::unique_ptr<Character> character) {
 	characters.push_back(std::move(character));
@@ -8,8 +9,15 @@ void ObjectManager::AddCharacter(std::unique_ptr<Character> character) {
 }
 
 void ObjectManager::Action() {
+	char act;
 	for (auto& character : characters) {
+		std::cout << "请输入a进行攻击" << std::endl;
 		if (dynamic_cast<Player*>(character.get())) {
+			std::cin >> act;
+			while (act != 'a') {
+				std::cout << "请输入a进行攻击" << std::endl;
+				std::cin >> act;
+			}
 			character->Attack(*characters[1]);
 		}
 		else {

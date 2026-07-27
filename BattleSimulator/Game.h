@@ -14,7 +14,7 @@ class Game
 public:
 	Game(); //构造函数
 	void Run(); //运行游戏
-	
+	static void ClearScreen(); //清屏
 private:
 	//std::unique_ptr<ObjectManager> manager; //对象管理器
 	std::unique_ptr<BattleManager> battleManager; //战斗管理器
@@ -24,4 +24,5 @@ private:
 	void EnterBattle(); //进入战斗
 	void Update(); //更新游戏状态
 	void Render(); //渲染游戏画面
+	
 };

@@ -1,4 +1,5 @@
 #include "BattleManager.h"
+#include "Game.h"
 #include <iostream>
 
 void BattleManager::InitializeBattle() {
@@ -8,7 +9,7 @@ void BattleManager::InitializeBattle() {
 	enemy = e.get();
 	manager.AddCharacter(std::move(p));
 	manager.AddCharacter(std::move(e));
-	DisplayInfo();
+	//DisplayInfo();
 	manager.CoutInfo();
 	//初始化战局，把玩家和敌人加入管理器，并通过player和enemy成员进行操作
 }
@@ -20,6 +21,7 @@ void BattleManager::DisplayInfo() {
 void BattleManager::ManageBattle() {
 	while (!player->IsDead() && !enemy->IsDead()) {
 		manager.Action();
+		Game::ClearScreen();
 		DisplayInfo();
 	}
 	if (player->IsDead()) {

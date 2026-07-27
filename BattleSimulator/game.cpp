@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <iostream>
+#include <cstdlib>
 #include "Player.h"
 #include "Enemy.h"
 #include "ObjectManager.h"
@@ -21,8 +22,17 @@ void Game::Run()
 		if (Game::isRunning == false) {
 			cout << "已退出" << endl;
 			break;
+		}else if (CurrentState==GameState::Battle) {
+			ClearScreen();
+			cout << "进入战斗   " << "z退出" << endl;
+			CurrentState = GameState::Battle;
+			battleManager = std::make_unique<BattleManager>();
+			//这里忘记初始化了，battlemanager没有实例化，后续指针赋值给player时找不到对象，报this为nullptr的错。
+			EnterBattle();
+			CurrentState = GameState::Menu;
 		}
 		Update();
+		ClearScreen();
 		Render();
 	}
 }
@@ -38,16 +48,10 @@ void Game::Input()
 		isRunning = false;
 	}
 	else if (command == 'b' && CurrentState!=GameState::Battle) {
-		cout << "进入战斗\n" << "z退出" << endl;
 		CurrentState = GameState::Battle;
-		battleManager = std::make_unique<BattleManager>();
-		//这里忘记初始化了，battlemanager没有实例化，后续指针赋值给player时找不到对象，报this为nullptr的错。
-		EnterBattle();
-		CurrentState = GameState::Menu;
 	}
 	else if (command == 'z' && CurrentState == GameState::Battle) {
 		CurrentState = GameState::Menu;
-		cout << "返回菜单\n";
 	}
 }
 
@@ -82,4 +86,13 @@ void Game::EnterBattle()
 	battleManager->ManageBattle();
 	//battleManager->DisplayInfo();
 	battleManager.reset();
+}
+
+void Game::ClearScreen()
+{
+	#ifdef _WIN32
+		system("cls");
+	#else
+		system("clear");
+	#endif
 }
