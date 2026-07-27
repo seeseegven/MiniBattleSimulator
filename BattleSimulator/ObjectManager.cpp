@@ -23,3 +23,9 @@ void ObjectManager::PrintAll() {
 		character->Print();
 	}
 }
+
+void ObjectManager::CoutInfo() {
+	for (const auto& character : characters) {
+		std::cout << *character << std::endl;
+	}
+}

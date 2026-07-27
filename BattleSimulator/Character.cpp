@@ -2,7 +2,7 @@
 #include <iostream>
 
 Character::Character(const std::string NameIn, const int HPIn)
-	: Name(NameIn), HP(HPIn) {}
+	: attr(Attribution()),Name(NameIn), HP(HPIn) {}
 
 void Character::TakeDamage(int demage) {
 	HP -= demage;
@@ -19,4 +19,10 @@ bool Character::IsDead() {
 
 void Character::Print() {
 	std::cout << "Name: " << Name << ", HP: " << HP << std::endl;
+}
+
+std::ostream& operator<<(std::ostream& os, const Character& character) {
+	os << "Name: " << character.Name << ", HP: " << character.HP << "\n";
+	os << "Attack: " << character.attr.GetAttack() << ", Defense: " << character.attr.GetDefense() << "\n";
+	return os;
 }

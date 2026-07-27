@@ -41,6 +41,7 @@ void Game::Input()
 		cout << "进入战斗\n" << "z退出" << endl;
 		CurrentState = GameState::Battle;
 		battleManager = std::make_unique<BattleManager>();
+		//这里忘记初始化了，battlemanager没有实例化，后续指针赋值给player时找不到对象，报this为nullptr的错。
 		EnterBattle();
 		CurrentState = GameState::Menu;
 	}

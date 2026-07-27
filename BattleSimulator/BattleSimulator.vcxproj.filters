@@ -36,6 +36,9 @@
     <ClCompile Include="BattleManager.cpp">
       <Filter>头文件</Filter>
     </ClCompile>
+    <ClCompile Include="Attribution.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -55,6 +58,9 @@
     </ClInclude>
     <ClInclude Include="BattleManager.h">
       <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Attribution.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

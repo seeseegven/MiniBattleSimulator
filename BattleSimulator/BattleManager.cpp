@@ -9,6 +9,7 @@ void BattleManager::InitializeBattle() {
 	manager.AddCharacter(std::move(p));
 	manager.AddCharacter(std::move(e));
 	DisplayInfo();
+	manager.CoutInfo();
 	//初始化战局，把玩家和敌人加入管理器，并通过player和enemy成员进行操作
 }
 

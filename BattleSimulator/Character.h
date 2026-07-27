@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <iostream>
+#include "Attribution.h"
 
 class Character
 {
@@ -14,8 +16,9 @@ public:
 
 	virtual ~Character() = default;
 	void Print();
+	friend std::ostream& operator<<(std::ostream& os, const Character& character);
 protected:
+	Attribution attr;
 	std::string Name;
-
 	int HP;
 };
