@@ -1,6 +1,7 @@
 #include "ObjectManager.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Game.h"
 #include <iostream>
 
 void ObjectManager::AddCharacter(std::unique_ptr<Character> character) {
@@ -19,9 +20,17 @@ void ObjectManager::Action() {
 				std::cin >> act;
 			}
 			character->Attack(*characters[1]);
+			std::cout << "玩家进行普攻，造成了";
+			BattleManager::RenderText("20", TextColor::Red);
+			std::cout << "点伤害" << std::endl;
+			BattleManager::WaitForDisplay(1200);
 		}
 		else {
 			character->Attack(*characters[0]);
+			std::cout << "敌人进行普攻，造成了";
+			BattleManager::RenderText("15", TextColor::Red);
+			std::cout << "点伤害" << std::endl;
+			BattleManager::WaitForDisplay(1200);
 		}
 	}
 }

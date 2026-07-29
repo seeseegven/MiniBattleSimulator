@@ -1,5 +1,8 @@
 #include "BattleManager.h"
 #include "Game.h"
+#include <Windows.h>
+#include <thread>
+#include <chrono>
 #include <iostream>
 
 void BattleManager::InitializeBattle() {
@@ -22,7 +25,7 @@ void BattleManager::ManageBattle() {
 	while (!player->IsDead() && !enemy->IsDead()) {
 		manager.Action();
 		Game::ClearScreen();
-		DisplayInfo();
+		manager.CoutInfo();
 	}
 	if (player->IsDead()) {
 		std::cout << "玩家死亡，游戏结束" << std::endl;
@@ -37,4 +40,21 @@ void BattleManager::ManageBattle() {
 		std::cout << "按z返回菜单" << std::endl;
 		std::cin >> command;
 	}
+}
+
+void BattleManager::WaitForDisplay(int seconds)
+{
+	std::this_thread::sleep_for(std::chrono::milliseconds(seconds));
+}
+
+void BattleManager::SetTextColor(TextColor color)
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, static_cast<WORD>(color));
+}
+
+void BattleManager::RenderText(const std::string& s, TextColor color) {
+	SetTextColor(color);
+	std::cout << s << std::endl;
+	SetTextColor(TextColor::White);
 }

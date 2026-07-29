@@ -1,9 +1,6 @@
 #include "Game.h"
-#include <iostream>
-#include <cstdlib>
 #include "Player.h"
 #include "Enemy.h"
-#include "ObjectManager.h"
 
 using namespace std;
 
@@ -31,7 +28,6 @@ void Game::Run()
 			EnterBattle();
 			CurrentState = GameState::Menu;
 		}
-		Update();
 		ClearScreen();
 		Render();
 	}
@@ -52,14 +48,6 @@ void Game::Input()
 	}
 	else if (command == 'z' && CurrentState == GameState::Battle) {
 		CurrentState = GameState::Menu;
-	}
-}
-
-void Game::Update()
-{
-	// 更新游戏状态的逻辑
-	if (CurrentState == GameState::Battle) {
-		cout << "已更新游戏状态" << endl;
 	}
 }
 

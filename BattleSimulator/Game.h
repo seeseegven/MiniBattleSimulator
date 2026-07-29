@@ -1,7 +1,10 @@
 #pragma once
+#include <iostream>
+#include <cstdlib>
 #include <memory>
 #include "ObjectManager.h"
 #include "BattleManager.h"
+
 
 enum class GameState
 {
@@ -22,7 +25,6 @@ private:
 	GameState CurrentState; //当前游戏状态	
 	void Input(); //处理输入
 	void EnterBattle(); //进入战斗
-	void Update(); //更新游戏状态
 	void Render(); //渲染游戏画面
 	
 };
