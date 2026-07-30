@@ -9,5 +9,5 @@ public:
 	Damage(const std::string& s);
 	void Use(Character& caster, Character& target);
 	void CoutSkill(const std::string& s, int value);
-	//~Damage();
+	~Damage()=default;
 };

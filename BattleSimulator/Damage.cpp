@@ -7,7 +7,7 @@ void Damage::Use(Character& caster, Character& target) {
 	CharacterInfo TargetInfo = target.GetInfo();
 	int value = CasterInfo.Attack - TargetInfo.Defense * 0.1;
 	caster.AttackOpponent(target, value);
-	CoutSkill("¼¼ÄÜ1", value);
+	CoutSkill(name, value);
 }
 
 void Damage::CoutSkill(const std::string& s, int value) {

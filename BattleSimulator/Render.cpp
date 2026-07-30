@@ -17,7 +17,7 @@ void Render::SetTextColor(TextColor color)
 
 void Render::RenderText(const std::string& s, TextColor color) {
 	SetTextColor(color);
-	std::cout << s << std::endl;
+	std::cout << s;
 	SetTextColor(TextColor::White);
 }
 
