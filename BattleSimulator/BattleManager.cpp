@@ -1,8 +1,5 @@
 #include "BattleManager.h"
 #include "Game.h"
-#include <Windows.h>
-#include <thread>
-#include <chrono>
 #include <iostream>
 
 void BattleManager::InitializeBattle() {
@@ -17,9 +14,6 @@ void BattleManager::InitializeBattle() {
 	//初始化战局，把玩家和敌人加入管理器，并通过player和enemy成员进行操作
 }
 
-void BattleManager::DisplayInfo() {
-	manager.PrintAll();
-}
 
 void BattleManager::ManageBattle() {
 	while (!player->IsDead() && !enemy->IsDead()) {
@@ -42,19 +36,3 @@ void BattleManager::ManageBattle() {
 	}
 }
 
-void BattleManager::WaitForDisplay(int seconds)
-{
-	std::this_thread::sleep_for(std::chrono::milliseconds(seconds));
-}
-
-void BattleManager::SetTextColor(TextColor color)
-{
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hConsole, static_cast<WORD>(color));
-}
-
-void BattleManager::RenderText(const std::string& s, TextColor color) {
-	SetTextColor(color);
-	std::cout << s << std::endl;
-	SetTextColor(TextColor::White);
-}

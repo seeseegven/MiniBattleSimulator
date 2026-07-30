@@ -5,5 +5,5 @@ class Enemy : public Character
 {
 public:
 		Enemy(std::string name, int hp);
-		void Attack(Character& target) override;
+		void AttackOpponent(Character& target, int harm) override;
 };

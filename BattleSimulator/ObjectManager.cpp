@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Game.h"
+#include "Render.h"
+#include "Damage.h"
 #include <iostream>
 
 void ObjectManager::AddCharacter(std::unique_ptr<Character> character) {
@@ -19,27 +21,24 @@ void ObjectManager::Action() {
 				std::cout << "请输入a进行攻击" << std::endl;
 				std::cin >> act;
 			}
-			character->Attack(*characters[1]);
+			std::unique_ptr<Skill> skill1 = std::make_unique<Damage>("火球术");
+			//character->Attack(*characters[1], 20);
+			skill1->Use(*character, *characters[1]);
 			std::cout << "玩家进行普攻，造成了";
-			BattleManager::RenderText("20", TextColor::Red);
+			Render::RenderText("20", TextColor::Red);
 			std::cout << "点伤害" << std::endl;
-			BattleManager::WaitForDisplay(1200);
+			Render::WaitForDisplay(1200);
 		}
 		else {
-			character->Attack(*characters[0]);
+			character->AttackOpponent(*characters[0], 15);
 			std::cout << "敌人进行普攻，造成了";
-			BattleManager::RenderText("15", TextColor::Red);
+			Render::RenderText("15", TextColor::Red);
 			std::cout << "点伤害" << std::endl;
-			BattleManager::WaitForDisplay(1200);
+			Render::WaitForDisplay(1200);
 		}
 	}
 }
 
-void ObjectManager::PrintAll() {
-	for (const auto& character : characters) {
-		character->Print();
-	}
-}
 
 void ObjectManager::CoutInfo() {
 	for (const auto& character : characters) {

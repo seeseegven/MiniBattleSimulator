@@ -36,8 +36,17 @@
     <ClCompile Include="BattleManager.cpp">
       <Filter>头文件</Filter>
     </ClCompile>
-    <ClCompile Include="Attribution.cpp">
+    <ClCompile Include="Skill.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Damage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HealSkill.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Render.cpp">
+      <Filter>头文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,8 +68,17 @@
     <ClInclude Include="BattleManager.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="Attribution.h">
+    <ClInclude Include="Skill.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Damage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HealSkill.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Render.h">
+      <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

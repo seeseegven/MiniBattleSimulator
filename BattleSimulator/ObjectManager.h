@@ -8,7 +8,6 @@ class ObjectManager
 {
 public:
 	void AddCharacter(std::unique_ptr<Character> character);
-	void PrintAll();
 	void CoutInfo();
 	void Action();
 private:
