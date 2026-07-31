@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Render.h"
 
 using namespace std;
 
@@ -20,7 +21,7 @@ void Game::Run()
 			cout << "已退出" << endl;
 			break;
 		}else if (CurrentState==GameState::Battle) {
-			ClearScreen();
+			Render::ClearScreen();
 			cout << "进入战斗   " << "z退出" << endl;
 			CurrentState = GameState::Battle;
 			battleManager = std::make_unique<BattleManager>();
@@ -28,7 +29,7 @@ void Game::Run()
 			EnterBattle();
 			CurrentState = GameState::Menu;
 		}
-		ClearScreen();
+		Render::ClearScreen();
 		Render();
 	}
 }
@@ -76,11 +77,3 @@ void Game::EnterBattle()
 	battleManager.reset();
 }
 
-void Game::ClearScreen()
-{
-	#ifdef _WIN32
-		system("cls");
-	#else
-		system("clear");
-	#endif
-}

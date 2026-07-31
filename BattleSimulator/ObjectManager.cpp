@@ -13,12 +13,7 @@ void ObjectManager::AddCharacter(std::unique_ptr<Character> character) {
 
 void ObjectManager::Action() {
 	for (auto& character : characters) {
-		if (dynamic_cast<Player*>(character.get())) {
 			character->RoundBehavior(characters);
-		}
-		else {
-			character->RoundBehavior(characters);
-		}
 	}
 }
 

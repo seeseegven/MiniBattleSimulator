@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <cstdlib>
 #include "Character.h"
 
 enum class TextColor
@@ -28,6 +29,8 @@ public:
 	//const加了就可以传入右值，const引用可以绑定到临时对象
 	//以color渲染字符串s
 	static void WaitForDisplay(int seconds = 1000); //等待显示
+	static void ClearScreen(); //清屏
+	static void ClearPartScreen(int x, int y);
 private:
 	static void SetTextColor(TextColor color); //设置文本颜色
 };

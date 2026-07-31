@@ -1,5 +1,6 @@
 #include "BattleManager.h"
 #include "Game.h"
+#include "Render.h"
 #include <iostream>
 
 void BattleManager::InitializeBattle() {
@@ -18,7 +19,7 @@ void BattleManager::InitializeBattle() {
 void BattleManager::ManageBattle() {
 	while (!player->IsDead() && !enemy->IsDead()) {
 		manager.Action();
-		Game::ClearScreen();
+		Render::ClearScreen();
 		manager.CoutInfo();
 	}
 	if (player->IsDead()) {

@@ -37,3 +37,22 @@ std::ostream& operator<<(std::ostream& os, Character& character) {
 	os << "  Attack: " << Info.Attack << ", Defense: " << Info.Defense << "\n";
 	return os;
 }
+
+void Render::ClearScreen()
+{
+#ifdef _WIN32
+	system("cls");
+#else
+	system("clear");
+#endif
+}
+
+void Render::ClearPartScreen(int x, int y) {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	COORD pos;
+	pos.X = x;
+	pos.Y = y;
+
+	SetConsoleCursorPosition(hConsole, pos);
+}

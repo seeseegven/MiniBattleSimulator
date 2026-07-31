@@ -1,9 +1,9 @@
 #pragma once
-#include <iostream>
-#include <cstdlib>
-#include <memory>
 #include "ObjectManager.h"
 #include "BattleManager.h"
+#include <iostream>
+#include <memory>
+
 
 
 enum class GameState
@@ -17,7 +17,6 @@ class Game
 public:
 	Game(); //构造函数
 	void Run(); //运行游戏
-	static void ClearScreen(); //清屏
 private:
 	//std::unique_ptr<ObjectManager> manager; //对象管理器
 	std::unique_ptr<BattleManager> battleManager; //战斗管理器
