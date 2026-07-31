@@ -12,27 +12,12 @@ void ObjectManager::AddCharacter(std::unique_ptr<Character> character) {
 }
 
 void ObjectManager::Action() {
-	char act;
 	for (auto& character : characters) {
-		
 		if (dynamic_cast<Player*>(character.get())) {
-			std::cout << "请输入a进行攻击" << std::endl;
-			std::cin >> act;
-			while (act != 'a') {
-				std::cout << "请输入a进行攻击" << std::endl;
-				std::cin >> act;
-			}
-			std::unique_ptr<Skill> skill1 = std::make_unique<Damage>("火球术");
-			//character->Attack(*characters[1], 20);
-			skill1->Use(*character, *characters[1]);
-			Render::WaitForDisplay(3000);
+			character->RoundBehavior(characters);
 		}
 		else {
-			character->AttackOpponent(*characters[0], 15);
-			std::cout << "敌人进行普攻，造成了";
-			Render::RenderText("15", TextColor::Red);
-			std::cout << "点伤害" << std::endl;
-			Render::WaitForDisplay(1200);
+			character->RoundBehavior(characters);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <vector>
 
 struct CharacterInfo {
 	std::string Name;
@@ -23,6 +24,7 @@ public:
 	int ChangeHP(int HP, int lastHP);
 	int ChangeAttack(int Attack, int lastAttack);
 	int ChangeDefense(int Defense, int lastDefense);
+	virtual void RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) = 0;
 protected:
 	int Attack, lastAttack;
 	int Defense, lastDefense;
