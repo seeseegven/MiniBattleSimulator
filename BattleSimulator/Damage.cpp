@@ -15,5 +15,5 @@ void Damage::CoutSkill(const std::string& s, int value) {
 	Render::RenderText(s, TextColor::LightCyan);
 	std::cout << ",\n造成了";
 	Render::RenderText(std::to_string(value), TextColor::Red);
-	std::cout << "点伤害";
+	std::cout << "点伤害\n";
 }

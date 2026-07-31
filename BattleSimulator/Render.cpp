@@ -34,6 +34,6 @@ std::ostream& operator<<(std::ostream& os, Character& character) {
 	else {
 		os << Info.HP;
 	}
-	os << "Attack: " << Info.Attack << ", Defense: " << Info.Defense << "\n";
+	os << "  Attack: " << Info.Attack << ", Defense: " << Info.Defense << "\n";
 	return os;
 }
