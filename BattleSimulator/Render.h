@@ -30,7 +30,6 @@ public:
 	//以color渲染字符串s
 	static void WaitForDisplay(int seconds = 1000); //等待显示
 	static void ClearScreen(); //清屏
-	static void ClearPartScreen(int x, int y);
 private:
 	static void SetTextColor(TextColor color); //设置文本颜色
 };

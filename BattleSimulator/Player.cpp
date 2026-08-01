@@ -23,7 +23,13 @@ void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) 
 		CoutSkillList();
 		std::cin >> act;
 	}
-	std::unique_ptr<Skill> skill1 = std::make_unique<Damage>("»ğÇòÊõ");
+	std::unique_ptr<Skill> skill1;
+	if (act == '1') {
+		skill1 = std::make_unique<Damage>("»ğÇòÊõ", 1.1);
+	}
+	else if (act == '2') {
+		skill1 = std::make_unique<Damage>("±ù·â½£", 2);
+	}
 	skill1->Use(*characters[0], *characters[1]);
 	Render::WaitForDisplay(3000);
 }
