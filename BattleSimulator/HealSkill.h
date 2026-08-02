@@ -21,4 +21,7 @@ class DefenseUp : public HealSkill {
 public:
 	DefenseUp(const std::string& s) : HealSkill(s) {}
 	void Effect(Character& caster) override;
+	~DefenseUp() override = default;
+	virtual void CoutSkill(const std::string& s, int value);
+	virtual void Use(Character& caster, Character& target) {}
 };

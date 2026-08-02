@@ -20,10 +20,11 @@ public:
 	bool IsDead();
 	virtual ~Character() = default;
 	CharacterInfo GetInfo();
-	int ChangeHP(int HP, int lastHP);
-	int ChangeAttack(int Attack, int lastAttack);
-	int ChangeDefense(int Defense, int lastDefense);
+	int IsChangeHP(int HP, int lastHP);
+	int IsChangeAttack(int Attack, int lastAttack);
+	int IsChangeDefense(int Defense, int lastDefense);
 	void SetHP(int hp);
+	void SetDefense(int defense);
 	virtual void RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) = 0;
 protected:
 	int Attack, lastAttack;

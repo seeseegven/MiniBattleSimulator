@@ -32,8 +32,7 @@ void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) 
 			}
 		);
 		skill1->Use(*characters[0], *characters[1]);
-	}
-	else if (act == 2) {
+	}else if (act == 2) {
 		skill2 = std::make_unique<Damage>(
 			"",
 			[](Character& caster, Character& target) {
@@ -43,10 +42,13 @@ void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) 
 			}
 		);
 		skill2->Use(*characters[0], *characters[1]);
-	}
-	else if (act == 3) {
+	}else if (act == 3) {
 		std::unique_ptr<HealSkill> healSkill = std::make_unique<Heal>("血量回复");
 		healSkill->Effect(*characters[0]);
+	}
+	else {
+		std::unique_ptr<HealSkill> defenseUpSkill = std::make_unique<DefenseUp>("防御增加");
+		defenseUpSkill->Effect(*characters[0]);
 	}
 	Render::WaitForDisplay(3000);
 }

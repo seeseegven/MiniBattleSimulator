@@ -24,7 +24,7 @@ void Render::RenderText(const std::string& s, TextColor color) {
 std::ostream& operator<<(std::ostream& os, Character& character) {
 	CharacterInfo Info = character.GetInfo();
 	os << "Name: " << Info.Name << ", HP: ";
-	int deltaHP = character.ChangeHP(Info.lastHP, Info.HP);
+	int deltaHP = character.IsChangeHP(Info.lastHP, Info.HP);
 	if (deltaHP > 0) {
 		Render::RenderText(std::to_string(Info.HP), TextColor::Green);
 	}
