@@ -3,14 +3,15 @@
 #include "Character.h"
 #include "Render.h"
 #include <string>
+#include <functional>
 
 class Damage : public Skill {
 public:
-	Damage(const std::string& s, int ratio);
-	void Use(Character& caster, Character& target);
-	void CoutSkill(const std::string& s, int value);
-	virtual int CalculateDamage(Character& target);
-	~Damage()=default;
+	Damage(const std::string& s, std::function<int(Character&, Character&)> func);
+	void Use(Character& caster, Character& target) override;
+	void CoutSkill(const std::string& s, int value) override;
+
+	~Damage() override =default;
 private:
-	int ratio;
+	std::function<int(Character&, Character&)> damageFunc;
 };

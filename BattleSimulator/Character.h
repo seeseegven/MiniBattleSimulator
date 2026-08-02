@@ -17,13 +17,13 @@ public:
 		const int AttackIn=30, const int DefenseIn=100);
 	friend std::ostream& operator<<(std::ostream& os, Character& character);
 	void TakeDamage(int demage);
-    virtual void AttackOpponent(Character& target, int harm);
 	bool IsDead();
 	virtual ~Character() = default;
 	CharacterInfo GetInfo();
 	int ChangeHP(int HP, int lastHP);
 	int ChangeAttack(int Attack, int lastAttack);
 	int ChangeDefense(int Defense, int lastDefense);
+	void SetHP(int hp);
 	virtual void RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) = 0;
 protected:
 	int Attack, lastAttack;

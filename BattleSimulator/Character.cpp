@@ -13,10 +13,6 @@ void Character::TakeDamage(int demage) {
 	HP -= demage;
 }
 
-void Character::AttackOpponent(Character& target, int harm) {
-	// Ä¬ÈÏ¹¥»÷ÐÐÎª
-	target.TakeDamage(harm);
-}
 
 bool Character::IsDead() {
 	return HP <= 0;
@@ -41,4 +37,9 @@ int Character::ChangeAttack(int Attack, int lastAttack) {
 
 int Character::ChangeDefense(int Defense, int lastDefense) {
 	return Defense - lastDefense;
+}
+
+void Character::SetHP(int hp) {
+	lastHP = HP;
+	HP = hp;
 }

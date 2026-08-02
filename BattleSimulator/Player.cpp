@@ -1,21 +1,19 @@
 #include "Player.h"
 #include "Damage.h"
+#include "HealSkill.h"
 #include <iostream>
+#include <functional>
 
 using namespace std;
 
 Player::Player(std::string name, int hp)
 	: Character(name, hp) {}
 
-void Player::AttackOpponent(Character& target, int harm) {
-	target.TakeDamage(harm);
-}
-
 void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) {
-	char act;
+	int act;
 	CoutSkillList();
 	std::cin >> act;
-	while (act - '0'<1||act-'0'>4) {
+	while (act <1||act >4) {
 		Render::ClearScreen();
 		for (const auto& character : characters) {
 			std::cout << *character << std::endl;
@@ -23,14 +21,33 @@ void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) 
 		CoutSkillList();
 		std::cin >> act;
 	}
-	std::unique_ptr<Skill> skill1;
-	if (act == '1') {
-		skill1 = std::make_unique<Damage>("»ðÇòÊõ", 1.1);
+	std::unique_ptr<Skill> skill1, skill2;
+	if (act == 1) {
+		skill1 = std::make_unique<Damage>(
+			"»ðÇòÊõ",
+			[](Character& caster, Character& target) {
+				CharacterInfo CasterInfo = caster.GetInfo();
+				CharacterInfo TargetInfo = target.GetInfo();
+				return CasterInfo.Attack * 1.5 - TargetInfo.Defense * 0.3;
+			}
+		);
+		skill1->Use(*characters[0], *characters[1]);
 	}
-	else if (act == '2') {
-		skill1 = std::make_unique<Damage>("±ù·â½£", 2);
+	else if (act == 2) {
+		skill2 = std::make_unique<Damage>(
+			"",
+			[](Character& caster, Character& target) {
+				CharacterInfo CasterInfo = caster.GetInfo();
+				CharacterInfo TargetInfo = target.GetInfo();
+				return CasterInfo.Attack * 1.2;
+			}
+		);
+		skill2->Use(*characters[0], *characters[1]);
 	}
-	skill1->Use(*characters[0], *characters[1]);
+	else if (act == 3) {
+		std::unique_ptr<HealSkill> healSkill = std::make_unique<Heal>("ÑªÁ¿»Ø¸´");
+		healSkill->Effect(*characters[0]);
+	}
 	Render::WaitForDisplay(3000);
 }
 

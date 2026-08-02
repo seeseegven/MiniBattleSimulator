@@ -5,6 +5,5 @@ class Enemy : public Character
 {
 public:
 		Enemy(std::string name, int hp);
-		void AttackOpponent(Character& target, int harm) override;
 		void RoundBehavior(std::vector<std::unique_ptr<Character>>& characters);
 };
