@@ -11,6 +11,7 @@ Game::Game() : isRunning(true) {
 
 void Game::Run()
 {
+	Render::RenderText("欢迎来到战斗模拟器！\n", TextColor::White);
 	cout
 		<< "=====菜单=====\n"
 		<< "b.开始游戏\n"

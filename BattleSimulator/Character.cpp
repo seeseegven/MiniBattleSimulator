@@ -27,21 +27,21 @@ CharacterInfo Character::GetInfo() {
 	};
 }
 
-int Character::IsChangeHP(int lastHP, int HP) {
+int Character::HpDeltaValue(int HP, int lastHP) {
 	return HP - lastHP;
 }
 
-int Character::IsChangeAttack(int Attack, int lastAttack) {
+int Character::AttackDeltaValue(int Attack, int lastAttack) {
 	return Attack - lastAttack;
 }
 
-int Character::IsChangeDefense(int Defense, int lastDefense) {
+int Character::DefenseDeltaValue(int Defense, int lastDefense) {
 	return Defense - lastDefense;
 }
 
 void Character::SetHP(int hp) {
 	lastHP = HP;
-	HP = hp;
+	HP = hp > 100 ? 100 : hp;
 }
 
 void Character::SetDefense(int defense) {

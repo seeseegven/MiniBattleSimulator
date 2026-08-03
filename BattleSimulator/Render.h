@@ -1,8 +1,10 @@
 #pragma once
 #include <string>
 #include <cstdlib>
-#include "Character.h"
+#include <functional>
 
+class Character;
+struct CharacterInfo;
 enum class TextColor
 {
 	Black = 0,
@@ -30,6 +32,7 @@ public:
 	//以color渲染字符串s
 	static void WaitForDisplay(int seconds = 1000); //等待显示
 	static void ClearScreen(); //清屏
+	static void CoutCharacter(CharacterInfo & InfoBegin, CharacterInfo & InfoEnd);
 private:
 	static void SetTextColor(TextColor color); //设置文本颜色
 };

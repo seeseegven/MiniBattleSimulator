@@ -17,6 +17,10 @@ void ObjectManager::Action() {
 	}
 }
 
+std::vector<std::unique_ptr<Character>>& ObjectManager::GetCharacters() {
+	return characters;
+}
+
 
 void ObjectManager::CoutInfo() {
 	for (const auto& character : characters) {

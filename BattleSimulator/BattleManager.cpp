@@ -17,10 +17,17 @@ void BattleManager::InitializeBattle() {
 
 
 void BattleManager::ManageBattle() {
+	auto& characters = manager.GetCharacters();
 	while (!player->IsDead() && !enemy->IsDead()) {
+		CharacterInfo PlayerInfoBegin = characters[0]->GetInfo();
+		CharacterInfo EnemyInfoBegin = characters[1]->GetInfo();
 		manager.Action();
 		Render::ClearScreen();
-		manager.CoutInfo();
+		CharacterInfo PlayerInfoEnd = characters[0]->GetInfo();
+		CharacterInfo EnemyInfoEnd = characters[1]->GetInfo();
+		Render::CoutCharacter(PlayerInfoBegin, PlayerInfoEnd);
+		Render::CoutCharacter(EnemyInfoBegin, EnemyInfoEnd);
+		//manager.CoutInfo();
 	}
 	if (player->IsDead()) {
 		std::cout << "Íæ¼ÒËÀÍö£¬ÓÎÏ·½áÊø" << std::endl;
