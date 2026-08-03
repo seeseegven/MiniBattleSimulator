@@ -24,17 +24,7 @@ void Render::RenderText(const std::string& s, TextColor color) {
 
 std::ostream& operator<<(std::ostream& os, Character& character) {
 	CharacterInfo Info = character.GetInfo();
-	os << "Name: " << Info.Name << ", HP: ";
-	int deltaHP = character.HpDeltaValue(Info.HP, Info.lastHP);
-	if (deltaHP > 0) {
-		Render::RenderText(std::to_string(Info.HP), TextColor::Green);
-	}
-	else if (deltaHP < 0) {
-		Render::RenderText(std::to_string(Info.HP), TextColor::Red);
-	}
-	else {
-		os << Info.HP;
-	}
+	os << "Name: " << Info.Name << ", HP: " << Info.HP;
 	os << "  Attack: " << Info.Attack << ", Defense: " << Info.Defense << "\n";
 	return os;
 }

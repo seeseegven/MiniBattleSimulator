@@ -5,9 +5,9 @@
 
 struct CharacterInfo {
 	std::string Name;
-	int HP, lastHP;
-	int Attack, lastAttack;
-	int Defense, lastDefense;
+	int HP;
+	int Attack;
+	int Defense;
 };
 
 class Character
@@ -20,16 +20,12 @@ public:
 	bool IsDead();
 	virtual ~Character() = default;
 	CharacterInfo GetInfo();
-	int HpDeltaValue(int lastHP, int HP);
-	int AttackDeltaValue(int Attack, int lastAttack);
-	int DefenseDeltaValue(int Defense, int lastDefense);
 	void SetHP(int hp);
 	void SetDefense(int defense);
 	virtual void RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) = 0;
 protected:
-	int Attack, lastAttack;
-	int Defense, lastDefense;
+	int Attack;
+	int Defense;
 	std::string Name;
 	int HP;
-	int lastHP;
 };
