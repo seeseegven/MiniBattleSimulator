@@ -48,6 +48,9 @@
     <ClCompile Include="Render.cpp">
       <Filter>头文件</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyAI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="Render.h">
       <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAI.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

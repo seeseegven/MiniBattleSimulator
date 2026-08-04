@@ -24,7 +24,11 @@ void Heal::CoutSkill(const std::string& s, int value) {
 	std::cout << "点血量\n";
 }
 
-void Heal::Use(Character& caster, Character& target) {}
+void Heal::Use(Character& caster, Character& target) {
+	auto info = caster.GetInfo();
+	caster.SetDefense(info.Defense + 10);
+	CoutSkill(name, 10);
+}
 
 void DefenseUp::CoutSkill(const std::string& s, int value) {
 	std::cout << "玩家使用 ";
@@ -32,4 +36,10 @@ void DefenseUp::CoutSkill(const std::string& s, int value) {
 	std::cout << ",\n防御力增加了";
 	Render::RenderText(std::to_string(value), TextColor::LightBlue);
 	std::cout << "点\n";
+}
+
+void DefenseUp::Use(Character& caster, Character& target) {
+	auto info = caster.GetInfo();
+	caster.SetDefense(info.Defense + 10);
+	CoutSkill(name, 10);
 }
