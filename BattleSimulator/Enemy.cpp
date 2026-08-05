@@ -29,10 +29,18 @@ void Enemy::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) {
 		skill = std::make_unique<Heal>("敌人回血");
 		break;
 	}
-	skill->Use(*this, *characters[0]);
+	skill->Use(*characters[1], *characters[0]);
 	/*characters[0]->TakeDamage(15);
 	std::cout << "敌人进行普攻，造成了";
 	Render::RenderText("15", TextColor::Red);
-	std::cout << "点伤害" << std::endl;
-	Render::WaitForDisplay(1200);*/
+	std::cout << "点伤害" << std::endl;*/
+	Render::WaitForDisplay(1200);
+}
+
+void Enemy::CoutSkill(const std::string& s, int value) {
+	std::cout << "敌人使用 ";
+	Render::RenderText(s, TextColor::LightCyan);
+	std::cout << ",\n造成了";
+	Render::RenderText(std::to_string(value), TextColor::Red);
+	std::cout << "点伤害\n";
 }

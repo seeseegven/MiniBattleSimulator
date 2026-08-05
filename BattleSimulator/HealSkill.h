@@ -13,7 +13,6 @@ public:
 	Heal(const std::string& s) : HealSkill(s) {}
 	void Effect(Character& caster) override;
 	~Heal() override = default;
-	virtual void CoutSkill(const std::string& s, int value);
 	virtual void Use(Character& caster, Character& target);
 };
 

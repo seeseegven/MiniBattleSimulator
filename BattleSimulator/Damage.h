@@ -9,7 +9,6 @@ class Damage : public Skill {
 public:
 	Damage(const std::string& s, std::function<int(Character&, Character&)> func);
 	void Use(Character& caster, Character& target) override;
-	void CoutSkill(const std::string& s, int value) override;
 
 	~Damage() override =default;
 private:

@@ -22,6 +22,7 @@ public:
 	CharacterInfo GetInfo();
 	void SetHP(int hp);
 	void SetDefense(int defense);
+	virtual void CoutSkill(const std::string& s, int value) = 0;
 	virtual void RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) = 0;
 protected:
 	int Attack;

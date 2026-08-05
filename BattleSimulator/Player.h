@@ -6,5 +6,6 @@ class Player : public Character
 public:
 	Player(std::string name, int hp);
 	void RoundBehavior(std::vector<std::unique_ptr<Character>>& characters);
+	void CoutSkill(const std::string& s, int value) override;
 	void CoutSkillList();
 };

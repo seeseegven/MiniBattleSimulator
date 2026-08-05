@@ -7,6 +7,7 @@ class Enemy : public Character
 public:
 	Enemy(std::string name, int hp);
 	void RoundBehavior(std::vector<std::unique_ptr<Character>>& characters);
+	void CoutSkill(const std::string& s, int value) override;
 private:
 	EnemyAI ai;
 };
