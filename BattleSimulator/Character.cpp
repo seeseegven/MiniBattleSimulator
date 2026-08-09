@@ -51,4 +51,8 @@ void Character::InitSkill(Character& caster, Character& target)
 		"ÑªÁ¿»Ø¸´",
 		SkillFactory::CreateHealHP
 	));
+	skills.push_back(std::make_unique<DefenseUp>(
+		"·ÀÓùÌáÉı",
+		SkillFactory::CreateDefenseUp
+	));
 }

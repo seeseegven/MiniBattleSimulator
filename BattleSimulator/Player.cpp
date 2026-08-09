@@ -22,18 +22,7 @@ void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) 
 		CoutSkillList();
 		std::cin >> act;
 	}
-	std::unique_ptr<Skill> skill1, skill2;
-	if (act[0] == '1') {
-		skills[0]->Use(*characters[0], *characters[1]);
-	}else if (act[0] == '2') {
-		skills[1]->Use(*characters[0], *characters[1]);
-	}else if (act[0] == '3') {
-		skills[2]->Use(*characters[0], *characters[1]);
-	}
-	else {
-		std::unique_ptr<HealSkill> defenseUpSkill = std::make_unique<DefenseUp>("·ÀÓùÔö¼Ó");
-		defenseUpSkill->Effect(*characters[0]);
-	}
+	skills[act[0] - '1']->Use(*characters[0], *characters[1]);
 	Render::WaitForDisplay(3000);
 }
 

@@ -1,27 +1,29 @@
 #include "HealSkill.h"
+#include "SkillFactory.h"
 #include "Render.h"
 
 
 HealSkill::HealSkill(const std::string& s) : Skill(s) {}
 
-void Heal::Effect(Character& caster) {
+void Heal::Effect(Character& caster, Character& target) {
 	auto info = caster.GetInfo();
 	caster.SetHP(info.HP + 20);
 	caster.CoutSkill(name, 20);
 }
 
-void DefenseUp::Effect(Character& caster) {
+void DefenseUp::Effect(Character& caster, Character& target) {
 	auto info = caster.GetInfo();
-	caster.SetDefense(info.Defense + 10);
+	caster.SetDefense(info.Defense + SkillFactory::CreateDefenseUp(caster, target));
 	CoutSkill(name, 10);
 }
 
 
 
 void Heal::Use(Character& caster, Character& target) {
-	auto info = caster.GetInfo();
-	caster.SetDefense(info.HP + 10);
-	caster.CoutSkill(name, 10);
+	CharacterInfo CasterInfo = caster.GetInfo();
+	int heal = SkillFactory::CreateHealHP(caster, target);
+	caster.SetHP(CasterInfo.HP + heal);
+	caster.CoutSkill(name, heal);
 }
 
 void DefenseUp::CoutSkill(const std::string& s, int value) {
@@ -34,6 +36,7 @@ void DefenseUp::CoutSkill(const std::string& s, int value) {
 
 void DefenseUp::Use(Character& caster, Character& target) {
 	auto info = caster.GetInfo();
-	caster.SetDefense(info.Defense + 10);
-	CoutSkill(name, 10);
+	int defense = SkillFactory::CreateDefenseUp(caster, target);
+	caster.SetDefense(info.Defense + defense);
+	CoutSkill(name, defense);
 }
