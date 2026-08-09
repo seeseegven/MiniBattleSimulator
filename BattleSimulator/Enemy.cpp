@@ -25,9 +25,9 @@ void Enemy::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) {
 			}
 		);
 		break;
-	case SkillType::Heal:
-		skill = std::make_unique<Heal>("敌人回血");
-		break;
+	//case SkillType::Heal:
+		//skill = std::make_unique<Heal>("敌人回血", 20);
+		//break;
 	}
 	skill->Use(*characters[1], *characters[0]);
 	/*characters[0]->TakeDamage(15);

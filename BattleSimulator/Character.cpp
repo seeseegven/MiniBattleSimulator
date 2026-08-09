@@ -1,6 +1,9 @@
 #include "Character.h"
 #include "BattleManager.h"
-#include <iostream>
+#include "Damage.h"
+#include "HealSkill.h"
+#include "SkillFactory.h"
+#include <memory>
 
 Character::Character(const std::string NameIn, const int HPIn,
 							const int AttackIn, const int DefenseIn)
@@ -8,8 +11,8 @@ Character::Character(const std::string NameIn, const int HPIn,
 		Attack(AttackIn),
 		Defense(DefenseIn){}
 
-void Character::TakeDamage(int demage) {
-	HP -= demage;
+void Character::TakeDamage(int damage) {
+	HP -= damage;
 }
 
 
@@ -32,4 +35,20 @@ void Character::SetHP(int hp) {
 
 void Character::SetDefense(int defense) {
 	Defense = defense;
+}
+
+void Character::InitSkill(Character& caster, Character& target)
+{
+	skills.push_back(std::make_unique<Damage>(
+		"»ðÇòÊõ",
+		SkillFactory::CreateFireBall
+	));
+	skills.push_back(std::make_unique<Damage>(
+		"±ù·âj",
+		SkillFactory::CreateIceSword
+	));
+	skills.push_back(std::make_unique<Heal>(
+		"ÑªÁ¿»Ø¸´",
+		SkillFactory::CreateHealHP
+	));
 }

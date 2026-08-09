@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 
+class Skill;
+
 struct CharacterInfo {
 	std::string Name;
 	int HP;
@@ -24,9 +26,11 @@ public:
 	void SetDefense(int defense);
 	virtual void CoutSkill(const std::string& s, int value) = 0;
 	virtual void RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) = 0;
+	void InitSkill(Character& caster, Character& target);
 protected:
 	int Attack;
 	int Defense;
 	std::string Name;
-	int HP;
+	int HP;//到时候调下顺序
+	std::vector<std::unique_ptr<Skill>> skills;
 };
