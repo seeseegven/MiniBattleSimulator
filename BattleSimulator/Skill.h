@@ -1,6 +1,7 @@
 #pragma once
-#include "Character.h"
 #include <string>
+
+class Character;
 
 class Skill {
 public:
@@ -8,6 +9,7 @@ public:
 	virtual void Use(Character& caster, Character& target) = 0;
 	virtual ~Skill()=default;
 	virtual std::string GetName();
+	virtual int CalculateSkillScore(Character& caster, Character& target)=0;
 protected:
 	std::string name;
 };

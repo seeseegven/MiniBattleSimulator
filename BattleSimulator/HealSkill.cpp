@@ -26,6 +26,11 @@ void Heal::Use(Character& caster, Character& target) {
 	caster.CoutSkill(name, heal);
 }
 
+int Heal::CalculateSkillScore(Character& caster, Character& target)
+{
+	return 100 - caster.GetInfo().HP;
+}
+
 void DefenseUp::CoutSkill(const std::string& s, int value) {
 	std::cout << "Íæ¼ÒÊ¹ÓÃ ";
 	Render::RenderText(s, TextColor::LightBlue);
@@ -39,4 +44,9 @@ void DefenseUp::Use(Character& caster, Character& target) {
 	int defense = SkillFactory::CreateDefenseUp(caster, target);
 	caster.SetDefense(info.Defense + defense);
 	CoutSkill(name, defense);
+}
+
+int DefenseUp::CalculateSkillScore(Character& caster, Character& target)
+{
+	return 0;
 }

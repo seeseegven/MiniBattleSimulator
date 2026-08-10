@@ -27,6 +27,7 @@ public:
 	virtual void CoutSkill(const std::string& s, int value) = 0;
 	virtual void RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) = 0;
 	void InitSkill(Character& caster, Character& target);
+	const auto& GetSkills() { return skills; };
 protected:
 	int Attack;
 	int Defense;
