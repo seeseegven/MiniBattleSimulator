@@ -12,7 +12,7 @@ Player::Player(std::string name, int hp)
 
 void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters, int curRound) {
 	std::string act;
-	CoutSkillList();
+	CoutSkillList(curRound);
 	std::cin >> act;
 	while (act.size() != 1 || act[0]<'1' || act[0]>'4' 
 		|| skills[act[0]-'1']->GetRoundLeft() > curRound) {
@@ -21,7 +21,7 @@ void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters, 
 		for (const auto& character : characters) {
 			std::cout << *character << std::endl;
 		}
-		CoutSkillList();
+		CoutSkillList(curRound);
 		std::cin >> act;
 	}
 	skills[act[0] - '1']->Use(*characters[0], *characters[1]);
@@ -29,10 +29,11 @@ void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters, 
 	Render::WaitForDisplay(3000);
 }
 
-void Player::CoutSkillList() {
+void Player::CoutSkillList(int curRound) {
 	std::cout << "请选择你要施放的技能\n";
 	for (int i = 0; i < skills.size(); i++) {
-		std::cout << i + 1 << "." << skills[i]->GetName() << std::endl;
+		std::cout << i + 1 << "." << skills[i]->GetName();
+		skills[i]->PrintDetail(curRound);
 	}
 }
 

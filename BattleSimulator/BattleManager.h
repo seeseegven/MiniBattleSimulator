@@ -10,6 +10,7 @@ public:
 	void InitializeBattle();
 	//void DisplayInfo();
 	void ManageBattle();
+	void PrintCurrentRound();
 	int GetCurRound();
 private:
 	ObjectManager manager;

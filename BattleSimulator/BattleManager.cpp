@@ -21,9 +21,7 @@ void BattleManager::InitializeBattle() {
 void BattleManager::ManageBattle() {
 	auto& characters = manager.GetCharacters();
 	while (!player->IsDead() && !enemy->IsDead()) {
-		Render::RenderText("当前为第 ", TextColor::White);
-		Render::RenderText(std::to_string(curRound), TextColor::Magenta);
-		Render::RenderText(" 回合\n", TextColor::White);
+		PrintCurrentRound();
 		CharacterInfo PlayerInfoBegin = characters[0]->GetInfo();
 		CharacterInfo EnemyInfoBegin = characters[1]->GetInfo();
 		manager.Action(curRound);
@@ -48,6 +46,13 @@ void BattleManager::ManageBattle() {
 		std::cout << "按z返回菜单" << std::endl;
 		std::cin >> command;
 	}
+}
+
+void BattleManager::PrintCurrentRound()
+{
+	Render::RenderText("当前为第 ", TextColor::White);
+	Render::RenderText(std::to_string(curRound+1), TextColor::LightMagenta);
+	Render::RenderText(" 回合\n", TextColor::White);
 }
 
 int BattleManager::GetCurRound()

@@ -1,6 +1,6 @@
+#include "Enemy.h"
 #include "Game.h"
 #include "Player.h"
-#include "Enemy.h"
 #include "Render.h"
 
 using namespace std;
