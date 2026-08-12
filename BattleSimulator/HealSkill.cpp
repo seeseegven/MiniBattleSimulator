@@ -3,22 +3,6 @@
 #include "Render.h"
 
 
-HealSkill::HealSkill(const std::string& s) : Skill(s) {}
-
-void Heal::Effect(Character& caster, Character& target) {
-	auto info = caster.GetInfo();
-	caster.SetHP(info.HP + 20);
-	caster.CoutSkill(name, 20);
-}
-
-void DefenseUp::Effect(Character& caster, Character& target) {
-	auto info = caster.GetInfo();
-	caster.SetDefense(info.Defense + SkillFactory::CreateDefenseUp(caster, target));
-	CoutSkill(name, 10);
-}
-
-
-
 void Heal::Use(Character& caster, Character& target) {
 	CharacterInfo CasterInfo = caster.GetInfo();
 	int heal = SkillFactory::CreateHealHP(caster, target);

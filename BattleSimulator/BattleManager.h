@@ -10,8 +10,10 @@ public:
 	void InitializeBattle();
 	//void DisplayInfo();
 	void ManageBattle();
+	int GetCurRound();
 private:
 	ObjectManager manager;
+	int curRound=0;//当前回合
 	Player* player;
 	Enemy* enemy;
 };

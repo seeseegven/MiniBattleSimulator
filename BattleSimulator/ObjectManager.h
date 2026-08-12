@@ -9,7 +9,7 @@ class ObjectManager
 public:
 	void AddCharacter(std::unique_ptr<Character> character);
 	void CoutInfo();
-	void Action();
+	void Action(int curRound);
 	std::vector<std::unique_ptr<Character>>& GetCharacters();
 private:
 	std::vector<std::unique_ptr<Character>> characters;

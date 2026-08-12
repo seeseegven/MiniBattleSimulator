@@ -40,19 +40,19 @@ void Character::SetDefense(int defense) {
 void Character::InitSkill(Character& caster, Character& target)
 {
 	skills.push_back(std::make_unique<Damage>(
-		"»ğÇòÊõ",
+		"»ğÇòÊõ", 1,
 		SkillFactory::CreateFireBall
 	));
 	skills.push_back(std::make_unique<Damage>(
-		"±ù·âj",
+		"±ù·âj", 3,
 		SkillFactory::CreateIceSword
 	));
 	skills.push_back(std::make_unique<Heal>(
-		"ÑªÁ¿»Ø¸´",
+		"ÑªÁ¿»Ø¸´", 2,
 		SkillFactory::CreateHealHP
 	));
 	skills.push_back(std::make_unique<DefenseUp>(
-		"·ÀÓùÌáÉı",
+		"·ÀÓùÌáÉı", 1,
 		SkillFactory::CreateDefenseUp
 	));
 }

@@ -11,9 +11,10 @@ void ObjectManager::AddCharacter(std::unique_ptr<Character> character) {
 	//unique_ptr是独占的，不能复制只能移动，不然会有
 }
 
-void ObjectManager::Action() {
+void ObjectManager::Action(int curRound) {
+	
 	for (auto& character : characters) {
-			character->RoundBehavior(characters);
+			character->RoundBehavior(characters, curRound);
 	}
 }
 

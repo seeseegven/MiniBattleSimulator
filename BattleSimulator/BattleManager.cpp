@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Render.h"
 #include <iostream>
+#include <string>
 
 void BattleManager::InitializeBattle() {
 	auto p = std::make_unique<Player>("玩家", 100);
@@ -20,14 +21,18 @@ void BattleManager::InitializeBattle() {
 void BattleManager::ManageBattle() {
 	auto& characters = manager.GetCharacters();
 	while (!player->IsDead() && !enemy->IsDead()) {
+		Render::RenderText("当前为第 ", TextColor::White);
+		Render::RenderText(std::to_string(curRound), TextColor::Magenta);
+		Render::RenderText(" 回合\n", TextColor::White);
 		CharacterInfo PlayerInfoBegin = characters[0]->GetInfo();
 		CharacterInfo EnemyInfoBegin = characters[1]->GetInfo();
-		manager.Action();
+		manager.Action(curRound);
 		Render::ClearScreen();
 		CharacterInfo PlayerInfoEnd = characters[0]->GetInfo();
 		CharacterInfo EnemyInfoEnd = characters[1]->GetInfo();
 		Render::CoutCharacter(PlayerInfoBegin, PlayerInfoEnd);
 		Render::CoutCharacter(EnemyInfoBegin, EnemyInfoEnd);
+		curRound++;
 		//manager.CoutInfo();
 	}
 	if (player->IsDead()) {
@@ -43,5 +48,10 @@ void BattleManager::ManageBattle() {
 		std::cout << "按z返回菜单" << std::endl;
 		std::cin >> command;
 	}
+}
+
+int BattleManager::GetCurRound()
+{
+	return curRound;
 }
 

@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Damage.h"
 #include "HealSkill.h"
+#include "Render.h"
 #include <iostream>
 #include <functional>
 
@@ -9,12 +10,13 @@ using namespace std;
 Player::Player(std::string name, int hp)
 	: Character(name, hp) {}
 
-void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) {
+void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters, int curRound) {
 	std::string act;
 	CoutSkillList();
 	std::cin >> act;
-	while (act.size()!=1 || act[0]<'1' || act[0]>'4') {
-		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	while (act.size() != 1 || act[0]<'1' || act[0]>'4' 
+		|| skills[act[0]-'1']->GetRoundLeft() > curRound) {
+		//std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		Render::ClearScreen();
 		for (const auto& character : characters) {
 			std::cout << *character << std::endl;
@@ -23,6 +25,7 @@ void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters) 
 		std::cin >> act;
 	}
 	skills[act[0] - '1']->Use(*characters[0], *characters[1]);
+	skills[act[0] - '1']->SetRoundLeft(curRound);
 	Render::WaitForDisplay(3000);
 }
 
