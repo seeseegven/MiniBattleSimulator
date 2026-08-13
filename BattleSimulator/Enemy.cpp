@@ -17,10 +17,7 @@ void Enemy::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters, i
 	Render::WaitForDisplay(1200);
 }
 
-void Enemy::CoutSkill(const std::string& s, int value) {
+void Enemy::CoutSkill(const std::string& s, int value, Skill* skill) {
 	std::cout << "敌人使用 ";
-	Render::RenderText(s, TextColor::LightCyan);
-	std::cout << ",\n造成了";
-	Render::RenderText(std::to_string(value), TextColor::Red);
-	std::cout << "点伤害\n";
+	skill->SkillEffect(s, value);
 }

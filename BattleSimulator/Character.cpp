@@ -47,9 +47,13 @@ void Character::InitSkill(Character& caster, Character& target)
 		"冰封j", 3,
 		SkillFactory::CreateIceSword
 	));
-	skills.push_back(std::make_unique<Heal>(
+	skills.push_back(std::make_unique<OneTimeHeal>(
 		"血量回复", 2,
-		SkillFactory::CreateHealHP
+		SkillFactory::CreateOneTimeHealHP
+	));
+	skills.push_back(std::make_unique<ContinuousHeal>(
+		"持续回复", 4, 3,
+		SkillFactory::CreateContinuousHealHP
 	));
 	skills.push_back(std::make_unique<DefenseUp>(
 		"防御提升", 1,

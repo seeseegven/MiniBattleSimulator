@@ -59,6 +59,7 @@ void Game::Render()
 	if (CurrentState == GameState::Menu)
 	{
 		cout
+		<< "欢迎来到战斗模拟器！\n"
 		<< "=====菜单=====\n"
 		<< "b.开始游戏\n"
 		<< "q.退出\n";

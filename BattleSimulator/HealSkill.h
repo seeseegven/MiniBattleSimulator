@@ -2,15 +2,16 @@
 #include <functional>
 #include "Skill.h"
 
-class Heal : public Skill {
+class OneTimeHeal : public Skill {
 public:
-	Heal(const std::string& s, const int& round, 
+	OneTimeHeal(const std::string& s, const int& round, 
 		std::function<int(Character&, Character&)> func)
 		: Skill(s, round), Healfunc(func) {
 	}
-	~Heal() override = default;
+	~OneTimeHeal() override = default;
 	virtual void Use(Character& caster, Character& target);
 	int CalculateSkillScore(Character& caster, Character& target) override;
+	void SkillEffect(const std::string& s, int value);
 private:
 	std::function<int(Character&, Character&)> Healfunc;
 };
@@ -21,9 +22,24 @@ public:
 		std::function<int(Character&, Character&)> func) 
 		: Skill(s, round) , Defensefunc(func){}
 	~DefenseUp() override = default;
-	virtual void CoutSkill(const std::string& s, int value);
 	virtual void Use(Character& caster, Character& target);
 	int CalculateSkillScore(Character& caster, Character& target) override;
+	void SkillEffect(const std::string& s, int value) override;
 private:
 	std::function<int(Character&, Character&)> Defensefunc;
+};
+
+class ContinuousHeal : public Skill {
+public:
+	ContinuousHeal(const std::string& s, const int& round, int continueRound,
+		std::function<int(Character&, Character&)> func)
+		: Skill(s, round), Healfunc(func), roundLeft(continueRound){
+	}
+	~ContinuousHeal() override = default;
+	virtual void Use(Character& caster, Character& target);
+	int CalculateSkillScore(Character& caster, Character& target) override;
+	void SkillEffect(const std::string& s, int value) override;
+private:
+	int roundLeft;//技能效果持续时间
+	std::function<int(Character&, Character&)> Healfunc;
 };

@@ -13,6 +13,7 @@ public:
 	int GetRoundLeft() const;//获取哪个回合才能使用该技能
 	virtual void SetRoundLeft(int curRound);//设置哪个回合才能使用该技能
 	virtual void PrintDetail(int curRound);
+	virtual void SkillEffect(const std::string& s, int value)=0;
 protected:
 	std::string name;
 	int whichRoundCanUse = 0;

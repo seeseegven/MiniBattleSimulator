@@ -13,25 +13,16 @@ void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters, 
 	std::string act;
 	CoutSkillList(curRound);
 	COORD info = Render::GetCursorPosition();
-	std::cin >> act;
-	while (act.size() != 1 || act[0]<'1' || act[0]>'4' 
+    std::cin >> act;
+	while (act.size() != 1 || act[0]<'1' || act[0]-'1'>skills.size() //妈的老是忘记-'1'转成整数。。。
 		|| skills[act[0]-'1']->GetRoundLeft() > curRound) {
-		//std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		/*Render::ClearScreen();
-		std::cout << "进入战斗   " << "z退出" << std::endl;
-		for (const auto& character : characters) {
-			std::cout << *character << std::endl;
-		}
-		PrintCurrentRound(curRound);
-		CoutSkillList(curRound);*/
-
 		Render::SetCursorPosition(0, info.Y);
 		std::cout << "\033[2K"; 
 		std::cin >> act;
 	}
 	skills[act[0] - '1']->Use(*characters[0], *characters[1]);
 	skills[act[0] - '1']->SetRoundLeft(curRound);
-	Render::WaitForDisplay(3000);
+	Render::WaitForDisplay(1200);
 }
 
 void Player::CoutSkillList(int curRound) {
@@ -48,10 +39,7 @@ void Player::PrintCurrentRound(int curRound) {
 	Render::RenderText(" 回合\n", TextColor::White);
 }
 
-void Player::CoutSkill(const std::string& s, int value) {
+void Player::CoutSkill(const std::string& s, int value, Skill* skill) {
 	std::cout << "玩家使用 ";
-	Render::RenderText(s, TextColor::LightCyan);
-	std::cout << ",\n造成了";
-	Render::RenderText(std::to_string(value), TextColor::Red);
-	std::cout << "点伤害\n";
+	skill->SkillEffect(s, value);
 }

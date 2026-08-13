@@ -3,34 +3,65 @@
 #include "Render.h"
 
 
-void Heal::Use(Character& caster, Character& target) {
+void OneTimeHeal::Use(Character& caster, Character& target) {
 	CharacterInfo CasterInfo = caster.GetInfo();
-	int heal = SkillFactory::CreateHealHP(caster, target);
+	int heal = SkillFactory::CreateOneTimeHealHP(caster, target);
 	caster.SetHP(CasterInfo.HP + heal);
-	caster.CoutSkill(name, heal);
+	caster.CoutSkill(name, heal, this);
 }
 
-int Heal::CalculateSkillScore(Character& caster, Character& target)
+int OneTimeHeal::CalculateSkillScore(Character& caster, Character& target)
 {
 	return 100 - caster.GetInfo().HP;
-}
-
-void DefenseUp::CoutSkill(const std::string& s, int value) {
-	std::cout << "玩家使用 ";
-	Render::RenderText(s, TextColor::LightBlue);
-	std::cout << ",\n防御力增加了";
-	Render::RenderText(std::to_string(value), TextColor::LightBlue);
-	std::cout << "点\n";
 }
 
 void DefenseUp::Use(Character& caster, Character& target) {
 	auto info = caster.GetInfo();
 	int defense = SkillFactory::CreateDefenseUp(caster, target);
 	caster.SetDefense(info.Defense + defense);
-	CoutSkill(name, defense);
+	caster.CoutSkill(name, defense, this);
 }
 
 int DefenseUp::CalculateSkillScore(Character& caster, Character& target)
 {
 	return 0;
+}
+
+void DefenseUp::SkillEffect(const std::string& s, int value)
+{
+	Render::RenderText(s, TextColor::LightCyan);
+	std::cout << ",\n增加了";
+	Render::RenderText(std::to_string(value), TextColor::LightBlue);
+	std::cout << "点防御\n";
+}
+
+void ContinuousHeal::Use(Character& caster, Character& target) {
+	CharacterInfo CasterInfo = caster.GetInfo();
+	if (roundLeft > 0) {
+		int heal = SkillFactory::CreateContinuousHealHP(caster, target);
+		caster.SetHP(CasterInfo.HP + heal);
+		roundLeft--;
+		caster.CoutSkill(name, heal, this);
+	}
+}
+
+int ContinuousHeal::CalculateSkillScore(Character& caster, Character& target)
+{
+	return 0;
+}
+
+void ContinuousHeal::SkillEffect(const std::string& s, int value)
+{
+	Render::RenderText(s, TextColor::LightCyan);
+	std::cout << ",\n恢复了";
+	Render::RenderText(std::to_string(value), TextColor::LightGreen);
+	std::cout << "点血量\n";
+}
+
+void OneTimeHeal::SkillEffect(const std::string& s, int value)
+{
+	Render::RenderText(s, TextColor::LightCyan);
+	std::cout << ",\n恢复了";
+	Render::RenderText(std::to_string(value), TextColor::LightGreen);
+	std::cout << "点血量\n";
 }
