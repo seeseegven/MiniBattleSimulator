@@ -21,14 +21,16 @@ void BattleManager::InitializeBattle() {
 void BattleManager::ManageBattle() {
 	auto& characters = manager.GetCharacters();
 	while (!player->IsDead() && !enemy->IsDead()) {
-		PrintCurrentRound();
+		player->PrintCurrentRound(curRound);
 		CharacterInfo PlayerInfoBegin = characters[0]->GetInfo();
 		CharacterInfo EnemyInfoBegin = characters[1]->GetInfo();
 		manager.Action(curRound);
 		Render::ClearScreen();
 		CharacterInfo PlayerInfoEnd = characters[0]->GetInfo();
 		CharacterInfo EnemyInfoEnd = characters[1]->GetInfo();
+		std::cout << "进入战斗   " << "z退出" << std::endl;
 		Render::CoutCharacter(PlayerInfoBegin, PlayerInfoEnd);
+		//虽然重载了<<来输出角色信息，但是不能输出前后的颜色变化，所以新增了一个函数。
 		Render::CoutCharacter(EnemyInfoBegin, EnemyInfoEnd);
 		curRound++;
 		//manager.CoutInfo();
@@ -46,17 +48,5 @@ void BattleManager::ManageBattle() {
 		std::cout << "按z返回菜单" << std::endl;
 		std::cin >> command;
 	}
-}
-
-void BattleManager::PrintCurrentRound()
-{
-	Render::RenderText("当前为第 ", TextColor::White);
-	Render::RenderText(std::to_string(curRound+1), TextColor::LightMagenta);
-	Render::RenderText(" 回合\n", TextColor::White);
-}
-
-int BattleManager::GetCurRound()
-{
-	return curRound;
 }
 

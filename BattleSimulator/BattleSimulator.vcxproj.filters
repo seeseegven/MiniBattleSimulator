@@ -33,9 +33,6 @@
     <ClCompile Include="ObjectManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="BattleManager.cpp">
-      <Filter>头文件</Filter>
-    </ClCompile>
     <ClCompile Include="Skill.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -45,13 +42,16 @@
     <ClCompile Include="HealSkill.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Render.cpp">
-      <Filter>头文件</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyAI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="SkillFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Render.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,9 +71,6 @@
     <ClInclude Include="ObjectManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="BattleManager.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="Skill.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -83,13 +80,16 @@
     <ClInclude Include="HealSkill.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Render.h">
-      <Filter>源文件</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyAI.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="SkillFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Render.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

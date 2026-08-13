@@ -2,6 +2,7 @@
 #include <string>
 #include <cstdlib>
 #include <functional>
+#include <Windows.h>
 
 class Character;
 struct CharacterInfo;
@@ -33,6 +34,8 @@ public:
 	static void WaitForDisplay(int seconds = 1000); //等待显示
 	static void ClearScreen(); //清屏
 	static void CoutCharacter(CharacterInfo & InfoBegin, CharacterInfo & InfoEnd);
+	static void SetCursorPosition(short x, short y);
+	static COORD GetCursorPosition();
 private:
 	static void SetTextColor(TextColor color); //设置文本颜色
 };

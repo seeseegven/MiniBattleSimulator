@@ -1,6 +1,5 @@
 #include "Render.h"
 #include "Character.h"
-#include <Windows.h>
 #include <thread>
 #include <chrono>
 #include <iostream>
@@ -67,4 +66,23 @@ void Render::CoutCharacter(CharacterInfo& InfoBegin, CharacterInfo& InfoEnd) {
 		std::cout << ", Defense: " << InfoEnd.Defense;
 	}
 	std::cout << '\n' << std::endl;
+}
+
+void Render::SetCursorPosition(short x, short y) {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	COORD pos;
+	pos.X = x;
+	pos.Y = y;
+
+	SetConsoleCursorPosition(hConsole, pos);
+}
+
+COORD Render::GetCursorPosition() {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	GetConsoleScreenBufferInfo(hConsole, &info);
+
+	return info.dwCursorPosition;
 }

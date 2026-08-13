@@ -8,4 +8,5 @@ public:
 	void RoundBehavior(std::vector<std::unique_ptr<Character>>& characters, int curRound);
 	void CoutSkill(const std::string& s, int value) override;
 	void CoutSkillList(int curRound);
+	void PrintCurrentRound(int );
 };
