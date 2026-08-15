@@ -10,8 +10,8 @@ public:
 	virtual ~Skill()=default;
 	virtual std::string GetName();
 	virtual int CalculateSkillScore(Character& caster, Character& target)=0;
-	int GetRoundLeft() const;//获取哪个回合才能使用该技能
-	virtual void SetRoundLeft(int curRound);//设置哪个回合才能使用该技能
+	int GetWhichRoundCanUse() const;//获取哪个回合才能使用该技能
+	virtual void SetWhichRoundCanUse(int curRound);//设置哪个回合才能使用该技能
 	virtual void PrintDetail(int curRound);
 	virtual void SkillEffect(const std::string& s, int value)=0;
 protected:

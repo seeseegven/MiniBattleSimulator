@@ -4,14 +4,15 @@ int SkillFactory::CreateFireBall(Character& caster, Character& target)
 {
 	CharacterInfo CasterInfo = caster.GetInfo();
 	CharacterInfo TargetInfo = target.GetInfo();
-	return CasterInfo.Attack * (1-TargetInfo.Defense / (TargetInfo.Defense+100));
+	return CasterInfo.Attack 
+		* (1-TargetInfo.Defense / (static_cast<double>(TargetInfo.Defense)+200));
 }
 
 int SkillFactory::CreateIceSword(Character& caster, Character& target)
 {
 	CharacterInfo CasterInfo = caster.GetInfo();
 	CharacterInfo TargetInfo = target.GetInfo();
-	return CasterInfo.Attack * 1.5;
+	return CasterInfo.Attack * 0.5;
 }
 
 int SkillFactory::CreateOneTimeHealHP(Character& caster, Character& target)

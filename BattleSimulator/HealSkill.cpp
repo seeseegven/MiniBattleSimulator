@@ -1,6 +1,7 @@
 #include "HealSkill.h"
 #include "SkillFactory.h"
 #include "Render.h"
+#include "EffectStatus.h"
 
 
 void OneTimeHeal::Use(Character& caster, Character& target) {
@@ -37,12 +38,9 @@ void DefenseUp::SkillEffect(const std::string& s, int value)
 
 void ContinuousHeal::Use(Character& caster, Character& target) {
 	CharacterInfo CasterInfo = caster.GetInfo();
-	if (roundLeft > 0) {
-		int heal = SkillFactory::CreateContinuousHealHP(caster, target);
-		caster.SetHP(CasterInfo.HP + heal);
-		roundLeft--;
-		caster.CoutSkill(name, heal, this);
-	}
+	int heal = SkillFactory::CreateContinuousHealHP(caster, target);
+	caster.AddStatus(std::make_unique<ContinueHeal>(continueRound, heal));
+	caster.CoutSkill(name, heal, this);
 }
 
 int ContinuousHeal::CalculateSkillScore(Character& caster, Character& target)

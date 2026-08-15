@@ -3,6 +3,7 @@
 #include "Damage.h"
 #include "HealSkill.h"
 #include "SkillFactory.h"
+#include "EffectStatus.h"
 #include <memory>
 
 Character::Character(const std::string NameIn, const int HPIn,
@@ -19,6 +20,8 @@ void Character::TakeDamage(int damage) {
 bool Character::IsDead() {
 	return HP <= 0;
 }
+
+Character::~Character() = default;
 
 CharacterInfo Character::GetInfo() {
 	return {
@@ -37,6 +40,7 @@ void Character::SetDefense(int defense) {
 	Defense = defense;
 }
 
+
 void Character::InitSkill(Character& caster, Character& target)
 {
 	skills.push_back(std::make_unique<Damage>(
@@ -52,11 +56,16 @@ void Character::InitSkill(Character& caster, Character& target)
 		SkillFactory::CreateOneTimeHealHP
 	));
 	skills.push_back(std::make_unique<ContinuousHeal>(
-		"持续回复", 4, 3,
+		"持续回复", 4, 3,//持续三回合
 		SkillFactory::CreateContinuousHealHP
 	));
 	skills.push_back(std::make_unique<DefenseUp>(
 		"防御提升", 1,
 		SkillFactory::CreateDefenseUp
 	));
+}
+
+void Character::AddStatus(std::unique_ptr<EffectStatus>&& status)
+{
+	Statuses.push_back(std::move(status));
 }

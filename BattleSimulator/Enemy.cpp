@@ -21,3 +21,7 @@ void Enemy::CoutSkill(const std::string& s, int value, Skill* skill) {
 	std::cout << "µÐÈËÊ¹ÓÃ ";
 	skill->SkillEffect(s, value);
 }
+
+void Enemy::CoutSkill(const std::string& s, Skill* skill)
+{
+}

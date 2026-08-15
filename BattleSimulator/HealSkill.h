@@ -33,13 +33,13 @@ class ContinuousHeal : public Skill {
 public:
 	ContinuousHeal(const std::string& s, const int& round, int continueRound,
 		std::function<int(Character&, Character&)> func)
-		: Skill(s, round), Healfunc(func), roundLeft(continueRound){
+		: Skill(s, round), Healfunc(func), continueRound(continueRound){
 	}
 	~ContinuousHeal() override = default;
 	virtual void Use(Character& caster, Character& target);
 	int CalculateSkillScore(Character& caster, Character& target) override;
 	void SkillEffect(const std::string& s, int value) override;
 private:
-	int roundLeft;//技能效果持续时间
+	int continueRound;//技能效果持续时间
 	std::function<int(Character&, Character&)> Healfunc;
 };

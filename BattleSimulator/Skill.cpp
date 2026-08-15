@@ -6,11 +6,11 @@ std::string Skill::GetName()
 	return name;
 }
 
-int Skill::GetRoundLeft() const{
+int Skill::GetWhichRoundCanUse() const{
 	return whichRoundCanUse;
 }
 
-void Skill::SetRoundLeft(int curRound)
+void Skill::SetWhichRoundCanUse(int curRound)
 {
 	whichRoundCanUse = coolDown + curRound;
 }
