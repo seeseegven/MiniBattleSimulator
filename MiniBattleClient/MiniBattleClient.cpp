@@ -45,13 +45,13 @@ int main()
 	}
 
 	std::cout << "connected to server!\n";
-	const char* message = "Hello Server";
-	send(clientSocket, message, static_cast<int>(strlen(message)),0);
+	const std::string message = "Hello Server";
+	send(clientSocket, message.data(), static_cast<int>(message.size()), 0);
 	
-	char buffer[1024]{};
-	int received = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
+	std::string buffer(1024, '\0');
+	int received = recv(clientSocket, buffer.data(), buffer.size(), 0);
 	if (received > 0) {
-		buffer[received] = '\0';
+		buffer.resize(received);
 		std::cout << "Server says: "
 			<< buffer << '\n';
 	}
@@ -61,4 +61,4 @@ int main()
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
+// 调试程序: F5 或调试 >“开始调试”菜单  
