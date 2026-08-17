@@ -45,6 +45,16 @@ int main()
 	}
 
 	std::cout << "connected to server!\n";
+	const char* message = "Hello Server";
+	send(clientSocket, message, static_cast<int>(strlen(message)),0);
+	
+	char buffer[1024]{};
+	int received = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
+	if (received > 0) {
+		buffer[received] = '\0';
+		std::cout << "Server says: "
+			<< buffer << '\n';
+	}
 	closesocket(clientSocket);
 	WSACleanup();
 	return 0;
