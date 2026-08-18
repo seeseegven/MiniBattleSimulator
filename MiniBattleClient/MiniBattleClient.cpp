@@ -48,7 +48,7 @@ int main()
 	std::cout << "connected to server!\n";
 	while (1) {
 		std::string message;
-		std::cout << "请输入你要发送的内容,quit退出";
+		std::cout << "请输入你要发送的内容,quit退出\n";
 		std::cin >> message;
 		if (message == "quit") break;
 		send(clientSocket, message.data(), static_cast<int>(message.size()), 0);

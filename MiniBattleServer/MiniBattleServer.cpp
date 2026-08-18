@@ -73,8 +73,9 @@ int main()
                     << buffer << "\n";
                 reply = "已收到客户端的"+buffer;
             }
-            Sleep(4000);
-
+            else if (received <= 0)
+                break;
+            
             send(
                 clientSocket,
                 reply.data(),
