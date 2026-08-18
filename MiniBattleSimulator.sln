@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MiniBattleServer", "MiniBat
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MiniBattleClient", "MiniBattleClient\MiniBattleClient.vcxproj", "{B555416A-931D-4977-B84C-BCFEBC67DCA5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MiniBattleCore", "MiniBattleCore\MiniBattleCore.vcxproj", "{17C0A1DA-4CCE-4463-B7BB-0E35C12ED6A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{B555416A-931D-4977-B84C-BCFEBC67DCA5}.Release|x64.Build.0 = Release|x64
 		{B555416A-931D-4977-B84C-BCFEBC67DCA5}.Release|x86.ActiveCfg = Release|Win32
 		{B555416A-931D-4977-B84C-BCFEBC67DCA5}.Release|x86.Build.0 = Release|Win32
+		{17C0A1DA-4CCE-4463-B7BB-0E35C12ED6A8}.Debug|x64.ActiveCfg = Debug|x64
+		{17C0A1DA-4CCE-4463-B7BB-0E35C12ED6A8}.Debug|x64.Build.0 = Debug|x64
+		{17C0A1DA-4CCE-4463-B7BB-0E35C12ED6A8}.Debug|x86.ActiveCfg = Debug|Win32
+		{17C0A1DA-4CCE-4463-B7BB-0E35C12ED6A8}.Debug|x86.Build.0 = Debug|Win32
+		{17C0A1DA-4CCE-4463-B7BB-0E35C12ED6A8}.Release|x64.ActiveCfg = Release|x64
+		{17C0A1DA-4CCE-4463-B7BB-0E35C12ED6A8}.Release|x64.Build.0 = Release|x64
+		{17C0A1DA-4CCE-4463-B7BB-0E35C12ED6A8}.Release|x86.ActiveCfg = Release|Win32
+		{17C0A1DA-4CCE-4463-B7BB-0E35C12ED6A8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
