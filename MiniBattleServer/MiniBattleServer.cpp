@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <WinSock2.h>
+#include <Windows.h>
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -57,30 +58,32 @@ int main()
     }
     else {
         std::cout << "Client connected!\n";
-        std::string buffer(1024,'\0');
-        int received = recv(
-            clientSocket,
-            buffer.data(),
-            static_cast<int>(buffer.size()),
-            0
-        );//从clientSocket接收最多1023字节放入buffer，返回值是实际收到了多少字节
+        while (1) {
+            std::string buffer(1024, '\0');
+            int received = recv(
+                clientSocket,
+                buffer.data(),
+                static_cast<int>(buffer.size()),
+                0
+            );//从clientSocket接收最多1023字节放入buffer，返回值是实际收到了多少字节
+            std::string reply = "Hello Client";
+            if (received > 0) {
+                buffer.resize(received);
+                std::cout << "Client says: "
+                    << buffer << "\n";
+                reply = "已收到客户端的"+buffer;
+            }
+            Sleep(4000);
 
-        if (received > 0) {
-            buffer.resize(received);
-            std::cout << "Client says: "
-                << buffer << "\n";
+            send(
+                clientSocket,
+                reply.data(),
+                static_cast<int>(reply.size()),
+                0
+            );
+            Sleep(5000);
         }
-
-        const std::string reply = "Hello Client";
-
-        send(
-            clientSocket,
-            reply.data(),
-            static_cast<int>(reply.size()),
-            0
-        );
     }
-
     if (clientSocket != INVALID_SOCKET) {
         closesocket(clientSocket);
     }

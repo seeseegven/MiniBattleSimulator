@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <WinSock2.h>
 #include <WS2tcpip.h>
+#include <Windows.h>
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -45,15 +46,23 @@ int main()
 	}
 
 	std::cout << "connected to server!\n";
-	const std::string message = "Hello Server";
-	send(clientSocket, message.data(), static_cast<int>(message.size()), 0);
-	
-	std::string buffer(1024, '\0');
-	int received = recv(clientSocket, buffer.data(), buffer.size(), 0);
-	if (received > 0) {
+	while (1) {
+		std::string message;
+		std::cout << "请输入你要发送的内容,quit退出";
+		std::cin >> message;
+		if (message == "quit") break;
+		send(clientSocket, message.data(), static_cast<int>(message.size()), 0);
+
+		std::string buffer(1024, '\0');
+		int received = recv(clientSocket, buffer.data(), buffer.size(), 0);
+		if (received <= 0) {
+			std::cout << "Server disconnected.\n";
+			break;
+		}
 		buffer.resize(received);
 		std::cout << "Server says: "
 			<< buffer << '\n';
+		Sleep(3000);
 	}
 	closesocket(clientSocket);
 	WSACleanup();
