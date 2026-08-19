@@ -57,6 +57,9 @@
     <ClCompile Include="EffectStatus.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkClient.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -96,6 +99,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="EffectStatus.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkClient.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

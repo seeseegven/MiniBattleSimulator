@@ -1,0 +1,94 @@
+#include <iostream>
+#include <WS2tcpip.h>
+#include "NetworkClient.h"
+
+#pragma comment(lib, "ws2_32.lib")
+
+ConnectStatus NetworkClient::Connect(const std::string& ip, int port)
+{
+	WSADATA wsaData{};
+
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+		return ConnectStatus::InitFail;
+	}
+	//错误代码，SOCKET clientSocket会导致同名局部变量覆盖
+	clientSocket = socket(
+		AF_INET,
+		SOCK_STREAM,
+		IPPROTO_TCP
+	);
+
+	if (clientSocket == INVALID_SOCKET) {
+		WSACleanup();
+		return ConnectStatus::SocketFail;
+	}
+
+	sockaddr_in serverAddr{};
+	serverAddr.sin_family = AF_INET;
+	serverAddr.sin_port = htons(port);
+
+	inet_pton(
+		AF_INET,
+		ip.data(),
+		&serverAddr.sin_addr
+	);
+	std::cout << "Connecting to server...\n";
+	if (connect(clientSocket,
+		reinterpret_cast<sockaddr*>(&serverAddr),
+		sizeof(serverAddr)) == SOCKET_ERROR) {
+		closesocket(clientSocket);
+		WSACleanup();
+		return ConnectStatus::ConnectFail;
+	}
+	isConnected = true;
+	return ConnectStatus::ConnectSuccess;
+}
+
+void NetworkClient::SendMessage()
+{
+	std::string message;
+	std::cout << "请输入你要发送的内容,quit退出\n";
+	std::cin >> message;
+	if (message == "quit") {
+		std::cout << "客户端断开连接";
+		isConnected = false;
+		return;
+	}
+	send(clientSocket, message.data(), static_cast<int>(message.size()), 0);
+}
+
+void NetworkClient::DisplayConnectStatus(ConnectStatus status)
+{
+	if (status == ConnectStatus::InitFail) std::cout << "WSAStartUp failed\n";
+	else if (status == ConnectStatus::SocketFail) std::cout << "socket failed\n";
+	else if (status == ConnectStatus::ConnectFail) std::cout << "connect failed\n";
+	else std::cout << "connected to server!\n";
+}
+
+void NetworkClient::ReceiveMessage()
+{
+	std::string buffer(1024, '\0');
+	int received = recv(clientSocket, buffer.data(), buffer.size(), 0);
+	if (received <= 0) {
+		std::cout << "Server disconnected.\n";
+		isConnected = false;
+		return;
+	}
+	buffer.resize(received);
+	std::cout << "Server says: "
+		<< buffer << '\n';
+}
+
+void NetworkClient::ManageCommunication()
+{
+	ConnectStatus state = Connect("127.0.0.1", 8888);
+	DisplayConnectStatus(state);
+	while (isConnected) {
+		SendMessage();
+		ReceiveMessage();
+	}
+	if (state == ConnectStatus::ConnectSuccess) {
+		
+	}
+}
+

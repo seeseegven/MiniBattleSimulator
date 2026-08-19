@@ -15,7 +15,9 @@ void Game::Run()
 	cout
 		<< "=====菜单=====\n"
 		<< "b.开始游戏\n"
-		<< "q.退出\n";
+		<< "q.退出\n"
+		<< "n.联机对战";
+
 	while (isRunning) {
 		Input();
 		if (Game::isRunning == false) {
@@ -29,6 +31,9 @@ void Game::Run()
 			//这里忘记初始化了，battlemanager没有实例化，后续指针赋值给player时找不到对象，报this为nullptr的错。
 			EnterBattle();
 			CurrentState = GameState::Menu;
+		}
+		else if (CurrentState == GameState::Network) {
+			client.ManageCommunication();
 		}
 		Render::ClearScreen();
 		Render();
@@ -48,8 +53,11 @@ void Game::Input()
 	else if (command == 'b' && CurrentState!=GameState::Battle) {
 		CurrentState = GameState::Battle;
 	}
-	else if (command == 'z' && CurrentState == GameState::Battle) {
+	else if (command == 'z' && CurrentState != GameState::Menu) {
 		CurrentState = GameState::Menu;
+	}
+	else if (command == 'n' && CurrentState != GameState::Network) {
+		CurrentState = GameState::Network;
 	}
 }
 

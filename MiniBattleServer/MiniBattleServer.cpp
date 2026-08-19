@@ -5,14 +5,11 @@
 #include <string>
 #include <WinSock2.h>
 #include <Windows.h>
-#include "Testcore.h"
 
 #pragma comment(lib, "ws2_32.lib")
 
 int main()
 {
-    TestCore core;
-    std::cout << core.Add(10, 20) << '\n';
     //初始化winsock
     WSADATA wsaData{};
 
@@ -85,7 +82,7 @@ int main()
                 static_cast<int>(reply.size()),
                 0
             );
-            Sleep(5000);
+            //Sleep(5000);
         }
     }
     if (clientSocket != INVALID_SOCKET) {
