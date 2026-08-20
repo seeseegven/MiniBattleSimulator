@@ -84,14 +84,14 @@ void NetworkClient::ManageCommunication()
 	ConnectStatus state = Connect("127.0.0.1", 8888);
 	DisplayConnectStatus(state);
 	while (isConnected) {
-		SendMessage();
+		ReceiveMessage();
 		if (!isConnected) {
 			std::cout << "已退出联机\n";
 			closesocket(clientSocket);
 			Sleep(2000);
 			break;
 		}
-		ReceiveMessage();
+		SendMessage();
 	}
 }
 

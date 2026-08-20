@@ -52,54 +52,68 @@ int main()
 
     std::cout << "Server is watting for client...\n";
 
-    SOCKET clientSocket = accept(listenSocket, nullptr, nullptr);
-    if (clientSocket == INVALID_SOCKET) {
+    SOCKET clientSocket1 = accept(listenSocket, nullptr, nullptr);
+    if (clientSocket1 == INVALID_SOCKET) {
         std::cout << "accept failed\n";
     }
     else {
         std::cout << "Client connected!\n";
-        while (1) {
-            std::string buffer(1024, '\0');
-            int received = recv(
-                clientSocket,
-                buffer.data(),
-                static_cast<int>(buffer.size()),
-                0
-            );//从clientSocket接收最多1023字节放入buffer，返回值是实际收到了多少字节
-            std::string reply = "Hello Client";
-            if (received > 0) {
-                buffer.resize(received);
-                std::cout << "Client says: "
-                    << buffer << "\n";
-                reply = "已收到客户端的"+buffer;
-            }
-            else if (received < 0)
-                break;
-            else if(received == 0)
-            {
-                std::cout << "客户端退出连接";
-                break;
-            }
-            
+        std::string reply = "Hello Client1";
+        send(
+            clientSocket1,
+            reply.data(),
+            static_cast<int>(reply.size()),
+            0
+        );
+        std::string buffer(1024, '\0');
+        int received = recv(
+            clientSocket1,
+            buffer.data(),
+            static_cast<int>(buffer.size()),
+            0
+        );//从clientSocket1接收最多1023字节放入buffer，返回值是实际收到了多少字节
+
+        if (received > 0) {
+            buffer.resize(received);
+            std::cout << "Client says: "
+                << buffer << "\n";
+            reply = "已收到客户端的" + buffer;
+        }
+        SOCKET clientSocket2 = accept(listenSocket, nullptr, nullptr);
+        if (clientSocket2 == INVALID_SOCKET) {
+            std::cout << "accept failed\n";
+        }
+        else {
+            std::cout << "Client connected!\n";
+            std::string reply = "Hello Client2";
             send(
-                clientSocket,
+                clientSocket2,
                 reply.data(),
                 static_cast<int>(reply.size()),
                 0
             );
-            if (clientSocket == INVALID_SOCKET) {
-                std::cout << "客户端断联";
-                break;
+            std::string buffer(1024, '\0');
+            int received = recv(
+                clientSocket2,
+                buffer.data(),
+                static_cast<int>(buffer.size()),
+                0
+            );//从clientSocket1接收最多1023字节放入buffer，返回值是实际收到了多少字节
+
+            if (received > 0) {
+                buffer.resize(received);
+                std::cout << "Client says: "
+                    << buffer << "\n";
+                reply = "已收到客户端的" + buffer;
             }
         }
+        /*
+        if (clientSocket != INVALID_SOCKET) {
+            closesocket(clientSocket);
+        }
+        closesocket(listenSocket);
+        */
     }
-    /*
-    if (clientSocket != INVALID_SOCKET) {
-        closesocket(clientSocket);
-    }
-    closesocket(listenSocket);
-    */
-
     return 0;
 }
 
