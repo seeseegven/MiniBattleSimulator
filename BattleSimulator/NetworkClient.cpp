@@ -85,10 +85,13 @@ void NetworkClient::ManageCommunication()
 	DisplayConnectStatus(state);
 	while (isConnected) {
 		SendMessage();
+		if (!isConnected) {
+			std::cout << "已退出联机\n";
+			closesocket(clientSocket);
+			Sleep(2000);
+			break;
+		}
 		ReceiveMessage();
-	}
-	if (state == ConnectStatus::ConnectSuccess) {
-		
 	}
 }
 

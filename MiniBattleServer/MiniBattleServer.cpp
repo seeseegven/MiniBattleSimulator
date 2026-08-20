@@ -73,8 +73,13 @@ int main()
                     << buffer << "\n";
                 reply = "已收到客户端的"+buffer;
             }
-            else if (received <= 0)
+            else if (received < 0)
                 break;
+            else if(received == 0)
+            {
+                std::cout << "客户端退出连接";
+                break;
+            }
             
             send(
                 clientSocket,
@@ -82,14 +87,19 @@ int main()
                 static_cast<int>(reply.size()),
                 0
             );
-            //Sleep(5000);
+            if (clientSocket == INVALID_SOCKET) {
+                std::cout << "客户端断联";
+                break;
+            }
         }
     }
+    /*
     if (clientSocket != INVALID_SOCKET) {
         closesocket(clientSocket);
     }
     closesocket(listenSocket);
-    WSACleanup();
+    */
+
     return 0;
 }
 

@@ -34,6 +34,7 @@ void Game::Run()
 		}
 		else if (CurrentState == GameState::Network) {
 			client.ManageCommunication();
+			CurrentState = GameState::Menu;
 		}
 		Render::ClearScreen();
 		Render();
