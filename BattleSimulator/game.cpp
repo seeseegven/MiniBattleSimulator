@@ -27,12 +27,20 @@ void Game::Run()
 			Render::ClearScreen();
 			cout << "进入战斗   " << "z退出" << endl;
 			CurrentState = GameState::Battle;
+			curMode = Mode::pve;
+			test t = testInit(curMode);
+			cout << t.x << " ooo" << t.y;
+			Sleep(5000);
 			battleManager = std::make_unique<BattleManager>();
 			//这里忘记初始化了，battlemanager没有实例化，后续指针赋值给player时找不到对象，报this为nullptr的错。
 			EnterBattle();
 			CurrentState = GameState::Menu;
 		}
 		else if (CurrentState == GameState::Network) {
+			curMode = Mode::pvp;
+			test t = testInit(curMode);
+			cout << t.x << " ooo" << t.y;
+			Sleep(5000);
 			client.ManageCommunication();
 			CurrentState = GameState::Menu;
 		}

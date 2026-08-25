@@ -21,19 +21,7 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\BattleSimulator\BattleManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\BattleSimulator\Character.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\BattleSimulator\Enemy.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\BattleSimulator\ObjectManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\BattleSimulator\Player.h">
+    <ClInclude Include="Test.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,19 +32,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\BattleSimulator\BattleManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\BattleSimulator\Character.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\BattleSimulator\Enemy.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\BattleSimulator\ObjectManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\BattleSimulator\Player.cpp">
+    <ClCompile Include="Test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

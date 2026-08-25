@@ -8,6 +8,31 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+void Send(SOCKET& s, const std::string& str) {
+    //把str发送到SOCKET s那边
+    send(
+        s,
+        str.data(),
+        static_cast<int>(str.size()),
+        0
+    );
+}
+
+int Receive(SOCKET& s,  std::string& str) {
+    int received = recv(
+        s,
+        str.data(),
+        static_cast<int>(str.size()),
+        0
+    );//从clientSocket1接收最多1023字节放入buffer，返回值是实际收到了多少字节
+    if (received > 0) {
+        str.resize(received);
+        std::cout << "Client says: "
+            << str << "\n";
+    }
+    return received;
+}
+
 int main()
 {
     //初始化winsock
@@ -59,26 +84,10 @@ int main()
     else {
         std::cout << "Client connected!\n";
         std::string reply = "Hello Client1";
-        send(
-            clientSocket1,
-            reply.data(),
-            static_cast<int>(reply.size()),
-            0
-        );
         std::string buffer(1024, '\0');
-        int received = recv(
-            clientSocket1,
-            buffer.data(),
-            static_cast<int>(buffer.size()),
-            0
-        );//从clientSocket1接收最多1023字节放入buffer，返回值是实际收到了多少字节
-
-        if (received > 0) {
-            buffer.resize(received);
-            std::cout << "Client says: "
-                << buffer << "\n";
-            reply = "已收到客户端的" + buffer;
-        }
+        Send(clientSocket1, reply);
+        int rec = Receive(clientSocket1, buffer);
+        closesocket(clientSocket1);
         SOCKET clientSocket2 = accept(listenSocket, nullptr, nullptr);
         if (clientSocket2 == INVALID_SOCKET) {
             std::cout << "accept failed\n";
@@ -86,27 +95,12 @@ int main()
         else {
             std::cout << "Client connected!\n";
             std::string reply = "Hello Client2";
-            send(
-                clientSocket2,
-                reply.data(),
-                static_cast<int>(reply.size()),
-                0
-            );
             std::string buffer(1024, '\0');
-            int received = recv(
-                clientSocket2,
-                buffer.data(),
-                static_cast<int>(buffer.size()),
-                0
-            );//从clientSocket1接收最多1023字节放入buffer，返回值是实际收到了多少字节
-
-            if (received > 0) {
-                buffer.resize(received);
-                std::cout << "Client says: "
-                    << buffer << "\n";
-                reply = "已收到客户端的" + buffer;
-            }
+            Send(clientSocket2, reply);
+            int rec2 = Receive(clientSocket2, buffer);
         }
+        closesocket(clientSocket2);
+        WSACleanup();
         /*
         if (clientSocket != INVALID_SOCKET) {
             closesocket(clientSocket);
