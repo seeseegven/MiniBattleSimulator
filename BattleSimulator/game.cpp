@@ -64,7 +64,9 @@ void Game::Input()
 	else if (command == 'n' && CurrentState != GameState::Network) {
 		CurrentState = GameState::Network;
 		ConnectStatus state = client.Connect("127.0.0.1", 8888);
+		Render::ClearScreen();
 		client.DisplayConnectStatus(state);
+		Sleep(2000);
 		client.SendMessages(std::string(1,command));
 	}
 }

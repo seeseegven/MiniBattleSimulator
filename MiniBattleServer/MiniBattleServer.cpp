@@ -34,10 +34,14 @@ int Receive(SOCKET& s,  std::string& str) {
     return received;
 }
 
-void AnalysisMessage(const std::string& str) {
+void AnalysisMessage(const std::string& str, test& t) {
     if (str.size() == 1 && str[0] == 'n') {
-        test t = testInit(Mode::pvp);
-        std::cout << t.x << "     ghjfdh    " << t.y;
+        t = testInit(Mode::pvp);
+        //std::cout << t.x << "     ghjfdh    " << t.y;
+    }
+    else {
+        t.x = 12234;
+        t.y = 5896;
     }
 }
 
@@ -93,15 +97,22 @@ int main()
         std::cout << "Client connected!\n";
         std::string reply = "Hello Client1";
         std::string buffer(1024, '\0');
+        test t{ 0,0 };
         while (1) {
-            Send(clientSocket1, reply);
+            
             int rec = Receive(clientSocket1, buffer);
             if (rec <= 0) {
                 std::cout << "客户端断开连接";
                 break;
             }
             buffer.resize(rec);
-            AnalysisMessage(buffer);
+            AnalysisMessage(buffer, t);
+            if (t.x != 0) {
+                Send(clientSocket1, std::to_string(t.x) + "," + std::to_string(t.y));
+            }
+            else
+                Send(clientSocket1, reply);
+            
         }
         closesocket(clientSocket1);
         
