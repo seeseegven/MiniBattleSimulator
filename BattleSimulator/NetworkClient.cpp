@@ -44,17 +44,14 @@ ConnectStatus NetworkClient::Connect(const std::string& ip, int port)
 	return ConnectStatus::ConnectSuccess;
 }
 
-void NetworkClient::SendMessage()
+void NetworkClient::SendMessages(const std::string& str)
 {
-	std::string message;
-	std::cout << "请输入你要发送的内容,quit退出\n";
-	std::cin >> message;
-	if (message == "quit") {
+	if (str == "quit") {
 		std::cout << "客户端断开连接";
 		isConnected = false;
 		return;
 	}
-	send(clientSocket, message.data(), static_cast<int>(message.size()), 0);
+	send(clientSocket, str.data(), static_cast<int>(str.size()), 0);
 }
 
 void NetworkClient::DisplayConnectStatus(ConnectStatus status)
@@ -81,8 +78,6 @@ void NetworkClient::ReceiveMessage()
 
 void NetworkClient::ManageCommunication()
 {
-	ConnectStatus state = Connect("127.0.0.1", 8888);
-	DisplayConnectStatus(state);
 	while (isConnected) {
 		ReceiveMessage();
 		if (!isConnected) {
@@ -91,7 +86,10 @@ void NetworkClient::ManageCommunication()
 			Sleep(2000);
 			break;
 		}
-		SendMessage();
+		std::string message;
+		std::cout << "请输入你要发送的内容,quit退出\n";
+		std::cin >> message;
+		SendMessages(message);
 	}
 }
 

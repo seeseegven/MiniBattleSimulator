@@ -37,10 +37,6 @@ void Game::Run()
 			CurrentState = GameState::Menu;
 		}
 		else if (CurrentState == GameState::Network) {
-			curMode = Mode::pvp;
-			test t = testInit(curMode);
-			cout << t.x << " ooo" << t.y;
-			Sleep(5000);
 			client.ManageCommunication();
 			CurrentState = GameState::Menu;
 		}
@@ -67,6 +63,9 @@ void Game::Input()
 	}
 	else if (command == 'n' && CurrentState != GameState::Network) {
 		CurrentState = GameState::Network;
+		ConnectStatus state = client.Connect("127.0.0.1", 8888);
+		client.DisplayConnectStatus(state);
+		client.SendMessages(std::string(1,command));
 	}
 }
 

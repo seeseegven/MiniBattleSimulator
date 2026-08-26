@@ -5,6 +5,7 @@
 #include <string>
 #include <WinSock2.h>
 #include <Windows.h>
+#include "Test.h"
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -31,6 +32,13 @@ int Receive(SOCKET& s,  std::string& str) {
             << str << "\n";
     }
     return received;
+}
+
+void AnalysisMessage(const std::string& str) {
+    if (str.size() == 1 && str[0] == 'n') {
+        test t = testInit(Mode::pvp);
+        std::cout << t.x << "     ghjfdh    " << t.y;
+    }
 }
 
 int main()
@@ -85,28 +93,19 @@ int main()
         std::cout << "Client connected!\n";
         std::string reply = "Hello Client1";
         std::string buffer(1024, '\0');
-        Send(clientSocket1, reply);
-        int rec = Receive(clientSocket1, buffer);
+        while (1) {
+            Send(clientSocket1, reply);
+            int rec = Receive(clientSocket1, buffer);
+            if (rec <= 0) {
+                std::cout << "客户端断开连接";
+                break;
+            }
+            buffer.resize(rec);
+            AnalysisMessage(buffer);
+        }
         closesocket(clientSocket1);
-        SOCKET clientSocket2 = accept(listenSocket, nullptr, nullptr);
-        if (clientSocket2 == INVALID_SOCKET) {
-            std::cout << "accept failed\n";
-        }
-        else {
-            std::cout << "Client connected!\n";
-            std::string reply = "Hello Client2";
-            std::string buffer(1024, '\0');
-            Send(clientSocket2, reply);
-            int rec2 = Receive(clientSocket2, buffer);
-        }
-        closesocket(clientSocket2);
+        
         WSACleanup();
-        /*
-        if (clientSocket != INVALID_SOCKET) {
-            closesocket(clientSocket);
-        }
-        closesocket(listenSocket);
-        */
     }
     return 0;
 }

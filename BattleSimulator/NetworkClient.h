@@ -12,7 +12,7 @@ enum ConnectStatus {
 class NetworkClient {
 public:
 	ConnectStatus Connect(const std::string& ip, int port);
-	void SendMessage();
+	void SendMessages(const std::string& str);
 	void DisplayConnectStatus(ConnectStatus status);
 	void ReceiveMessage();
 	void ManageCommunication();
