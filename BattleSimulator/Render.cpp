@@ -86,3 +86,28 @@ COORD Render::GetCursorPosition() {
 
 	return info.dwCursorPosition;
 }
+
+void Render::DisplayPlayerInfo(std::string& s)
+{
+	size_t pos = s.find(';');
+	s = s.substr(0, pos);
+	CharacterInfo p1 = AnalysisPlayerData(1, s);
+	Render::CoutCharacter(p1, p1);
+}
+
+CharacterInfo Render::AnalysisPlayerData(int index, std::string& s)
+{
+	CharacterInfo p;
+	p.Name = "Íæ¼Ò" + std::to_string(index);
+	size_t pos;
+	std::vector<int> values;
+	while ((pos = s.find(',')) != std::string::npos) {
+		values.push_back(std::stoi(s.substr(0, pos)));
+		s = s.substr(pos+1);
+		//100,30,;
+	}
+	p.HP = values[0];
+	p.Attack = values[1];
+	p.Defense = values[2];
+	return p;
+}

@@ -1,4 +1,4 @@
-#include <iostream>
+/*#include <iostream>
 #include "Test.h"
 
 test testInit(Mode mode) {
@@ -10,4 +10,4 @@ test testInit(Mode mode) {
 		t.x = 10, t.y = 50;
 	}
 	return t;
-}
+}*/

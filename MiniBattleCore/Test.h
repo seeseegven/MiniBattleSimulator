@@ -1,4 +1,5 @@
 #pragma once
+/*
 enum  class Mode
 {
 	pvp,
@@ -11,4 +12,4 @@ struct test
 	int y;
 };
 
-test testInit(Mode mode);
+test testInit(Mode mode);*/

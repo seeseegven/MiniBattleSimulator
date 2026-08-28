@@ -127,37 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BattleManager.cpp" />
-    <ClCompile Include="Character.cpp" />
-    <ClCompile Include="Damage.cpp" />
-    <ClCompile Include="EffectStatus.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="EnemyAI.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="HealSkill.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkClient.cpp" />
-    <ClCompile Include="ObjectManager.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Render.cpp" />
-    <ClCompile Include="Skill.cpp" />
-    <ClCompile Include="SkillFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BattleManager.h" />
-    <ClInclude Include="Character.h" />
-    <ClInclude Include="Damage.h" />
-    <ClInclude Include="EffectStatus.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="EnemyAI.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="HealSkill.h" />
     <ClInclude Include="NetworkClient.h" />
-    <ClInclude Include="ObjectManager.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="Render.h" />
-    <ClInclude Include="Skill.h" />
-    <ClInclude Include="SkillFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MiniBattleCore\MiniBattleCore.vcxproj">

@@ -14,7 +14,7 @@ public:
 	ConnectStatus Connect(const std::string& ip, int port);
 	void SendMessages(const std::string& str);
 	void DisplayConnectStatus(ConnectStatus status);
-	void ReceiveMessage();
+	std::string ReceiveMessage();
 	void ManageCommunication();
 private:
 	SOCKET clientSocket = INVALID_SOCKET;

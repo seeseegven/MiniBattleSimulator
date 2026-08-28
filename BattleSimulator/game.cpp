@@ -28,9 +28,6 @@ void Game::Run()
 			cout << "进入战斗   " << "z退出" << endl;
 			CurrentState = GameState::Battle;
 			curMode = Mode::pve;
-			test t = testInit(curMode);
-			cout << t.x << " ooo" << t.y;
-			Sleep(5000);
 			battleManager = std::make_unique<BattleManager>();
 			//这里忘记初始化了，battlemanager没有实例化，后续指针赋值给player时找不到对象，报this为nullptr的错。
 			EnterBattle();
@@ -89,10 +86,11 @@ void Game::Render()
 	}
 }
 
+
 void Game::EnterBattle()
 {
-	battleManager->InitializeBattle();
-	battleManager->ManageBattle();
+	battleManager->InitializeBattle(Mode::pve);
+	//battleManager->ManageBattle();
 	//battleManager->DisplayInfo();
 	battleManager.reset();
 }

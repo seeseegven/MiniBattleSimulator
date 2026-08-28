@@ -21,40 +21,7 @@
     <ClCompile Include="game.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Skill.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Damage.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="HealSkill.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyAI.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SkillFactory.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Render.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="EffectStatus.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="NetworkClient.cpp">
@@ -65,40 +32,7 @@
     <ClInclude Include="Game.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Character.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Skill.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Damage.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="HealSkill.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyAI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="SkillFactory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="BattleManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Render.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="EffectStatus.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="NetworkClient.h">

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <WS2tcpip.h>
 #include "NetworkClient.h"
+#include "Render.h"
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -62,24 +63,26 @@ void NetworkClient::DisplayConnectStatus(ConnectStatus status)
 	else std::cout << "connected to server!\n";
 }
 
-void NetworkClient::ReceiveMessage()
+std::string NetworkClient::ReceiveMessage()
 {
 	std::string buffer(1024, '\0');
 	int received = recv(clientSocket, buffer.data(), buffer.size(), 0);
 	if (received <= 0) {
 		std::cout << "Server disconnected.\n";
 		isConnected = false;
-		return;
+		return "";
 	}
 	buffer.resize(received);
 	std::cout << "Server says: "
 		<< buffer << '\n';
+	return buffer;
 }
 
 void NetworkClient::ManageCommunication()
 {
 	while (isConnected) {
-		ReceiveMessage();
+		std::string s = ReceiveMessage();
+		Render::DisplayPlayerInfo(s);
 		if (!isConnected) {
 			std::cout << "已退出联机\n";
 			closesocket(clientSocket);
