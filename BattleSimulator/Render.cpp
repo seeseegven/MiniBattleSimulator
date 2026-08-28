@@ -87,12 +87,15 @@ COORD Render::GetCursorPosition() {
 	return info.dwCursorPosition;
 }
 
-void Render::DisplayPlayerInfo(std::string& s)
+void Render::DisplayAllCharacterInfo(std::string& s)
 {
 	size_t pos = s.find(';');
-	s = s.substr(0, pos);
-	CharacterInfo p1 = AnalysisPlayerData(1, s);
-	Render::CoutCharacter(p1, p1);
+	std::string p1 = s.substr(0, pos);
+	std::string p2 = s.substr(pos + 1);
+	CharacterInfo pInfo1 = AnalysisPlayerData(1, p1);
+	CharacterInfo pInfo2 = AnalysisPlayerData(2, p2);
+	Render::CoutCharacter(pInfo1, pInfo1);
+	Render::CoutCharacter(pInfo2, pInfo2);
 }
 
 CharacterInfo Render::AnalysisPlayerData(int index, std::string& s)

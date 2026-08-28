@@ -16,7 +16,7 @@ void Game::Run()
 		<< "=====菜单=====\n"
 		<< "b.开始游戏\n"
 		<< "q.退出\n"
-		<< "n.联机对战";
+		<< "n.联机对战\n";
 
 	while (isRunning) {
 		Input();

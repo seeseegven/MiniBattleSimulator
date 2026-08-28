@@ -36,7 +36,7 @@ public:
 	static void CoutCharacter(CharacterInfo & InfoBegin, CharacterInfo & InfoEnd);
 	static void SetCursorPosition(short x, short y);
 	static COORD GetCursorPosition();
-	static void DisplayPlayerInfo(std::string& s);
+	static void DisplayAllCharacterInfo(std::string& s);
 private:
 	static void SetTextColor(TextColor color); //设置文本颜色
 	static CharacterInfo AnalysisPlayerData(int index, std::string& s);

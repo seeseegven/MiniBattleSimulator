@@ -82,7 +82,7 @@ void NetworkClient::ManageCommunication()
 {
 	while (isConnected) {
 		std::string s = ReceiveMessage();
-		Render::DisplayPlayerInfo(s);
+		Render::DisplayAllCharacterInfo(s);
 		if (!isConnected) {
 			std::cout << "已退出联机\n";
 			closesocket(clientSocket);
@@ -93,6 +93,7 @@ void NetworkClient::ManageCommunication()
 		std::cout << "请输入你要发送的内容,quit退出\n";
 		std::cin >> message;
 		SendMessages(message);
+		Render::ClearScreen();
 	}
 }
 

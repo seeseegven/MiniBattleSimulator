@@ -27,21 +27,20 @@ int main()
     else {
         std::cout << "Client connected!\n";
     }
-        while (1) {
-            std::string reply = "Hello Client1";
-            std::string buffer(1024, '\0');
-            int rec = server->Receive(clientSocket1, buffer);
-            if (rec <= 0) {
-                std::cout << "客户端断开连接";
-                break;
-            }
-            buffer.resize(rec);
-            server->AnalysisMessage(buffer);
-            std::string s = (server->GetBattleManager()->getManager()).StringToSend();
-            server->Send(clientSocket1, s);
-            
-        closesocket(clientSocket1);
+    while (1) {
+        std::string reply = "Hello Client1";
+        std::string buffer(1024, '\0');
+        int rec = server->Receive(clientSocket1, buffer);
+        if (rec <= 0) {
+            std::cout << "客户端断开连接";
+            break;
+        }
+        buffer.resize(rec);
+        server->AnalysisMessage(buffer);
+        std::string s = (server->GetBattleManager()->getManager()).StringToSend();
+        server->Send(clientSocket1, s);
     }
+    closesocket(clientSocket1);
     return 0;
 }
 
