@@ -4,8 +4,12 @@
 
 
 
-Server::Server(const std::string& r, Flag f)
+Server::Server(const std::string& r, Flag f):serverAddr(sockaddr_in{})
 {
+    
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(8888);
+    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 }
 
 Server::~Server()
@@ -101,5 +105,7 @@ void Server::AnalysisMessage(const std::string& str) {
 
     }
 }
+
+
 
 
