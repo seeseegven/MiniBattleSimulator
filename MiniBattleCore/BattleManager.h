@@ -13,6 +13,7 @@ public:
 	//void DisplayInfo();
 	//void ManageBattle();
 	CharacterManager& getManager();
+
 private:
 	CharacterManager manager;
 	int curRound = 0;//当前回合

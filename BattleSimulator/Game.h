@@ -14,6 +14,8 @@ enum class GameState
 	Network
 };
 
+
+
 class Game
 {
 public:

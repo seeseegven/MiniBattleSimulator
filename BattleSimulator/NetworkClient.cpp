@@ -60,7 +60,7 @@ void NetworkClient::DisplayConnectStatus(ConnectStatus status)
 	if (status == ConnectStatus::InitFail) std::cout << "WSAStartUp failed\n";
 	else if (status == ConnectStatus::SocketFail) std::cout << "socket failed\n";
 	else if (status == ConnectStatus::ConnectFail) std::cout << "connect failed\n";
-	else std::cout << "connected to server!\n";
+	else std::cout << "connected to server!\n等待服务器分配\n";
 }
 
 std::string NetworkClient::ReceiveMessage()
@@ -80,9 +80,11 @@ std::string NetworkClient::ReceiveMessage()
 
 void NetworkClient::ManageCommunication()
 {
+	std::string s = ReceiveMessage();
+	Render::RenderText(s);
 	while (isConnected) {
-		std::string s = ReceiveMessage();
-		Render::DisplayAllCharacterInfo(s);
+		s = ReceiveMessage();
+		Render::DisplayAllCharacterInfo(s);	
 		if (!isConnected) {
 			std::cout << "已退出联机\n";
 			closesocket(clientSocket);

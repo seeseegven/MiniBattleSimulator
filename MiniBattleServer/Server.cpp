@@ -1,10 +1,11 @@
 #include <iostream>
+#include <thread>
 #include "Server.h"
 #include "BattleManager.h"
 
 
 
-Server::Server(const std::string& r, Flag f):serverAddr(sockaddr_in{})
+Server::Server():serverAddr(sockaddr_in{})
 {
     
     serverAddr.sin_family = AF_INET;
@@ -96,14 +97,58 @@ int Server::Receive(SOCKET& s, std::string& str) {
     return received;
 }
 
-void Server::AnalysisMessage(const std::string& str) {
+std::string Server::AnalysisMessage(const std::string& str) {
+    battleManager = std::make_unique<BattleManager>();
+    battleManager->InitializeBattle(Mode::pvp);
     if (str.size() == 1 && str[0] == 'n') {
-        battleManager = std::make_unique<BattleManager>();
-        battleManager->InitializeBattle(Mode::pvp);
+        return (GetBattleManager()->getManager()).StringToSend(States::waitForBattle);
     }
     else {
-
+        return (GetBattleManager()->getManager()).StringToSend(States::init);
     }
+}
+
+void Server::AddClientToQueue(SOCKET s)
+{
+    waitQueue.push(s);
+}
+
+void Server::JoinBattle()
+{
+    if (waitQueue.size() < 2) {
+        return;
+    }
+    std::string str = AnalysisMessage("b");
+    while (!waitQueue.empty()) {
+        SOCKET temp = waitQueue.front();
+        std::thread t(
+            &Server::NewThread,
+            this,
+            temp,
+            str//传进去的是右值，要么ref引用要么const &
+        );
+        t.detach();
+        waitQueue.pop();
+    }
+    
+}
+
+
+void Server::NewThread(SOCKET s, std::string str)
+{
+    while (1) {
+        Send(s, str);
+        std::string reply = "Hello Client1";
+        std::string buffer(1024, '\0');
+        int rec = Receive(s, buffer);
+        if (rec <= 0) {
+            std::cout << "客户端断开连接";
+            return;
+        }
+        buffer.resize(rec);
+        
+    }
+    closesocket(s);
 }
 
 
