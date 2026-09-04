@@ -78,12 +78,14 @@ std::string NetworkClient::ReceiveMessage()
 	return buffer;
 }
 
-void NetworkClient::ManageCommunication()
+void NetworkClient::ReceiveAndUpdate()
 {
-	std::string s = ReceiveMessage();
-	Render::RenderText(s);
+	//std::string s = ReceiveMessage();
+	//Render::RenderText(s);
 	while (isConnected) {
-		s = ReceiveMessage();
+		
+		std::string s = ReceiveMessage();
+		Render::ClearScreen();
 		Render::DisplayAllCharacterInfo(s);	
 		if (!isConnected) {
 			std::cout << "已退出联机\n";
@@ -91,11 +93,16 @@ void NetworkClient::ManageCommunication()
 			Sleep(2000);
 			break;
 		}
+	}
+}
+
+void NetworkClient::ManageNetworkInput()
+{
+	while (isConnected) {
 		std::string message;
 		std::cout << "请输入你要发送的内容,quit退出\n";
 		std::cin >> message;
 		SendMessages(message);
-		Render::ClearScreen();
 	}
 }
 

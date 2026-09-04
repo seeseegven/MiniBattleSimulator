@@ -26,7 +26,9 @@ int main()
         }
         else {
             std::cout << "等待对局匹配\n";
-            server->AddClientToQueue(clientSocket1);
+            std::string str = server->Receive(clientSocket1).second;
+            if (str == "n")
+                server->AddClientToQueue(clientSocket1);
             server->JoinBattle();
         }
     }

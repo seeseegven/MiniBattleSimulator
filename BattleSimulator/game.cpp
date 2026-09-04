@@ -1,3 +1,4 @@
+#include <thread>
 #include "Enemy.h"
 #include "Game.h"
 #include "Player.h"
@@ -34,7 +35,11 @@ void Game::Run()
 			CurrentState = GameState::Menu;
 		}
 		else if (CurrentState == GameState::Network) {
-			client.ManageCommunication();
+			std::thread inputThread(
+				&NetworkClient::ManageNetworkInput,
+				&client
+			);
+			client.ReceiveAndUpdate();
 			CurrentState = GameState::Menu;
 		}
 		Render::ClearScreen();
@@ -63,7 +68,6 @@ void Game::Input()
 		ConnectStatus state = client.Connect("127.0.0.1", 8888);
 		Render::ClearScreen();
 		client.DisplayConnectStatus(state);
-		Sleep(2000);
 		client.SendMessages(std::string(1,command));
 	}
 }
@@ -85,6 +89,8 @@ void Game::Render()
 			<< "=====Õ½¶·ÖÐ=====\n";
 	}
 }
+
+
 
 
 void Game::EnterBattle()

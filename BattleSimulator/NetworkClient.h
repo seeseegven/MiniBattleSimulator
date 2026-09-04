@@ -20,7 +20,8 @@ public:
 	void SendMessages(const std::string& str);
 	void DisplayConnectStatus(ConnectStatus status);
 	std::string ReceiveMessage();
-	void ManageCommunication();
+	void ReceiveAndUpdate();
+	void ManageNetworkInput();
 private:
 	SOCKET clientSocket = INVALID_SOCKET;
 	bool isConnected = false;

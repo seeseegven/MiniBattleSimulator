@@ -89,7 +89,9 @@ COORD Render::GetCursorPosition() {
 
 void Render::DisplayAllCharacterInfo(std::string& s)
 {
-	size_t pos = s.find(';');
+	size_t pos = s.find('\n');
+	s = s.substr(0, pos-1);
+	pos = s.find(';');
 	std::string p1 = s.substr(0, pos);
 	std::string p2 = s.substr(pos + 1);
 	CharacterInfo pInfo1 = AnalysisPlayerData(1, p1);
@@ -100,6 +102,7 @@ void Render::DisplayAllCharacterInfo(std::string& s)
 
 CharacterInfo Render::AnalysisPlayerData(int index, std::string& s)
 {
+
 	CharacterInfo p;
 	p.Name = "Íæ¼Ò" + std::to_string(index);
 	size_t pos;

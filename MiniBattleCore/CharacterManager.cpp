@@ -22,6 +22,7 @@ std::string CharacterManager::StringToSend(States states)
 			str = str + "," + std::to_string(defense) + ",";
 			str += ";";
 		}
+		str += '\n';
 		return str;
 	}
 	else if (states == States::waitForBattle) {

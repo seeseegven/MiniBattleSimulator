@@ -69,10 +69,19 @@ bool Server::Preparation()
 
 SOCKET Server::AcceptClient()
 {
-    return accept(listenSocket, nullptr, nullptr);
+    SOCKET clientSocket1 = accept(listenSocket, nullptr, nullptr);
+    if (clientSocket1 == INVALID_SOCKET) {
+        std::cout << "accept failed\n";
+        return clientSocket1;
+    }
+    if (client1Socket == INVALID_SOCKET)
+        client1Socket = clientSocket1;
+    else if (client2Socket == INVALID_SOCKET)
+        client2Socket = clientSocket1;
+    return clientSocket1;
 }
 
-void Server::Send(SOCKET& s, const std::string& str) {
+void Server::SendMessages(SOCKET& s, const std::string& str) {
     //把str发送到SOCKET s那边
     send(
         s,
@@ -82,30 +91,27 @@ void Server::Send(SOCKET& s, const std::string& str) {
     );
 }
 
-int Server::Receive(SOCKET& s, std::string& str) {
+std::pair<bool, std::string> Server::Receive(SOCKET& s) {
+    std::string buffer(1024, '\0');
     int received = recv(
         s,
-        str.data(),
-        static_cast<int>(str.size()),
+        buffer.data(),
+        static_cast<int>(buffer.size()),
         0
     );//从clientSocket1接收最多1023字节放入buffer，返回值是实际收到了多少字节
-    if (received > 0) {
-        str.resize(received);
-        std::cout << "Client says: "
-            << str << "\n";
+    if (received <= 0) {
+        return std::pair{ false, "" };
     }
-    return received;
+    buffer.resize(received);
+    std::cout << "Client says: "
+            << buffer << "\n";
+    return std::pair{ true, buffer };
 }
 
 std::string Server::AnalysisMessage(const std::string& str) {
-    battleManager = std::make_unique<BattleManager>();
-    battleManager->InitializeBattle(Mode::pvp);
-    if (str.size() == 1 && str[0] == 'n') {
-        return (GetBattleManager()->getManager()).StringToSend(States::waitForBattle);
-    }
-    else {
-        return (GetBattleManager()->getManager()).StringToSend(States::init);
-    }
+
+
+    return (GetBattleManager()->getManager()).StringToSend(States::init);
 }
 
 void Server::AddClientToQueue(SOCKET s)
@@ -118,6 +124,13 @@ void Server::JoinBattle()
     if (waitQueue.size() < 2) {
         return;
     }
+    battleManager = std::make_unique<BattleManager>();
+    battleManager->InitializeBattle(Mode::pvp);
+    std::thread battle(
+        &Server::ManageBattleThread,
+        this
+    );
+    battle.detach();
     std::string str = AnalysisMessage("b");
     while (!waitQueue.empty()) {
         SOCKET temp = waitQueue.front();
@@ -129,26 +142,45 @@ void Server::JoinBattle()
         );
         t.detach();
         waitQueue.pop();
-    }
-    
+    }   
 }
 
 
 void Server::NewThread(SOCKET s, std::string str)
-{
+{//客户端通信的单独线程
+    SendMessages(s, str);
     while (1) {
-        Send(s, str);
-        std::string reply = "Hello Client1";
-        std::string buffer(1024, '\0');
-        int rec = Receive(s, buffer);
-        if (rec <= 0) {
-            std::cout << "客户端断开连接";
+        
+        auto  result = Receive(s);
+        if (!result.first) {
+            std::cout << "客户端断开连接\n";
+            closesocket(s);
             return;
         }
-        buffer.resize(rec);
-        
+        std::string buffer(result.second);
+        int id = 2;
+        if (s == client1Socket) {
+            id = 1;
+        }
+        if (buffer[0] - '0' >= 1 || buffer[0] - '0' <= 4) {
+            messages.push({ id, buffer });
+        }
     }
-    closesocket(s);
+}
+
+void Server::ManageBattleThread()
+{
+    while (1) {
+        if (!messages.empty()) {
+            std::string str = messages.front().message;
+            int id = messages.front().playerId;
+            messages.pop();
+            GetBattleManager()->getManager().GetCharacters()[id-1]->SetHP(100 - id);
+            str = AnalysisMessage("b");
+            SendMessages(client1Socket, str);
+            SendMessages(client2Socket, str);
+        }
+    }
 }
 
 
