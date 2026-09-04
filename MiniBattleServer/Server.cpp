@@ -175,7 +175,9 @@ void Server::ManageBattleThread()
             std::string str = messages.front().message;
             int id = messages.front().playerId;
             messages.pop();
-            GetBattleManager()->getManager().GetCharacters()[id-1]->SetHP(100 - id);
+            auto& effectCharacter = GetBattleManager()->getManager().GetCharacters()[id - 1];
+            auto info = effectCharacter->GetInfo();
+            effectCharacter->SetHP(info.HP - id);
             str = AnalysisMessage("b");
             SendMessages(client1Socket, str);
             SendMessages(client2Socket, str);
