@@ -111,7 +111,7 @@ std::pair<bool, std::string> Server::Receive(SOCKET& s) {
 std::string Server::AnalysisMessage(const std::string& str) {
 
 
-    return (GetBattleManager()->getManager()).StringToSend(States::init);
+    return (GetBattleManager()->getManager()).StringToSend();
 }
 
 void Server::AddClientToQueue(SOCKET s)

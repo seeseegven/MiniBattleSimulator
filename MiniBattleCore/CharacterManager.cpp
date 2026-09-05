@@ -11,9 +11,9 @@ std::vector<std::unique_ptr<Character>>& CharacterManager::GetCharacters()
 	return characters;
 }
 
-std::string CharacterManager::StringToSend(States states)
+std::string CharacterManager::StringToSend()
 {
-	if (states == States::init) {
+	
 		std::string str;
 		for (auto& c : characters) {//要用引用啊，uniqueptr是独占的，不能复制
 			auto [name, hp, attack, defense] = c->GetInfo();
@@ -24,8 +24,4 @@ std::string CharacterManager::StringToSend(States states)
 		}
 		str += '\n';
 		return str;
-	}
-	else if (states == States::waitForBattle) {
-		return "等待进入对局";
-	}
 }
