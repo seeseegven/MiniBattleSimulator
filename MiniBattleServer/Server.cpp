@@ -150,20 +150,30 @@ void Server::NewThread(SOCKET s, std::string str)
 {//客户端通信的单独线程
     SendMessages(s, str);
     while (1) {
-        
+        isAdded = false;
         auto  result = Receive(s);
         if (!result.first) {
             std::cout << "客户端断开连接\n";
             closesocket(s);
             return;
         }
-        std::string buffer(result.second);
-        int id = 2;
-        if (s == client1Socket) {
-            id = 1;
+        std::string& buffer(result.second);
+        if (buffer.size() != 1 || buffer[0] < '1' || buffer[0]>'4') {
+            SendMessages(s, "Invalid Skill\n");
+            continue;
         }
-        if (buffer[0] - '0' >= 1 || buffer[0] - '0' <= 4) {
-            messages.push({ id, buffer });
+
+        {
+            std::lock_guard<std::mutex> lock(battleMutex);
+            int id = 2;
+            if (s == client1Socket) {
+                id = 1;
+            }
+            if (!isAdded && whichClient % 2 == id % 2) {
+                messages.push({ id, buffer });
+                isAdded = true;
+                whichClient += 1;
+            }
         }
     }
 }
