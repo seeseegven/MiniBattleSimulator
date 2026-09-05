@@ -85,8 +85,17 @@ void NetworkClient::ReceiveAndUpdate()
 	while (isConnected) {
 		
 		std::string s = ReceiveMessage();
+		if (!CheckReceivedValid(s)) {
+			COORD pos = Render::GetCursorPosition();
+			Render::SetCursorPosition(pos.X,pos.Y);
+			Render::RenderText("当前不是你的回合\n");
+			shouldHint = true;
+			continue;
+		}
+		s = s.substr(s.find('|') + 1);
 		Render::ClearScreen();
-		Render::DisplayAllCharacterInfo(s);	
+		Render::DisplayAllCharacterInfo(s);
+		shouldHint = true;
 		if (!isConnected) {
 			std::cout << "已退出联机\n";
 			closesocket(clientSocket);
@@ -98,11 +107,22 @@ void NetworkClient::ReceiveAndUpdate()
 
 void NetworkClient::ManageNetworkInput()
 {
-	while (isConnected) {
-		std::string message;
-		std::cout << "请输入你要发送的内容,quit退出\n";
-		std::cin >> message;
-		SendMessages(message);
+	while (1) {
+		if (isConnected && shouldHint) {
+			std::string message;
+			std::cout << "请输入你要发送的内容,quit退出\n";
+			std::cin >> message;
+			SendMessages(message);
+			shouldHint = false;
+		}
 	}
+}
+
+bool NetworkClient::CheckReceivedValid(const std::string& s)
+{
+	size_t pos = s.find('|');
+	if (s.substr(0, pos) == "Error")
+		return false;
+	return true;
 }
 

@@ -23,5 +23,6 @@ std::string CharacterManager::StringToSend()
 			str += ";";
 		}
 		str += '\n';
+		str = "Success|" + str;
 		return str;
 }

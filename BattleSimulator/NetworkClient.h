@@ -22,8 +22,10 @@ public:
 	std::string ReceiveMessage();
 	void ReceiveAndUpdate();
 	void ManageNetworkInput();
+	bool CheckReceivedValid(const std::string& s);
 private:
 	SOCKET clientSocket = INVALID_SOCKET;
 	bool isConnected = false;
+	bool shouldHint = false;
 	NetModeState netState;
 };

@@ -159,7 +159,7 @@ void Server::NewThread(SOCKET s, std::string str)
         }
         std::string& buffer(result.second);
         if (buffer.size() != 1 || buffer[0] < '1' || buffer[0]>'4') {
-            SendMessages(s, "Invalid Skill\n");
+            SendMessages(s, "Error|Invalid Skill\n");
             continue;
         }
 
@@ -173,6 +173,9 @@ void Server::NewThread(SOCKET s, std::string str)
                 messages.push({ id, buffer });
                 isAdded = true;
                 whichClient += 1;
+            }
+            else {
+                SendMessages(s, "Error|");
             }
         }
     }

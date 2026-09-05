@@ -39,6 +39,7 @@ void Game::Run()
 				&NetworkClient::ManageNetworkInput,
 				&client
 			);
+			inputThread.detach();
 			client.ReceiveAndUpdate();
 			CurrentState = GameState::Menu;
 		}
