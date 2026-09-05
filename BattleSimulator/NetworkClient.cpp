@@ -41,6 +41,7 @@ ConnectStatus NetworkClient::Connect(const std::string& ip, int port)
 		WSACleanup();
 		return ConnectStatus::ConnectFail;
 	}
+	previousCharacterData.clear();
 	isConnected = true;
 	return ConnectStatus::ConnectSuccess;
 }
@@ -100,9 +101,10 @@ void NetworkClient::ReceiveAndUpdate()
 			s = s.substr(0, actionPosition);
 		}
 		Render::ClearScreen();
-		Render::DisplayAllCharacterInfo(s);
+		Render::DisplayAllCharacterInfo(s, previousCharacterData);
+		previousCharacterData = s;
 		if (!actionMessage.empty()) {
-			Render::RenderText(actionMessage, TextColor::White);
+			Render::DisplayActionMessage(actionMessage);
 		}
 		shouldHint = true;
 		if (!isConnected) {

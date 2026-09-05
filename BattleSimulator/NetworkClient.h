@@ -28,4 +28,5 @@ private:
 	bool isConnected = false;
 	bool shouldHint = false;
 	NetModeState netState;
+	std::string previousCharacterData;
 };

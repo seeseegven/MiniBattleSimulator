@@ -35,7 +35,8 @@ public:
 	static void CoutCharacter(CharacterInfo& infoBegin, CharacterInfo& infoEnd);
 	static void SetCursorPosition(short x, short y);
 	static COORD GetCursorPosition();
-	static void DisplayAllCharacterInfo(std::string& s);
+	static void DisplayAllCharacterInfo(std::string& s, const std::string& previousData);
+	static void DisplayActionMessage(const std::string& s);
 private:
 	static void SetTextColor(TextColor color);
 	static CharacterInfo AnalysisPlayerData(int index, std::string& s);

@@ -95,15 +95,71 @@ COORD Render::GetCursorPosition()
 	return info.dwCursorPosition;
 }
 
-void Render::DisplayAllCharacterInfo(std::string& s)
+void Render::DisplayAllCharacterInfo(std::string& s, const std::string& previousData)
 {
 	size_t pos = s.find(';');
 	std::string p1 = s.substr(0, pos);
 	std::string p2 = s.substr(pos + 1);
 	CharacterInfo pInfo1 = AnalysisPlayerData(1, p1);
 	CharacterInfo pInfo2 = AnalysisPlayerData(2, p2);
-	Render::CoutCharacter(pInfo1, pInfo1);
-	Render::CoutCharacter(pInfo2, pInfo2);
+	if (previousData.empty()) {
+		Render::CoutCharacter(pInfo1, pInfo1);
+		Render::CoutCharacter(pInfo2, pInfo2);
+		return;
+	}
+
+	size_t previousPos = previousData.find(';');
+	std::string previousP1 = previousData.substr(0, previousPos);
+	std::string previousP2 = previousData.substr(previousPos + 1);
+	CharacterInfo previousPInfo1 = AnalysisPlayerData(1, previousP1);
+	CharacterInfo previousPInfo2 = AnalysisPlayerData(2, previousP2);
+	Render::CoutCharacter(previousPInfo1, pInfo1);
+	Render::CoutCharacter(previousPInfo2, pInfo2);
+}
+
+void Render::DisplayActionMessage(const std::string& s)
+{
+	const std::string useText = "\u4F7F\u7528 ";
+	const std::string skillEndText = ",\n";
+	size_t usePosition = s.find(useText);
+	if (usePosition == std::string::npos) {
+		RenderText(s, TextColor::White);
+		return;
+	}
+
+	size_t skillPosition = usePosition + useText.size();
+	size_t skillEndPosition = s.find(skillEndText, skillPosition);
+	if (skillEndPosition == std::string::npos) {
+		RenderText(s, TextColor::White);
+		return;
+	}
+
+	size_t valuePosition = s.find_first_of("0123456789", skillEndPosition);
+	if (valuePosition == std::string::npos) {
+		RenderText(s, TextColor::White);
+		return;
+	}
+	size_t valueEndPosition = s.find_first_not_of("0123456789", valuePosition);
+	if (valueEndPosition == std::string::npos) {
+		valueEndPosition = s.size();
+	}
+
+	TextColor valueColor = TextColor::White;
+	if (s.find("\u70B9\u4F24\u5BB3", valueEndPosition) != std::string::npos) {
+		valueColor = TextColor::LightRed;
+	}
+	else if (s.find("\u70B9\u8840\u91CF", valueEndPosition) != std::string::npos) {
+		valueColor = TextColor::LightGreen;
+	}
+	else if (s.find("\u70B9\u9632\u5FA1", valueEndPosition) != std::string::npos) {
+		valueColor = TextColor::LightBlue;
+	}
+
+	RenderText(s.substr(0, skillPosition), TextColor::White);
+	RenderText(s.substr(skillPosition, skillEndPosition - skillPosition), TextColor::LightCyan);
+	RenderText(s.substr(skillEndPosition, valuePosition - skillEndPosition), TextColor::White);
+	RenderText(s.substr(valuePosition, valueEndPosition - valuePosition), valueColor);
+	RenderText(s.substr(valueEndPosition), TextColor::White);
 }
 
 CharacterInfo Render::AnalysisPlayerData(int index, std::string& s)
