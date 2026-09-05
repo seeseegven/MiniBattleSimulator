@@ -38,11 +38,14 @@ public:
 	const auto& GetSkills() { return skills; };
 	void AddStatus(std::unique_ptr<EffectStatus>&& status);
 	bool UseSkill(size_t skillIndex, Character& target, int curRound);
+	const std::string& GetLastActionMessage() const;
 protected:
+	void RecordActionMessage(const std::string& effectMessage);
 	int Attack;
 	int Defense;
 	std::string Name;
 	int HP;//到时候调下顺序
 	std::vector<std::unique_ptr<Skill>> skills;
 	std::vector<std::unique_ptr<EffectStatus>> Statuses;
+	std::string lastActionMessage;
 };

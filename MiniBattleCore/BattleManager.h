@@ -16,10 +16,12 @@ public:
 	void ManageBattle();
 	bool ManageBattle(int playerId, const std::string& message);
 	CharacterManager& getManager();
+	const std::string& GetLastBattleMessage() const;
 private:
 	CharacterManager manager;
 	int curRound = 0;//当前回合
 	int currentPlayer = 1;
 	Player* player = nullptr;
 	Enemy* enemy = nullptr;
+	std::string lastBattleMessage;
 };

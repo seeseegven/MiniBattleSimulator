@@ -111,7 +111,7 @@ std::pair<bool, std::string> Server::Receive(SOCKET& s) {
 std::string Server::AnalysisMessage(const std::string& str) {
 
 
-    return (GetBattleManager()->getManager()).StringToSend();
+    return (GetBattleManager()->getManager()).StringToSend(str);
 }
 
 void Server::AddClientToQueue(SOCKET s)
@@ -131,7 +131,7 @@ void Server::JoinBattle()
         this
     );
     battle.detach();
-    std::string str = AnalysisMessage("b");
+    std::string str = AnalysisMessage("");
     while (!waitQueue.empty()) {
         SOCKET temp = waitQueue.front();
         std::thread t(
@@ -170,7 +170,7 @@ void Server::NewThread(SOCKET s, std::string str)
                 id = 1;
             }
             if (!isAdded && battleManager->ManageBattle(id, buffer)) {
-                messages.push({ id, buffer });
+                messages.push({ id, battleManager->GetLastBattleMessage() });
                 isAdded = true;
                 accepted = true;
             }
@@ -189,8 +189,9 @@ void Server::ManageBattleThread()
         {
             std::lock_guard<std::mutex> lock(battleMutex);
             if (!messages.empty()) {
+				std::string actionMessage = messages.front().message;
                 messages.pop();
-                str = AnalysisMessage("b");
+                str = AnalysisMessage(actionMessage);
                 isAdded = false;
                 hasMessage = true;
             }

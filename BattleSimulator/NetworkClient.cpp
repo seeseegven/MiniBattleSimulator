@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <WS2tcpip.h>
 #include "NetworkClient.h"
 #include "Render.h"
@@ -12,7 +12,7 @@ ConnectStatus NetworkClient::Connect(const std::string& ip, int port)
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
 		return ConnectStatus::InitFail;
 	}
-	//´íÎó´úÂë£¬SOCKET clientSocket»áµ¼ÖÂÍ¬Ãû¾Ö²¿±äÁ¿¸²¸Ç
+	//é”™è¯¯ä»£ç ï¼ŒSOCKET clientSocketä¼šå¯¼è‡´åŒåå±€éƒ¨å˜é‡è¦†ç›–
 	clientSocket = socket(
 		AF_INET,
 		SOCK_STREAM,
@@ -48,7 +48,7 @@ ConnectStatus NetworkClient::Connect(const std::string& ip, int port)
 void NetworkClient::SendMessages(const std::string& str)
 {
 	if (str == "quit") {
-		std::cout << "¿Í»§¶Ë¶Ï¿ªÁ¬½Ó";
+		std::cout << "å®¢æˆ·ç«¯æ–­å¼€è¿æ¥";
 		isConnected = false;
 		return;
 	}
@@ -60,7 +60,7 @@ void NetworkClient::DisplayConnectStatus(ConnectStatus status)
 	if (status == ConnectStatus::InitFail) std::cout << "WSAStartUp failed\n";
 	else if (status == ConnectStatus::SocketFail) std::cout << "socket failed\n";
 	else if (status == ConnectStatus::ConnectFail) std::cout << "connect failed\n";
-	else std::cout << "connected to server!\nµÈ´ı·şÎñÆ÷·ÖÅä\n";
+	else std::cout << "connected to server!\nç­‰å¾…æœåŠ¡å™¨åˆ†é…\n";
 }
 
 std::string NetworkClient::ReceiveMessage()
@@ -88,16 +88,25 @@ void NetworkClient::ReceiveAndUpdate()
 		if (!CheckReceivedValid(s)) {
 			COORD pos = Render::GetCursorPosition();
 			Render::SetCursorPosition(pos.X,pos.Y);
-			Render::RenderText("µ±Ç°²»ÊÇÄãµÄ»ØºÏ\n");
+			Render::RenderText("å½“å‰ä¸æ˜¯ä½ çš„å›åˆ\n");
 			shouldHint = true;
 			continue;
 		}
 		s = s.substr(s.find('|') + 1);
+		size_t actionPosition = s.find('\n');
+		std::string actionMessage;
+		if (actionPosition != std::string::npos) {
+			actionMessage = s.substr(actionPosition + 1);
+			s = s.substr(0, actionPosition);
+		}
 		Render::ClearScreen();
 		Render::DisplayAllCharacterInfo(s);
+		if (!actionMessage.empty()) {
+			Render::RenderText(actionMessage, TextColor::White);
+		}
 		shouldHint = true;
 		if (!isConnected) {
-			std::cout << "ÒÑÍË³öÁª»ú\n";
+			std::cout << "å·²é€€å‡ºè”æœº\n";
 			closesocket(clientSocket);
 			Sleep(2000);
 			break;
@@ -110,7 +119,7 @@ void NetworkClient::ManageNetworkInput()
 	while (1) {
 		if (isConnected && shouldHint) {
 			std::string message;
-			std::cout << "ÇëÊäÈëÄãÒª·¢ËÍµÄÄÚÈİ,quitÍË³ö\n";
+			std::cout << "è¯·è¾“å…¥ä½ è¦å‘é€çš„å†…å®¹,quité€€å‡º\n";
 			std::cin >> message;
 			SendMessages(message);
 			shouldHint = false;

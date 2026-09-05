@@ -32,6 +32,11 @@ CharacterManager& BattleManager::getManager()
 	return manager;
 }
 
+const std::string& BattleManager::GetLastBattleMessage() const
+{
+	return lastBattleMessage;
+}
+
 void BattleManager::ManageBattle()
 {
 	auto& characters = manager.GetCharacters();
@@ -77,6 +82,7 @@ bool BattleManager::ManageBattle(int playerId, const std::string& message)
 	if (!characters[casterIndex]->UseSkill(skillIndex, *characters[targetIndex], curRound)) {
 		return false;
 	}
+	lastBattleMessage = characters[casterIndex]->GetLastActionMessage();
 
 	if (currentPlayer == 1) {
 		currentPlayer = 2;

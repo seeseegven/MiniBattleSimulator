@@ -15,7 +15,7 @@ public:
 	void CoutInfo();
 	void Action(int curRound);
 	std::vector<std::unique_ptr<Character>>& GetCharacters();
-	std::string StringToSend();
+	std::string StringToSend(const std::string& actionMessage = "");
 private:
 	std::vector<std::unique_ptr<Character>> characters;
 };

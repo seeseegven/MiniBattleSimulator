@@ -11,7 +11,7 @@ public:
 	void Use(Character& caster, Character& target) override;
 	int CalculateSkillScore(Character& caster, Character& target) override;
 	~Damage() override = default;
-	void SkillEffect(const std::string& s, int value) override;
+	std::string SkillEffect(const std::string& s, int value) override;
 private:
 	std::function<int(Character&, Character&)> damageFunc;
 };

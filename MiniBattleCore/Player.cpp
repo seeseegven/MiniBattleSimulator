@@ -42,7 +42,7 @@ void Player::PrintCurrentRound(int curRound)
 void Player::CoutSkill(const std::string& s, int value, Skill* skill)
 {
 	std::cout << "\u73A9\u5BB6\u4F7F\u7528 ";
-	skill->SkillEffect(s, value);
+	RecordActionMessage(skill->SkillEffect(s, value));
 }
 
 void Player::CoutSkill(const std::string& s, Skill* skill)

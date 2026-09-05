@@ -26,7 +26,7 @@ void CharacterManager::CoutInfo()
 	}
 }
 
-std::string CharacterManager::StringToSend()
+std::string CharacterManager::StringToSend(const std::string& actionMessage)
 {
 	std::string str;
 	for (auto& c : characters) {//要用引用啊，uniqueptr是独占的，不能复制
@@ -38,5 +38,6 @@ std::string CharacterManager::StringToSend()
 	}
 	str += '\n';
 	str = "Success|" + str;
+	str += actionMessage;
 	return str;
 }

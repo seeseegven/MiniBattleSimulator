@@ -17,7 +17,7 @@ void Enemy::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters, i
 void Enemy::CoutSkill(const std::string& s, int value, Skill* skill)
 {
 	std::cout << "\u654C\u4EBA\u4F7F\u7528 ";
-	skill->SkillEffect(s, value);
+	RecordActionMessage(skill->SkillEffect(s, value));
 }
 
 void Enemy::CoutSkill(const std::string& s, Skill* skill)

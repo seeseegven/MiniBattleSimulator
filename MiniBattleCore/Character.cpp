@@ -91,3 +91,13 @@ bool Character::UseSkill(size_t skillIndex, Character& target, int curRound)
 	}
 	return true;
 }
+
+const std::string& Character::GetLastActionMessage() const
+{
+	return lastActionMessage;
+}
+
+void Character::RecordActionMessage(const std::string& effectMessage)
+{
+	lastActionMessage = Name + "\u4F7F\u7528 " + effectMessage;
+}

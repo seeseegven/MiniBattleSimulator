@@ -10,7 +10,7 @@ public:
 	~OneTimeHeal() override = default;
 	void Use(Character& caster, Character& target) override;
 	int CalculateSkillScore(Character& caster, Character& target) override;
-	void SkillEffect(const std::string& s, int value) override;
+	std::string SkillEffect(const std::string& s, int value) override;
 private:
 	std::function<int(Character&, Character&)> Healfunc;
 };
@@ -23,7 +23,7 @@ public:
 	~DefenseUp() override = default;
 	void Use(Character& caster, Character& target) override;
 	int CalculateSkillScore(Character& caster, Character& target) override;
-	void SkillEffect(const std::string& s, int value) override;
+	std::string SkillEffect(const std::string& s, int value) override;
 private:
 	std::function<int(Character&, Character&)> Defensefunc;
 };
@@ -36,7 +36,7 @@ public:
 	~ContinuousHeal() override = default;
 	void Use(Character& caster, Character& target) override;
 	int CalculateSkillScore(Character& caster, Character& target) override;
-	void SkillEffect(const std::string& s, int value) override;
+	std::string SkillEffect(const std::string& s, int value) override;
 private:
 	int continueRound;
 	std::function<int(Character&, Character&)> Healfunc;

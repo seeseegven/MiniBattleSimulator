@@ -13,7 +13,7 @@ public:
 	int GetWhichRoundCanUse() const;
 	virtual void SetWhichRoundCanUse(int curRound);
 	virtual void PrintDetail(int curRound);
-	virtual void SkillEffect(const std::string& s, int value) = 0;
+	virtual std::string SkillEffect(const std::string& s, int value) = 0;
 protected:
 	std::string name;
 	int whichRoundCanUse = 0;
