@@ -1,4 +1,4 @@
-#include <thread>
+ï»¿#include <thread>
 #include "Enemy.h"
 #include "Game.h"
 #include "Player.h"
@@ -12,25 +12,25 @@ Game::Game() : isRunning(true) {
 
 void Game::Run()
 {
-	Render::RenderText("»¶Ó­À´µ½Õ½¶·Ä£ÄâÆ÷£¡\n", TextColor::White);
+	Render::RenderText("æ¬¢è¿æ¥åˆ°æˆ˜æ–—æ¨¡æ‹Ÿå™¨ï¼\n", TextColor::White);
 	cout
-		<< "=====²Ëµ¥=====\n"
-		<< "b.¿ªÊ¼ÓÎÏ·\n"
-		<< "q.ÍË³ö\n"
-		<< "n.Áª»ú¶ÔÕ½\n";
+		<< "=====èœå•=====\n"
+		<< "b.å¼€å§‹æ¸¸æˆ\n"
+		<< "q.é€€å‡º\n"
+		<< "n.è”æœºå¯¹æˆ˜\n";
 
 	while (isRunning) {
 		Input();
 		if (Game::isRunning == false) {
-			cout << "ÒÑÍË³ö" << endl;
+			cout << "å·²é€€å‡º" << endl;
 			break;
 		}else if (CurrentState==GameState::Battle) {
 			Render::ClearScreen();
-			cout << "½øÈëÕ½¶·   " << "zÍË³ö" << endl;
+			cout << "è¿›å…¥æˆ˜æ–—   " << "zé€€å‡º" << endl;
 			CurrentState = GameState::Battle;
 			curMode = Mode::pve;
 			battleManager = std::make_unique<BattleManager>();
-			//ÕâÀïÍü¼Ç³õÊ¼»¯ÁË£¬battlemanagerÃ»ÓĞÊµÀı»¯£¬ºóĞøÖ¸Õë¸³Öµ¸øplayerÊ±ÕÒ²»µ½¶ÔÏó£¬±¨thisÎªnullptrµÄ´í¡£
+			//è¿™é‡Œå¿˜è®°åˆå§‹åŒ–äº†ï¼Œbattlemanageræ²¡æœ‰å®ä¾‹åŒ–ï¼Œåç»­æŒ‡é’ˆèµ‹å€¼ç»™playeræ—¶æ‰¾ä¸åˆ°å¯¹è±¡ï¼ŒæŠ¥thisä¸ºnullptrçš„é”™ã€‚
 			EnterBattle();
 			CurrentState = GameState::Menu;
 		}
@@ -50,9 +50,9 @@ void Game::Run()
 
 void Game::Input()
 {
-	//´¦ÀíÊäÈëµÄÂß¼­
+	//å¤„ç†è¾“å…¥çš„é€»è¾‘
 	char command;
-	cout << "ÇëÊäÈëÖ¸Áî£¬qÍË³ö\n";
+	cout << "è¯·è¾“å…¥æŒ‡ä»¤ï¼Œqé€€å‡º\n";
 	cin >> command;
 
 	if (command == 'q') {
@@ -75,19 +75,19 @@ void Game::Input()
 
 void Game::Render()
 {
-	// äÖÈ¾ÓÎÏ·»­ÃæµÄÂß¼­
+	// æ¸²æŸ“æ¸¸æˆç”»é¢çš„é€»è¾‘
 	if (CurrentState == GameState::Menu)
 	{
 		cout
-		<< "»¶Ó­À´µ½Õ½¶·Ä£ÄâÆ÷£¡\n"
-		<< "=====²Ëµ¥=====\n"
-		<< "b.¿ªÊ¼ÓÎÏ·\n"
-		<< "q.ÍË³ö\n";
+		<< "æ¬¢è¿æ¥åˆ°æˆ˜æ–—æ¨¡æ‹Ÿå™¨ï¼\n"
+		<< "=====èœå•=====\n"
+		<< "b.å¼€å§‹æ¸¸æˆ\n"
+		<< "q.é€€å‡º\n";
 	}
 	else if (CurrentState == GameState::Battle)
 	{
 		std::cout
-			<< "=====Õ½¶·ÖĞ=====\n";
+			<< "=====æˆ˜æ–—ä¸­=====\n";
 	}
 }
 
@@ -97,7 +97,7 @@ void Game::Render()
 void Game::EnterBattle()
 {
 	battleManager->InitializeBattle(Mode::pve);
-	//battleManager->ManageBattle();
+	battleManager->ManageBattle();
 	//battleManager->DisplayInfo();
 	battleManager.reset();
 }

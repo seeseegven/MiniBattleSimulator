@@ -130,12 +130,10 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkClient.cpp" />
-    <ClCompile Include="Render.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="NetworkClient.h" />
-    <ClInclude Include="Render.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MiniBattleCore\MiniBattleCore.vcxproj">

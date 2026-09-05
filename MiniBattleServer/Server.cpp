@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <thread>
 #include "Server.h"
 #include "BattleManager.h"
@@ -27,7 +27,7 @@ Server::~Server()
 
 bool Server::Preparation()
 {
-    //³õÊ¼»¯winsock
+    //åˆå§‹åŒ–winsock
     WSADATA wsaData{};
 
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
@@ -37,8 +37,8 @@ bool Server::Preparation()
     isStartUp = true;
     listenSocket = socket(
         AF_INET,//ipv4
-        SOCK_STREAM,//×Ö½ÚÁ÷
-        IPPROTO_TCP//tcpĞ­Òé
+        SOCK_STREAM,//å­—èŠ‚æµ
+        IPPROTO_TCP//tcpåè®®
     );
 
     if (listenSocket == INVALID_SOCKET) {
@@ -82,7 +82,7 @@ SOCKET Server::AcceptClient()
 }
 
 void Server::SendMessages(SOCKET& s, const std::string& str) {
-    //°Ñstr·¢ËÍµ½SOCKET sÄÇ±ß
+    //æŠŠstrå‘é€åˆ°SOCKET sé‚£è¾¹
     send(
         s,
         str.data(),
@@ -98,7 +98,7 @@ std::pair<bool, std::string> Server::Receive(SOCKET& s) {
         buffer.data(),
         static_cast<int>(buffer.size()),
         0
-    );//´ÓclientSocket1½ÓÊÕ×î¶à1023×Ö½Ú·ÅÈëbuffer£¬·µ»ØÖµÊÇÊµ¼ÊÊÕµ½ÁË¶àÉÙ×Ö½Ú
+    );//ä»clientSocket1æ¥æ”¶æœ€å¤š1023å­—èŠ‚æ”¾å…¥bufferï¼Œè¿”å›å€¼æ˜¯å®é™…æ”¶åˆ°äº†å¤šå°‘å­—èŠ‚
     if (received <= 0) {
         return std::pair{ false, "" };
     }
@@ -138,7 +138,7 @@ void Server::JoinBattle()
             &Server::NewThread,
             this,
             temp,
-            str//´«½øÈ¥µÄÊÇÓÒÖµ£¬ÒªÃ´refÒıÓÃÒªÃ´const &
+            str//ä¼ è¿›å»çš„æ˜¯å³å€¼ï¼Œè¦ä¹ˆrefå¼•ç”¨è¦ä¹ˆconst &
         );
         t.detach();
         waitQueue.pop();
@@ -147,36 +147,36 @@ void Server::JoinBattle()
 
 
 void Server::NewThread(SOCKET s, std::string str)
-{//¿Í»§¶ËÍ¨ĞÅµÄµ¥¶ÀÏß³Ì
+{//å®¢æˆ·ç«¯é€šä¿¡çš„å•ç‹¬çº¿ç¨‹
     SendMessages(s, str);
     while (1) {
-        isAdded = false;
         auto  result = Receive(s);
         if (!result.first) {
-            std::cout << "¿Í»§¶Ë¶Ï¿ªÁ¬½Ó\n";
+            std::cout << "å®¢æˆ·ç«¯æ–­å¼€è¿æ¥\n";
             closesocket(s);
             return;
         }
         std::string& buffer(result.second);
-        if (buffer.size() != 1 || buffer[0] < '1' || buffer[0]>'4') {
+        if (buffer.size() != 1 || buffer[0] < '1' || buffer[0] > '5') {
             SendMessages(s, "Error|Invalid Skill\n");
             continue;
         }
 
+        bool accepted = false;
         {
             std::lock_guard<std::mutex> lock(battleMutex);
             int id = 2;
             if (s == client1Socket) {
                 id = 1;
             }
-            if (!isAdded && whichClient % 2 == id % 2) {
+            if (!isAdded && battleManager->ManageBattle(id, buffer)) {
                 messages.push({ id, buffer });
                 isAdded = true;
-                whichClient += 1;
+                accepted = true;
             }
-            else {
-                SendMessages(s, "Error|");
-            }
+        }
+        if (!accepted) {
+            SendMessages(s, "Error|");
         }
     }
 }
@@ -184,14 +184,18 @@ void Server::NewThread(SOCKET s, std::string str)
 void Server::ManageBattleThread()
 {
     while (1) {
-        if (!messages.empty()) {
-            std::string str = messages.front().message;
-            int id = messages.front().playerId;
-            messages.pop();
-            auto& effectCharacter = GetBattleManager()->getManager().GetCharacters()[id - 1];
-            auto info = effectCharacter->GetInfo();
-            effectCharacter->SetHP(info.HP - id);
-            str = AnalysisMessage("b");
+        std::string str;
+        bool hasMessage = false;
+        {
+            std::lock_guard<std::mutex> lock(battleMutex);
+            if (!messages.empty()) {
+                messages.pop();
+                str = AnalysisMessage("b");
+                isAdded = false;
+                hasMessage = true;
+            }
+        }
+        if (hasMessage) {
             SendMessages(client1Socket, str);
             SendMessages(client2Socket, str);
         }

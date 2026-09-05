@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <memory>
 #include <queue>
@@ -29,13 +29,12 @@ public:
     void ManageBattleThread();
 private:
     std::mutex battleMutex;
-    int whichClient=1;//Ä¿Ç°Ó¦¸Ã½ÓÊÕÄÄ¸ö¿Í»§¶ËµÄÏûÏ¢
     std::queue<SOCKET> waitQueue;
     SOCKET listenSocket = INVALID_SOCKET;
     SOCKET client1Socket = INVALID_SOCKET;
     SOCKET client2Socket = INVALID_SOCKET;
     bool isStartUp = false;
-    bool isAdded = false;//¿Í»§¶ËµÄ²Ù×÷ÊÇ·ñÒÑ¾­Èë¶Ó
+    bool isAdded = false;//å®¢æˆ·ç«¯çš„æ“ä½œæ˜¯å¦å·²ç»å…¥é˜Ÿ
     sockaddr_in serverAddr;
     std::unique_ptr<BattleManager> battleManager;
     std::queue<PlayerMessage> messages;

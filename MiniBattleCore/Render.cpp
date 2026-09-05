@@ -3,6 +3,7 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
+#include <vector>
 
 void Render::WaitForDisplay(int seconds)
 {
@@ -15,16 +16,18 @@ void Render::SetTextColor(TextColor color)
 	SetConsoleTextAttribute(hConsole, static_cast<WORD>(color));
 }
 
-void Render::RenderText(const std::string& s, TextColor color) {
+void Render::RenderText(const std::string& s, TextColor color)
+{
 	SetTextColor(color);
 	std::cout << s;
 	SetTextColor(TextColor::White);
 }
 
-std::ostream& operator<<(std::ostream& os, Character& character) {
-	CharacterInfo Info = character.GetInfo();
-	os << "Name: " << Info.Name << ", HP: " << Info.HP;
-	os << "  Attack: " << Info.Attack << ", Defense: " << Info.Defense << "\n";
+std::ostream& operator<<(std::ostream& os, Character& character)
+{
+	CharacterInfo info = character.GetInfo();
+	os << "Name: " << info.Name << ", HP: " << info.HP;
+	os << "  Attack: " << info.Attack << ", Defense: " << info.Defense << "\n";
 	return os;
 }
 
@@ -37,53 +40,58 @@ void Render::ClearScreen()
 #endif
 }
 
-void Render::CoutCharacter(CharacterInfo& InfoBegin, CharacterInfo& InfoEnd) {
-	std::cout << "Name: " << InfoBegin.Name;
+void Render::CoutCharacter(CharacterInfo& infoBegin, CharacterInfo& infoEnd)
+{
+	std::cout << "Name: " << infoBegin.Name;
 	std::cout << ", HP: ";
-	if (InfoBegin.HP < InfoEnd.HP) {
-		RenderText(std::to_string(InfoEnd.HP), TextColor::Green);
-	}else if (InfoBegin.HP > InfoEnd.HP) {
-		RenderText(std::to_string(InfoEnd.HP), TextColor::Red);
-	}else {
-		std::cout << InfoEnd.HP;
+	if (infoBegin.HP < infoEnd.HP) {
+		RenderText(std::to_string(infoEnd.HP), TextColor::Green);
 	}
-	if (InfoBegin.Attack < InfoEnd.Attack) {
-		std::cout << ", Attack: ";
-		RenderText(std::to_string(InfoEnd.Attack), TextColor::Blue);
-	}else if (InfoBegin.Attack > InfoEnd.Attack) {
-		std::cout << ", Attack: ";
-		RenderText(std::to_string(InfoEnd.Attack), TextColor::Red);
-	}else {
-		std::cout << ", Attack: " << InfoEnd.Attack;
+	else if (infoBegin.HP > infoEnd.HP) {
+		RenderText(std::to_string(infoEnd.HP), TextColor::Red);
 	}
-	if (InfoBegin.Defense < InfoEnd.Defense) {
+	else {
+		std::cout << infoEnd.HP;
+	}
+	if (infoBegin.Attack < infoEnd.Attack) {
+		std::cout << ", Attack: ";
+		RenderText(std::to_string(infoEnd.Attack), TextColor::Blue);
+	}
+	else if (infoBegin.Attack > infoEnd.Attack) {
+		std::cout << ", Attack: ";
+		RenderText(std::to_string(infoEnd.Attack), TextColor::Red);
+	}
+	else {
+		std::cout << ", Attack: " << infoEnd.Attack;
+	}
+	if (infoBegin.Defense < infoEnd.Defense) {
 		std::cout << ", Defense: ";
-		RenderText(std::to_string(InfoEnd.Defense), TextColor::Yellow);
-	}else if (InfoBegin.Defense > InfoEnd.Defense) {
+		RenderText(std::to_string(infoEnd.Defense), TextColor::Yellow);
+	}
+	else if (infoBegin.Defense > infoEnd.Defense) {
 		std::cout << ", Defense: ";
-		RenderText(std::to_string(InfoEnd.Defense), TextColor::Red);
-	}else {
-		std::cout << ", Defense: " << InfoEnd.Defense;
+		RenderText(std::to_string(infoEnd.Defense), TextColor::Red);
+	}
+	else {
+		std::cout << ", Defense: " << infoEnd.Defense;
 	}
 	std::cout << '\n' << std::endl;
 }
 
-void Render::SetCursorPosition(short x, short y) {
+void Render::SetCursorPosition(short x, short y)
+{
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
 	COORD pos;
 	pos.X = x;
 	pos.Y = y;
-
 	SetConsoleCursorPosition(hConsole, pos);
 }
 
-COORD Render::GetCursorPosition() {
+COORD Render::GetCursorPosition()
+{
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
 	CONSOLE_SCREEN_BUFFER_INFO info;
 	GetConsoleScreenBufferInfo(hConsole, &info);
-
 	return info.dwCursorPosition;
 }
 
@@ -101,13 +109,12 @@ void Render::DisplayAllCharacterInfo(std::string& s)
 CharacterInfo Render::AnalysisPlayerData(int index, std::string& s)
 {
 	CharacterInfo p;
-	p.Name = "Íæ¼Ò" + std::to_string(index);
+	p.Name = "\u73A9\u5BB6" + std::to_string(index);
 	size_t pos;
 	std::vector<int> values;
 	while ((pos = s.find(',')) != std::string::npos) {
 		values.push_back(std::stoi(s.substr(0, pos)));
-		s = s.substr(pos+1);
-		//100,30,;
+		s = s.substr(pos + 1);
 	}
 	p.HP = values[0];
 	p.Attack = values[1];

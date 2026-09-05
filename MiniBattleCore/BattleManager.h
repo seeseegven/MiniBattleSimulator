@@ -1,5 +1,8 @@
-#pragma once
+ï»¿#pragma once
 #include "CharacterManager.h"
+#include "Player.h"
+#include "Enemy.h"
+#include <string>
 
 enum  class Mode
 {
@@ -10,11 +13,13 @@ enum  class Mode
 class BattleManager {
 public:
 	void InitializeBattle(Mode mode);
-	//void DisplayInfo();
-	//void ManageBattle();
+	void ManageBattle();
+	bool ManageBattle(int playerId, const std::string& message);
 	CharacterManager& getManager();
 private:
 	CharacterManager manager;
-	int curRound = 0;//µ±Ç°»ØºÏ
-	//Player* player;
+	int curRound = 0;//å½“å‰å›åˆ
+	int currentPlayer = 1;
+	Player* player = nullptr;
+	Enemy* enemy = nullptr;
 };

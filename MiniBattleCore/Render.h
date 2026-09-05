@@ -6,6 +6,7 @@
 
 class Character;
 struct CharacterInfo;
+
 enum class TextColor
 {
 	Black = 0,
@@ -29,15 +30,13 @@ enum class TextColor
 class Render {
 public:
 	static void RenderText(const std::string& s, TextColor color = TextColor::Red);
-	//const加了就可以传入右值，const引用可以绑定到临时对象
-	//以color渲染字符串s
-	static void WaitForDisplay(int seconds = 1000); //等待显示
-	static void ClearScreen(); //清屏
-	static void CoutCharacter(CharacterInfo & InfoBegin, CharacterInfo & InfoEnd);
+	static void WaitForDisplay(int seconds = 1000);
+	static void ClearScreen();
+	static void CoutCharacter(CharacterInfo& infoBegin, CharacterInfo& infoEnd);
 	static void SetCursorPosition(short x, short y);
 	static COORD GetCursorPosition();
 	static void DisplayAllCharacterInfo(std::string& s);
 private:
-	static void SetTextColor(TextColor color); //设置文本颜色
+	static void SetTextColor(TextColor color);
 	static CharacterInfo AnalysisPlayerData(int index, std::string& s);
 };

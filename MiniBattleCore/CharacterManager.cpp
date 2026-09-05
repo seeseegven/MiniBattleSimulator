@@ -1,5 +1,6 @@
-#include "CharacterManager.h"
+ï»¿#include "CharacterManager.h"
 #include "Character.h"
+#include <iostream>
 
 void CharacterManager::AddCharacter(std::unique_ptr<Character> character)
 {
@@ -11,18 +12,31 @@ std::vector<std::unique_ptr<Character>>& CharacterManager::GetCharacters()
 	return characters;
 }
 
+void CharacterManager::Action(int curRound)
+{
+	for (auto& character : characters) {
+		character->RoundBehavior(characters, curRound);
+	}
+}
+
+void CharacterManager::CoutInfo()
+{
+	for (const auto& character : characters) {
+		std::cout << *character << std::endl;
+	}
+}
+
 std::string CharacterManager::StringToSend()
 {
-	
-		std::string str;
-		for (auto& c : characters) {//ÒªÓÃÒýÓÃ°¡£¬uniqueptrÊÇ¶ÀÕ¼µÄ£¬²»ÄÜ¸´ÖÆ
-			auto [name, hp, attack, defense] = c->GetInfo();
-			str += std::to_string(hp);
-			str = str + "," + std::to_string(attack);
-			str = str + "," + std::to_string(defense) + ",";
-			str += ";";
-		}
-		str += '\n';
-		str = "Success|" + str;
-		return str;
+	std::string str;
+	for (auto& c : characters) {//è¦ç”¨å¼•ç”¨å•Šï¼Œuniqueptræ˜¯ç‹¬å çš„ï¼Œä¸èƒ½å¤åˆ¶
+		auto [name, hp, attack, defense] = c->GetInfo();
+		str += std::to_string(hp);
+		str = str + "," + std::to_string(attack);
+		str = str + "," + std::to_string(defense) + ",";
+		str += ";";
+	}
+	str += '\n';
+	str = "Success|" + str;
+	return str;
 }
