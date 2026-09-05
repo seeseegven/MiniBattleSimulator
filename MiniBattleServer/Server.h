@@ -21,7 +21,7 @@ public:
     SOCKET AcceptClient();
     void SendMessages(SOCKET& s, const std::string& str);
     std::pair<bool, std::string> Receive(SOCKET& s);
-    std::string AnalysisMessage(const std::string& str);
+    std::string AnalysisMessage(const std::string& str, int playerId);
     auto& GetBattleManager() { return battleManager; };
     void AddClientToQueue(SOCKET s);
     void JoinBattle();

@@ -32,7 +32,5 @@ void Player::CoutSkillList(int curRound)
 
 void Player::PrintCurrentRound(int curRound)
 {
-	Render::RenderText("\u5F53\u524D\u4E3A\u7B2C ", TextColor::White);
-	Render::RenderText(std::to_string(curRound + 1), TextColor::LightMagenta);
-	Render::RenderText(" \u56DE\u5408\n", TextColor::White);
+	Render::DisplayCurrentRound(curRound + 1);
 }

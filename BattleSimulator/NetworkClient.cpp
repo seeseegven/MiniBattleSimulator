@@ -94,6 +94,12 @@ void NetworkClient::ReceiveAndUpdate()
 			continue;
 		}
 		s = s.substr(s.find('|') + 1);
+		size_t roundPosition = s.find('|');
+		int currentRound = std::stoi(s.substr(0, roundPosition));
+		s = s.substr(roundPosition + 1);
+		size_t skillPosition = s.find('|');
+		std::string skillData = s.substr(0, skillPosition);
+		s = s.substr(skillPosition + 1);
 		size_t actionPosition = s.find('\n');
 		std::string actionMessage;
 		if (actionPosition != std::string::npos) {
@@ -101,11 +107,14 @@ void NetworkClient::ReceiveAndUpdate()
 			s = s.substr(0, actionPosition);
 		}
 		Render::ClearScreen();
+		std::cout << "进入战斗   quit退出" << std::endl;
 		Render::DisplayAllCharacterInfo(s, previousCharacterData);
 		previousCharacterData = s;
 		if (!actionMessage.empty()) {
 			Render::DisplayActionMessage(actionMessage);
 		}
+		Render::DisplayCurrentRound(currentRound);
+		Render::DisplaySkillList(skillData);
 		shouldHint = true;
 		if (!isConnected) {
 			std::cout << "已退出联机\n";
@@ -121,7 +130,6 @@ void NetworkClient::ManageNetworkInput()
 	while (1) {
 		if (isConnected && shouldHint) {
 			std::string message;
-			std::cout << "请输入你要发送的内容,quit退出\n";
 			std::cin >> message;
 			SendMessages(message);
 			shouldHint = false;

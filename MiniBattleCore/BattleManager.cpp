@@ -1,5 +1,7 @@
 ﻿#include "BattleManager.h"
 
+#include "Skill.h"
+
 void BattleManager::InitializeBattle(Mode mode)
 {
 	if (mode == Mode::pve) {
@@ -32,6 +34,26 @@ CharacterManager& BattleManager::getManager()
 const std::string& BattleManager::GetLastBattleMessage() const
 {
 	return lastBattleMessage;
+}
+
+int BattleManager::GetCurrentRound() const
+{
+	return curRound;
+}
+
+std::vector<std::pair<std::string, int>> BattleManager::GetSkillInfo(int playerId) const
+{
+	Character* character = playerId == 1 ? static_cast<Character*>(player)
+		: static_cast<Character*>(enemy);
+	std::vector<std::pair<std::string, int>> skillInfo;
+	for (const auto& skill : character->GetSkills()) {
+		int roundLeft = skill->GetWhichRoundCanUse() - curRound;
+		if (roundLeft < 0) {
+			roundLeft = 0;
+		}
+		skillInfo.push_back({ skill->GetName(), roundLeft });
+	}
+	return skillInfo;
 }
 
 bool BattleManager::ManageBattle(int playerId, const std::string& message)

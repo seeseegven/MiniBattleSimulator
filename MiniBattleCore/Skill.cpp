@@ -1,6 +1,6 @@
 #include "Skill.h"
 
-std::string Skill::GetName()
+std::string Skill::GetName() const
 {
 	return name;
 }

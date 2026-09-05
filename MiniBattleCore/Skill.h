@@ -8,7 +8,7 @@ public:
 	Skill(const std::string& s, const int round = 0) : name(s), coolDown(round) {}
 	virtual void Use(Character& caster, Character& target) = 0;
 	virtual ~Skill() = default;
-	virtual std::string GetName();
+	virtual std::string GetName() const;
 	virtual int CalculateSkillScore(Character& caster, Character& target) = 0;
 	int GetWhichRoundCanUse() const;
 	virtual void SetWhichRoundCanUse(int curRound);

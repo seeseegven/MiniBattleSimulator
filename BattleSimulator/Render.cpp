@@ -95,6 +95,35 @@ COORD Render::GetCursorPosition()
 	return info.dwCursorPosition;
 }
 
+void Render::DisplayCurrentRound(int currentRound)
+{
+	RenderText("\u5F53\u524D\u4E3A\u7B2C ", TextColor::White);
+	RenderText(std::to_string(currentRound), TextColor::LightMagenta);
+	RenderText("\u56DE\u5408\n", TextColor::White);
+}
+
+void Render::DisplaySkillList(const std::string& skillData)
+{
+	std::cout << "\u8BF7\u9009\u62E9\u4F60\u8981\u65BD\u653E\u7684\u6280\u80FD\n";
+	size_t begin = 0;
+	size_t index = 1;
+	while (begin < skillData.size()) {
+		size_t end = skillData.find(';', begin);
+		if (end == std::string::npos) {
+			break;
+		}
+		std::string skill = skillData.substr(begin, end - begin);
+		size_t separator = skill.rfind(',');
+		if (separator != std::string::npos) {
+			std::cout << index << "." << skill.substr(0, separator);
+			RenderText("      " + skill.substr(separator + 1), TextColor::LightBlue);
+			RenderText(" \u56DE\u5408\u540E\u53EF\u7528\n", TextColor::White);
+			index++;
+		}
+		begin = end + 1;
+	}
+}
+
 void Render::DisplayAllCharacterInfo(std::string& s, const std::string& previousData)
 {
 	size_t pos = s.find(';');

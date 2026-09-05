@@ -35,6 +35,8 @@ public:
 	static void CoutCharacter(CharacterInfo& infoBegin, CharacterInfo& infoEnd);
 	static void SetCursorPosition(short x, short y);
 	static COORD GetCursorPosition();
+	static void DisplayCurrentRound(int currentRound);
+	static void DisplaySkillList(const std::string& skillData);
 	static void DisplayAllCharacterInfo(std::string& s, const std::string& previousData);
 	static void DisplayActionMessage(const std::string& s);
 private:

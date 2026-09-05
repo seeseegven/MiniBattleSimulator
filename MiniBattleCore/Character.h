@@ -34,7 +34,7 @@ public:
 	virtual void CoutSkill(const std::string& s, int value, Skill* skill) = 0;
 	virtual void CoutSkill(const std::string& s, Skill* skill) = 0;
 	void InitSkill(Character& caster, Character& target);
-	const auto& GetSkills() { return skills; };
+	const auto& GetSkills() const { return skills; };
 	void AddStatus(std::unique_ptr<EffectStatus>&& status);
 	bool UseSkill(size_t skillIndex, Character& target, int curRound);
 	const std::string& GetLastActionMessage() const;

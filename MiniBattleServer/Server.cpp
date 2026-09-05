@@ -108,10 +108,18 @@ std::pair<bool, std::string> Server::Receive(SOCKET& s) {
     return std::pair{ true, buffer };
 }
 
-std::string Server::AnalysisMessage(const std::string& str) {
-
-
-    return (GetBattleManager()->getManager()).StringToSend(str);
+std::string Server::AnalysisMessage(const std::string& str, int playerId) {
+    const std::string successPrefix = "Success|";
+    BattleManager& manager = *GetBattleManager();
+    std::string battleData = manager.getManager().StringToSend(str);
+    std::string skillData;
+    for (const auto& [name, roundLeft] : manager.GetSkillInfo(playerId)) {
+        skillData += name + "," + std::to_string(roundLeft) + ";";
+    }
+    return successPrefix
+        + std::to_string(manager.GetCurrentRound() + 1) + "|"
+        + skillData + "|"
+        + battleData.substr(successPrefix.size());
 }
 
 void Server::AddClientToQueue(SOCKET s)
@@ -131,9 +139,10 @@ void Server::JoinBattle()
         this
     );
     battle.detach();
-    std::string str = AnalysisMessage("");
     while (!waitQueue.empty()) {
         SOCKET temp = waitQueue.front();
+        int playerId = temp == client1Socket ? 1 : 2;
+        std::string str = AnalysisMessage("", playerId);
         std::thread t(
             &Server::NewThread,
             this,
@@ -184,21 +193,23 @@ void Server::NewThread(SOCKET s, std::string str)
 void Server::ManageBattleThread()
 {
     while (1) {
-        std::string str;
+        std::string client1Message;
+        std::string client2Message;
         bool hasMessage = false;
         {
             std::lock_guard<std::mutex> lock(battleMutex);
             if (!messages.empty()) {
-				std::string actionMessage = messages.front().message;
+                std::string actionMessage = messages.front().message;
                 messages.pop();
-                str = AnalysisMessage(actionMessage);
+                client1Message = AnalysisMessage(actionMessage, 1);
+                client2Message = AnalysisMessage(actionMessage, 2);
                 isAdded = false;
                 hasMessage = true;
             }
         }
         if (hasMessage) {
-            SendMessages(client1Socket, str);
-            SendMessages(client2Socket, str);
+            SendMessages(client1Socket, client1Message);
+            SendMessages(client2Socket, client2Message);
         }
     }
 }
