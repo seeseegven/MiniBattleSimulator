@@ -12,7 +12,7 @@ public:
 	virtual int CalculateSkillScore(Character& caster, Character& target) = 0;
 	int GetWhichRoundCanUse() const;
 	virtual void SetWhichRoundCanUse(int curRound);
-	virtual void PrintDetail(int curRound);
+	void PrintDetail(int curRound);
 	virtual std::string SkillEffect(const std::string& s, int value) = 0;
 protected:
 	std::string name;

@@ -97,6 +97,7 @@ void Game::Render()
 void Game::EnterBattle()
 {
 	battleManager->InitializeBattle(Mode::pve);
+	battleManager->getManager().CoutInfo();
 	battleManager->ManageBattle();
 	//battleManager->DisplayInfo();
 	battleManager.reset();

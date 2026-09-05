@@ -1,6 +1,5 @@
 ﻿#include "CharacterManager.h"
 #include "Character.h"
-#include <iostream>
 
 void CharacterManager::AddCharacter(std::unique_ptr<Character> character)
 {
@@ -10,20 +9,6 @@ void CharacterManager::AddCharacter(std::unique_ptr<Character> character)
 std::vector<std::unique_ptr<Character>>& CharacterManager::GetCharacters()
 {
 	return characters;
-}
-
-void CharacterManager::Action(int curRound)
-{
-	for (auto& character : characters) {
-		character->RoundBehavior(characters, curRound);
-	}
-}
-
-void CharacterManager::CoutInfo()
-{
-	for (const auto& character : characters) {
-		std::cout << *character << std::endl;
-	}
 }
 
 std::string CharacterManager::StringToSend(const std::string& actionMessage)

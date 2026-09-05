@@ -1,9 +1,7 @@
 #include "HealSkill.h"
 #include "Character.h"
 #include "SkillFactory.h"
-#include "Render.h"
 #include "EffectStatus.h"
-#include <iostream>
 #include <memory>
 
 void OneTimeHeal::Use(Character& caster, Character& target)
@@ -34,10 +32,6 @@ int DefenseUp::CalculateSkillScore(Character& caster, Character& target)
 
 std::string DefenseUp::SkillEffect(const std::string& s, int value)
 {
-	Render::RenderText(s, TextColor::LightCyan);
-	std::cout << ",\n\u589E\u52A0\u4E86";
-	Render::RenderText(std::to_string(value), TextColor::LightBlue);
-	std::cout << "\u70B9\u9632\u5FA1\n";
 	return s + ",\n\u589E\u52A0\u4E86" + std::to_string(value) + "\u70B9\u9632\u5FA1\n";
 }
 
@@ -56,18 +50,10 @@ int ContinuousHeal::CalculateSkillScore(Character& caster, Character& target)
 
 std::string ContinuousHeal::SkillEffect(const std::string& s, int value)
 {
-	Render::RenderText(s, TextColor::LightCyan);
-	std::cout << ",\n\u6062\u590D\u4E86";
-	Render::RenderText(std::to_string(value), TextColor::LightGreen);
-	std::cout << "\u70B9\u8840\u91CF\n";
 	return s + ",\n\u6062\u590D\u4E86" + std::to_string(value) + "\u70B9\u8840\u91CF\n";
 }
 
 std::string OneTimeHeal::SkillEffect(const std::string& s, int value)
 {
-	Render::RenderText(s, TextColor::LightCyan);
-	std::cout << ",\n\u6062\u590D\u4E86";
-	Render::RenderText(std::to_string(value), TextColor::LightGreen);
-	std::cout << "\u70B9\u8840\u91CF\n";
 	return s + ",\n\u6062\u590D\u4E86" + std::to_string(value) + "\u70B9\u8840\u91CF\n";
 }
