@@ -119,7 +119,7 @@ std::string Server::AnalysisMessage(const std::string& str, int playerId) {
     return successPrefix
         + std::to_string(manager.GetCurrentRound() + 1) + "|"
         + skillData + "|"
-        + battleData.substr(successPrefix.size());
+        + battleData;
 }
 
 void Server::AddClientToQueue(SOCKET s)
@@ -166,10 +166,10 @@ void Server::NewThread(SOCKET s, std::string str)
             return;
         }
         std::string& buffer(result.second);
-        if (buffer.size() != 1 || buffer[0] < '1' || buffer[0] > '5') {
-            SendMessages(s, "Error|Invalid Skill\n");
-            continue;
-        }
+        //if (buffer.size() != 1 || buffer[0] < '1' || buffer[0] > '5') {
+   //         SendMessages(s, "Error|Invalid Skill\n");
+          //  continue;
+      //  }
 
         bool accepted = false;
         {
@@ -185,7 +185,7 @@ void Server::NewThread(SOCKET s, std::string str)
             }
         }
         if (!accepted) {
-            SendMessages(s, "Error|");
+            SendMessages(s, "Error|\n");
         }
     }
 }

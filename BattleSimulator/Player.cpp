@@ -13,7 +13,7 @@ void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters, 
 		|| static_cast<size_t>(act[0] - '1') >= skills.size()
 		|| skills[act[0] - '1']->GetWhichRoundCanUse() > curRound) {
 		Render::SetCursorPosition(0, info.Y);
-		std::cout << "\033[2K";
+		std::cout << "\033[2K";//清空该行，不移动光标
 		std::cin >> act;
 	}
 	UseSkill(act[0] - '1', *characters[1], curRound);

@@ -39,6 +39,7 @@ public:
 	static void DisplaySkillList(const std::string& skillData);
 	static void DisplayAllCharacterInfo(std::string& s, const std::string& previousData);
 	static void DisplayActionMessage(const std::string& s);
+	static void HintAndResetCursor(int offset, const std::string& s);
 private:
 	static void SetTextColor(TextColor color);
 	static CharacterInfo AnalysisPlayerData(int index, std::string& s);

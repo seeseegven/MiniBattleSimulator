@@ -30,3 +30,5 @@ private:
 	NetModeState netState;
 	std::string previousCharacterData;
 };
+
+void HintAndResetCursor();

@@ -75,7 +75,7 @@ std::string NetworkClient::ReceiveMessage()
 	}
 	buffer.resize(received);
 	std::cout << "Server says: "
-		<< buffer << '\n';
+		<< buffer;
 	return buffer;
 }
 
@@ -87,9 +87,7 @@ void NetworkClient::ReceiveAndUpdate()
 		
 		std::string s = ReceiveMessage();
 		if (!CheckReceivedValid(s)) {
-			COORD pos = Render::GetCursorPosition();
-			Render::SetCursorPosition(pos.X,pos.Y);
-			Render::RenderText("当前不是你的回合\n");
+			Render::HintAndResetCursor(2, "当前不是你的回合\n");
 			shouldHint = true;
 			continue;
 		}
@@ -131,11 +129,17 @@ void NetworkClient::ManageNetworkInput()
 		if (isConnected && shouldHint) {
 			std::string message;
 			std::cin >> message;
+			if (!(message > "0" && message < "6")) {
+				Render::HintAndResetCursor(1, "无效技能\n");
+				continue;
+			}
 			SendMessages(message);
 			shouldHint = false;
 		}
 	}
 }
+
+
 
 bool NetworkClient::CheckReceivedValid(const std::string& s)
 {

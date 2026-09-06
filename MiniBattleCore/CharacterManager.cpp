@@ -22,7 +22,6 @@ std::string CharacterManager::StringToSend(const std::string& actionMessage)
 		str += ";";
 	}
 	str += '\n';
-	str = "Success|" + str;
 	str += actionMessage;
 	return str;
 }

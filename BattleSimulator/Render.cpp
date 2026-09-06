@@ -206,3 +206,14 @@ CharacterInfo Render::AnalysisPlayerData(int index, std::string& s)
 	p.Defense = values[2];
 	return p;
 }
+
+void Render::HintAndResetCursor(int offset, const std::string& s)
+{
+	COORD pos = Render::GetCursorPosition();
+	Render::SetCursorPosition(0, pos.Y - offset);
+	Render::RenderText(s);
+	Sleep(1500);
+	Render::SetCursorPosition(0, pos.Y - offset);
+	std::cout << std::string(100, ' ');
+	Render::SetCursorPosition(0, pos.Y - offset);
+}
