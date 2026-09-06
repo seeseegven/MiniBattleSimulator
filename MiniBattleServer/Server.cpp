@@ -134,6 +134,7 @@ void Server::JoinBattle()
     }
     battleManager = std::make_unique<BattleManager>();
     battleManager->InitializeBattle(Mode::pvp);
+    isBattleRunning.store(true);
     std::thread battle(
         &Server::ManageBattleThread,
         this
@@ -158,18 +159,15 @@ void Server::JoinBattle()
 void Server::NewThread(SOCKET s, std::string str)
 {//客户端通信的单独线程
     SendMessages(s, str);
-    while (1) {
+    while (isBattleRunning.load()) {
         auto  result = Receive(s);
         if (!result.first) {
             std::cout << "客户端断开连接\n";
-            closesocket(s);
-            return;
+            EndBattle(s);
+            closesocket(s);        
         }
+        
         std::string& buffer(result.second);
-        //if (buffer.size() != 1 || buffer[0] < '1' || buffer[0] > '5') {
-   //         SendMessages(s, "Error|Invalid Skill\n");
-          //  continue;
-      //  }
 
         bool accepted = false;
         {
@@ -192,7 +190,7 @@ void Server::NewThread(SOCKET s, std::string str)
 
 void Server::ManageBattleThread()
 {
-    while (1) {
+    while (isBattleRunning) {
         std::string client1Message;
         std::string client2Message;
         bool hasMessage = false;
@@ -210,6 +208,29 @@ void Server::ManageBattleThread()
         if (hasMessage) {
             SendMessages(client1Socket, client1Message);
             SendMessages(client2Socket, client2Message);
+        }
+    }
+}
+
+void Server::EndBattle(SOCKET disconnected)
+{
+    bool isRunning = isBattleRunning.exchange(false);
+
+    if (!isRunning) return;
+    SOCKET otherSocket = INVALID_SOCKET;
+    {
+        std::lock_guard<std::mutex> lock(clientSocketMutex);
+        if (disconnected == client1Socket) {
+            otherSocket = client2Socket;
+        }
+        else if (disconnected == client2Socket) {
+            otherSocket = client1Socket;
+        }
+
+        if (otherSocket != INVALID_SOCKET) {
+            SendMessages(otherSocket, "Interrupt|");
+            shutdown(otherSocket, SD_BOTH);
+            client1Socket = client2Socket = INVALID_SOCKET;
         }
     }
 }

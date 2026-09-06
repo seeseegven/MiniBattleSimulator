@@ -26,10 +26,13 @@ int main()
         }
         else {
             std::cout << "等待对局匹配\n";
-            std::string str = server->Receive(clientSocket1).second;
-            if (str == "n")
+            auto res = server->Receive(clientSocket1);
+            std::string str = res.second;
+
+            if (str == "n") {
                 server->AddClientToQueue(clientSocket1);
-            server->JoinBattle();
+                server->JoinBattle();
+            }
         }
     }
     return 0;

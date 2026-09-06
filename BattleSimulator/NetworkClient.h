@@ -10,8 +10,9 @@ enum ConnectStatus {
 };
 
 enum class NetModeState {
-	waitForBattle,
-	init
+	error,
+	success,
+	interrupt
 };
 
 class NetworkClient {
@@ -22,13 +23,12 @@ public:
 	std::string ReceiveMessage();
 	void ReceiveAndUpdate();
 	void ManageNetworkInput();
-	bool CheckReceivedValid(const std::string& s);
+	NetModeState NetModeStateCheckReceivedValid(const std::string& s);
 private:
 	SOCKET clientSocket = INVALID_SOCKET;
 	bool isConnected = false;
 	bool shouldHint = false;
-	NetModeState netState;
+
 	std::string previousCharacterData;
 };
 
-void HintAndResetCursor();

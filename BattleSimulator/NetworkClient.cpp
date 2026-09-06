@@ -86,10 +86,16 @@ void NetworkClient::ReceiveAndUpdate()
 	while (isConnected) {
 		
 		std::string s = ReceiveMessage();
-		if (!CheckReceivedValid(s)) {
+		if (NetModeStateCheckReceivedValid(s)==NetModeState::error) {
 			Render::HintAndResetCursor(2, "当前不是你的回合\n");
 			shouldHint = true;
 			continue;
+		}
+		else if (NetModeStateCheckReceivedValid(s) == NetModeState::interrupt) {
+			Render::RenderText("由于玩家退出，对局结束");
+			Sleep(3000);
+			isConnected = false;
+			break;
 		}
 		s = s.substr(s.find('|') + 1);
 		size_t roundPosition = s.find('|');
@@ -141,11 +147,14 @@ void NetworkClient::ManageNetworkInput()
 
 
 
-bool NetworkClient::CheckReceivedValid(const std::string& s)
+NetModeState NetworkClient::NetModeStateCheckReceivedValid(const std::string& s)
 {
 	size_t pos = s.find('|');
 	if (s.substr(0, pos) == "Error")
-		return false;
-	return true;
+		return NetModeState::error;
+	else if (s.substr(0, pos) == "Interrupt") {
+		return NetModeState::interrupt;
+	}
+	return NetModeState::success;
 }
 
