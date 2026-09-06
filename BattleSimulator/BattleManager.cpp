@@ -5,11 +5,14 @@
 void BattleManager::ManageBattle()
 {
 	auto& characters = manager.GetCharacters();
-	while (!player->IsDead() && !enemy->IsDead()) {
+	while (!player->IsDead() && !enemy->IsDead()&&isPveRunning) {
 		player->PrintCurrentRound(curRound);
 		CharacterInfo playerInfoBegin = characters[0]->GetInfo();
 		CharacterInfo enemyInfoBegin = characters[1]->GetInfo();
-		manager.Action(curRound);
+		manager.Action(curRound, isPveRunning);
+		if (!isPveRunning) {
+			return;
+		}
 		Render::ClearScreen();
 		CharacterInfo playerInfoEnd = characters[0]->GetInfo();
 		CharacterInfo enemyInfoEnd = characters[1]->GetInfo();

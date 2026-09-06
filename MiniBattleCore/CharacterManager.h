@@ -13,7 +13,7 @@ class CharacterManager
 public:
 	void AddCharacter(std::unique_ptr<Character> character);
 	void CoutInfo();
-	void Action(int curRound);
+	void Action(int curRound, bool& isRunning);
 	std::vector<std::unique_ptr<Character>>& GetCharacters();
 	std::string StringToSend(const std::string& actionMessage = "");
 private:

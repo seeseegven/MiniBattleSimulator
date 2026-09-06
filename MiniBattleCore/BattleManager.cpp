@@ -5,6 +5,7 @@
 void BattleManager::InitializeBattle(Mode mode)
 {
 	if (mode == Mode::pve) {
+		isPveRunning = true;
 		auto p = std::make_unique<Player>("\u73A9\u5BB6", 100);
 		player = p.get();
 		manager.AddCharacter(std::move(p));

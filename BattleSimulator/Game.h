@@ -29,6 +29,5 @@ private:
 	void Input(); //处理输入
 	void EnterBattle(); //进入战斗
 	void Render(); //渲染游戏画面
-	
 	Mode curMode;
 };

@@ -92,9 +92,6 @@ void Game::Render()
 	}
 }
 
-
-
-
 void Game::EnterBattle()
 {
 	battleManager->InitializeBattle(Mode::pve);

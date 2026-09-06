@@ -23,6 +23,7 @@ public:
 	std::vector<std::pair<std::string, int>> GetSkillInfo(int playerId) const;
 private:
 	CharacterManager manager;
+	bool isPveRunning = false;
 	int curRound = 0;//当前回合
 	int currentPlayer = 1;
 	Player* player = nullptr;

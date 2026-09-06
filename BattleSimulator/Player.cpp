@@ -3,12 +3,16 @@
 #include "Render.h"
 #include <iostream>
 
-void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters, int curRound)
+void Player::RoundBehavior(std::vector<std::unique_ptr<Character>>& characters, int curRound, bool& isRunning)
 {
 	std::string act;
 	CoutSkillList(curRound);
 	COORD info = Render::GetCursorPosition();
 	std::cin >> act;
+	if (act == "z") {
+		isRunning = false;
+		return;
+	}
 	while (act.size() != 1 || act[0] < '1'
 		|| static_cast<size_t>(act[0] - '1') >= skills.size()
 		|| skills[act[0] - '1']->GetWhichRoundCanUse() > curRound) {

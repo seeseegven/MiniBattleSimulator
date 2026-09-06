@@ -3,9 +3,10 @@
 #include "Enemy.h"
 #include <iostream>
 
-void CharacterManager::Action(int curRound)
+void CharacterManager::Action(int curRound, bool& isRunning)
 {
-	static_cast<Player*>(characters[0].get())->RoundBehavior(characters, curRound);
+	static_cast<Player*>(characters[0].get())->RoundBehavior(characters, curRound, isRunning);
+	if (!isRunning) return;
 	static_cast<Enemy*>(characters[1].get())->RoundBehavior(characters, curRound);
 }
 
