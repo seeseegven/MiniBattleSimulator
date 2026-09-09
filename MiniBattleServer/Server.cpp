@@ -119,7 +119,7 @@ std::string Server::AnalysisMessage(const std::string& str, int playerId) {
     return successPrefix
         + std::to_string(manager.GetCurrentRound() + 1) + "|"
         + skillData + "|"
-        + battleData;
+        + battleData + "\r";
 }
 
 void Server::AddClientToQueue(SOCKET s)
@@ -183,7 +183,7 @@ void Server::NewThread(SOCKET s, std::string str)
             }
         }
         if (!accepted) {
-            SendMessages(s, "Error|\n");
+            SendMessages(s, "Error|\r");
         }
     }
 }
@@ -228,7 +228,7 @@ void Server::EndBattle(SOCKET disconnected)
         }
 
         if (otherSocket != INVALID_SOCKET) {
-            SendMessages(otherSocket, "Interrupt|");
+            SendMessages(otherSocket, "Interrupt|\r");
             shutdown(otherSocket, SD_BOTH);
             client1Socket = client2Socket = INVALID_SOCKET;
         }

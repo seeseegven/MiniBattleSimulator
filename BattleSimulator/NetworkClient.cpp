@@ -67,13 +67,18 @@ void NetworkClient::DisplayConnectStatus(ConnectStatus status)
 std::string NetworkClient::ReceiveMessage()
 {
 	std::string buffer(1024, '\0');
-	int received = recv(clientSocket, buffer.data(), buffer.size(), 0);
-	if (received <= 0) {
-		std::cout << "Server disconnected.\n";
-		isConnected = false;
-		return "";
+	int messageSize = 0;
+	while (buffer.find('\r') == std::string::npos) {
+		int received = recv(clientSocket, buffer.data()+messageSize, 
+			static_cast<int>(buffer.size()-messageSize), 0);
+		if (received <= 0) {
+			std::cout << "Server disconnected.\n";
+			isConnected = false;
+			return "";
+		}
+		messageSize += received;
 	}
-	buffer.resize(received);
+	buffer.resize(messageSize);
 	std::cout << "Server says: "
 		<< buffer;
 	return buffer;
@@ -87,7 +92,7 @@ void NetworkClient::ReceiveAndUpdate()
 		
 		std::string s = ReceiveMessage();
 		if (NetModeStateCheckReceivedValid(s)==NetModeState::error) {
-			Render::HintAndResetCursor(2, "当前不是你的回合\n");
+			Render::HintAndResetCursor(1, "当前不是你的回合\n");
 			shouldHint = true;
 			continue;
 		}

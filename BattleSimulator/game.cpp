@@ -52,7 +52,7 @@ void Game::Input()
 {
 	//处理输入的逻辑
 	char command;
-	cout << "请输入指令，q退出\n";
+	cout << "请输入指令，q退出" << endl;
 	cin >> command;
 
 	if (command == 'q') {
