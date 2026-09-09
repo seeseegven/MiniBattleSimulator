@@ -5,13 +5,26 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
+NetworkClient::~NetworkClient()
+{
+	CloseConnection();
+	if (isWsaStarted) {
+		WSACleanup();
+		isWsaStarted = false;
+	}
+}
+
 ConnectStatus NetworkClient::Connect(const std::string& ip, int port)
 {
-	WSADATA wsaData{};
-
-	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-		return ConnectStatus::InitFail;
+	if (!isWsaStarted) {
+		WSADATA wsaData{};
+		if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+			return ConnectStatus::InitFail;
+		}
+		isWsaStarted = true;
 	}
+
+	CloseConnection();
 	//错误代码，SOCKET clientSocket会导致同名局部变量覆盖
 	clientSocket = socket(
 		AF_INET,
@@ -20,7 +33,6 @@ ConnectStatus NetworkClient::Connect(const std::string& ip, int port)
 	);
 
 	if (clientSocket == INVALID_SOCKET) {
-		WSACleanup();
 		return ConnectStatus::SocketFail;
 	}
 
@@ -38,22 +50,44 @@ ConnectStatus NetworkClient::Connect(const std::string& ip, int port)
 		reinterpret_cast<sockaddr*>(&serverAddr),
 		sizeof(serverAddr)) == SOCKET_ERROR) {
 		closesocket(clientSocket);
-		WSACleanup();
+		clientSocket = INVALID_SOCKET;
 		return ConnectStatus::ConnectFail;
 	}
 	previousCharacterData.clear();
+	shouldHint = false;
+	isWaitingForInput = false;
 	isConnected = true;
 	return ConnectStatus::ConnectSuccess;
 }
 
+void NetworkClient::RequestDisconnect()
+{
+	isConnected = false;
+	shouldHint = false;
+	if (clientSocket != INVALID_SOCKET) {
+		shutdown(clientSocket, SD_BOTH);
+	}
+}
+
+void NetworkClient::CloseConnection()
+{
+	RequestDisconnect();
+	if (clientSocket != INVALID_SOCKET) {
+		closesocket(clientSocket);
+		clientSocket = INVALID_SOCKET;
+	}
+}
+
 void NetworkClient::SendMessages(const std::string& str)
 {
-	if (str == "quit") {
-		std::cout << "客户端断开连接";
-		isConnected = false;
+	if (!isConnected) {
 		return;
 	}
-	send(clientSocket, str.data(), static_cast<int>(str.size()), 0);
+	if (send(clientSocket, str.data(), static_cast<int>(str.size()), 0)
+		== SOCKET_ERROR) {
+		std::cout << "发送失败，连接已断开\n";
+		RequestDisconnect();
+	}
 }
 
 void NetworkClient::DisplayConnectStatus(ConnectStatus status)
@@ -69,18 +103,26 @@ std::string NetworkClient::ReceiveMessage()
 	std::string buffer(1024, '\0');
 	int messageSize = 0;
 	while (buffer.find('\r') == std::string::npos) {
+		if (messageSize == buffer.size()) {
+			std::cout << "服务器消息超过接收上限\n";
+			RequestDisconnect();
+			return "";
+		}
 		int received = recv(clientSocket, buffer.data()+messageSize, 
 			static_cast<int>(buffer.size()-messageSize), 0);
 		if (received <= 0) {
-			std::cout << "Server disconnected.\n";
+			if (isConnected) {
+				std::cout << "Server disconnected.\n";
+			}
 			isConnected = false;
+			shouldHint = false;
 			return "";
 		}
 		messageSize += received;
 	}
-	buffer.resize(messageSize);
+	buffer.resize(buffer.find('\r'));
 	std::cout << "Server says: "
-		<< buffer;
+		<< buffer << '\n';
 	return buffer;
 }
 
@@ -91,15 +133,20 @@ void NetworkClient::ReceiveAndUpdate()
 	while (isConnected) {
 		
 		std::string s = ReceiveMessage();
-		if (NetModeStateCheckReceivedValid(s)==NetModeState::error) {
+		if (!isConnected || s.empty()) {
+			break;
+		}
+
+		NetModeState state = NetModeStateCheckReceivedValid(s);
+		if (state == NetModeState::error) {
 			Render::HintAndResetCursor(1, "当前不是你的回合\n");
 			shouldHint = true;
 			continue;
 		}
-		else if (NetModeStateCheckReceivedValid(s) == NetModeState::interrupt) {
-			Render::RenderText("由于玩家退出，对局结束");
-			Sleep(3000);
+		else if (state == NetModeState::interrupt) {
 			isConnected = false;
+			shouldHint = false;
+			Render::RenderText("由于玩家退出，对局结束\n");
 			break;
 		}
 		s = s.substr(s.find('|') + 1);
@@ -125,27 +172,45 @@ void NetworkClient::ReceiveAndUpdate()
 		Render::DisplayCurrentRound(currentRound);
 		Render::DisplaySkillList(skillData);
 		shouldHint = true;
-		if (!isConnected) {
-			std::cout << "已退出联机\n";
-			closesocket(clientSocket);
-			Sleep(2000);
-			break;
-		}
 	}
+	isConnected = false;
+	shouldHint = false;
 }
 
 void NetworkClient::ManageNetworkInput()
 {
 	while (1) {
-		if (isConnected && shouldHint) {
+		if (!isConnected) break;
+		if (shouldHint) {
 			std::string message;
-			std::cin >> message;
+			isWaitingForInput = true;
+			if (!isConnected) {
+				isWaitingForInput = false;
+				break;
+			}
+			if (!(std::cin >> message)) {
+				isWaitingForInput = false;
+				RequestDisconnect();
+				break;
+			}
+			isWaitingForInput = false;
+			if (!isConnected) {
+				break;
+			}
+			if (message == "quit") {
+				std::cout << "客户端断开连接\n";
+				RequestDisconnect();
+				break;
+			}
 			if (!(message > "0" && message < "6")) {
 				Render::HintAndResetCursor(1, "无效技能\n");
 				continue;
 			}
 			SendMessages(message);
 			shouldHint = false;
+		}
+		else {
+			Sleep(10);
 		}
 	}
 }

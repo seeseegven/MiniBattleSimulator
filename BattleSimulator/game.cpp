@@ -39,8 +39,15 @@ void Game::Run()
 				&NetworkClient::ManageNetworkInput,
 				&client
 			);
-			inputThread.detach();
 			client.ReceiveAndUpdate();
+			if (client.IsWaitingForInput()) {
+				std::cout
+					<< "联机对局已结束，请输入任意字符并按回车返回菜单\n";
+			}
+			if (inputThread.joinable()) {
+				inputThread.join();
+			}
+			client.CloseConnection();
 			CurrentState = GameState::Menu;
 		}
 		Render::ClearScreen();
@@ -65,11 +72,16 @@ void Game::Input()
 		CurrentState = GameState::Menu;
 	}
 	else if (command == 'n' && CurrentState != GameState::Network) {
-		CurrentState = GameState::Network;
 		ConnectStatus state = client.Connect("127.0.0.1", 8888);
 		Render::ClearScreen();
 		client.DisplayConnectStatus(state);
-		client.SendMessages(std::string(1,command));
+		if (state == ConnectStatus::ConnectSuccess) {
+			CurrentState = GameState::Network;
+			client.SendMessages(std::string(1, command));
+		}
+		else {
+			CurrentState = GameState::Menu;
+		}
 	}
 }
 

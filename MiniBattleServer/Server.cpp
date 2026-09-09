@@ -164,7 +164,8 @@ void Server::NewThread(SOCKET s, std::string str)
         if (!result.first) {
             std::cout << "客户端断开连接\n";
             EndBattle(s);
-            closesocket(s);        
+            closesocket(s);
+            break;
         }
         
         std::string& buffer(result.second);
