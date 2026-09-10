@@ -192,6 +192,19 @@ void Server::NewThread(SOCKET s, std::string str)
 void Server::ManageBattleThread()
 {
     while (isBattleRunning) {
+        auto& characters = battleManager->getManager().GetCharacters();
+        if (characters[0]->IsDead()) {
+            isBattleRunning.store(false);
+            SendMessages(client1Socket, "Dead|\r");
+            SendMessages(client2Socket, "Win|\r");
+            continue;
+        }
+        else if (characters[1]->IsDead()) {
+            isBattleRunning.store(false);
+            SendMessages(client2Socket, "Dead|\r");
+            SendMessages(client1Socket, "Win|\r");
+            continue;
+        }
         std::string client1Message;
         std::string client2Message;
         bool hasMessage = false;

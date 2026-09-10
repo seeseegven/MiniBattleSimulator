@@ -13,7 +13,9 @@ enum ConnectStatus {
 enum class NetModeState {
 	error,
 	success,
-	interrupt
+	interrupt,
+	Win,
+	Lose
 };
 
 class NetworkClient {

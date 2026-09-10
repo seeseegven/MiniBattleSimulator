@@ -149,6 +149,20 @@ void NetworkClient::ReceiveAndUpdate()
 			Render::RenderText("由于玩家退出，对局结束\n");
 			break;
 		}
+		else if (state == NetModeState::Lose) {
+			isConnected = false;
+			shouldHint = true;
+			Render::RenderText("你输了，按任意键返回\n");
+			break;
+		}
+		else if (state == NetModeState::Win) {
+			isConnected = false;
+			shouldHint = true;
+			Render::RenderText("恭喜你赢了，按任意键返回\n", TextColor::LightMagenta);
+			char s;
+			std::cin >> s;
+			break;
+		}
 		s = s.substr(s.find('|') + 1);
 		size_t roundPosition = s.find('|');
 		int currentRound = std::stoi(s.substr(0, roundPosition));
@@ -224,6 +238,12 @@ NetModeState NetworkClient::NetModeStateCheckReceivedValid(const std::string& s)
 		return NetModeState::error;
 	else if (s.substr(0, pos) == "Interrupt") {
 		return NetModeState::interrupt;
+	}
+	else if (s.substr(0, pos) == "Win") {
+		return NetModeState::Win;
+	}
+	else if (s.substr(0, pos) == "Dead") {
+		return NetModeState::Lose;
 	}
 	return NetModeState::success;
 }

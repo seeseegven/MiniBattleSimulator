@@ -65,6 +65,9 @@ bool BattleManager::ManageBattle(int playerId, const std::string& message)
 	}
 
 	auto& characters = manager.GetCharacters();
+	if (characters[0]->IsDead()) {
+
+	}
 	size_t casterIndex = static_cast<size_t>(playerId - 1);
 	size_t targetIndex = casterIndex == 0 ? 1 : 0;
 	size_t skillIndex = static_cast<size_t>(message[0] - '1');
