@@ -121,8 +121,7 @@ std::string NetworkClient::ReceiveMessage()
 		messageSize += received;
 	}
 	buffer.resize(buffer.find('\r'));
-	std::cout << "Server says: "
-		<< buffer << '\n';
+	
 	return buffer;
 }
 
@@ -139,7 +138,8 @@ void NetworkClient::ReceiveAndUpdate()
 
 		NetModeState state = NetModeStateCheckReceivedValid(s);
 		if (state == NetModeState::error) {
-			Render::HintAndResetCursor(1, "当前不是你的回合\n");
+			COORD curPos = Render::GetCursorPosition();
+			Render::HintAndResetCursor(curPos.Y-truePos.Y, "当前不是你的回合\n");
 			shouldHint = true;
 			continue;
 		}
@@ -185,6 +185,7 @@ void NetworkClient::ReceiveAndUpdate()
 		}
 		Render::DisplayCurrentRound(currentRound);
 		Render::DisplaySkillList(skillData);
+		truePos = Render::GetCursorPosition();
 		shouldHint = true;
 	}
 	isConnected = false;
@@ -217,7 +218,8 @@ void NetworkClient::ManageNetworkInput()
 				break;
 			}
 			if (!(message > "0" && message < "6")) {
-				Render::HintAndResetCursor(1, "无效技能\n");
+				COORD curPos = Render::GetCursorPosition();
+				Render::HintAndResetCursor(curPos.Y-truePos.Y, "无效技能\n");
 				continue;
 			}
 			SendMessages(message);

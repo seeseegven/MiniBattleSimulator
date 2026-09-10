@@ -210,6 +210,8 @@ CharacterInfo Render::AnalysisPlayerData(int index, std::string& s)
 void Render::HintAndResetCursor(int offset, const std::string& s)
 {
 	COORD pos = Render::GetCursorPosition();
+	Render::SetCursorPosition(0, pos.Y-1);
+	std::cout << "\033[2K";
 	Render::SetCursorPosition(0, pos.Y - offset);
 	Render::RenderText(s);
 	Sleep(1500);

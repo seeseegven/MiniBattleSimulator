@@ -32,7 +32,7 @@ public:
 	bool IsWaitingForInput() const { return isWaitingForInput.load(); }
 private:
 	void RequestDisconnect();
-
+	COORD truePos;
 	SOCKET clientSocket = INVALID_SOCKET;
 	std::atomic_bool isConnected{ false };
 	std::atomic_bool shouldHint{ false };
