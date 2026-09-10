@@ -150,14 +150,12 @@ void NetworkClient::ReceiveAndUpdate()
 			break;
 		}
 		else if (state == NetModeState::Lose) {
-			isConnected = false;
-			shouldHint = true;
+			shouldHint = false;
 			Render::RenderText("你输了，按任意键返回\n");
 			break;
 		}
 		else if (state == NetModeState::Win) {
-			isConnected = false;
-			shouldHint = true;
+			shouldHint = false;
 			Render::RenderText("恭喜你赢了，按任意键返回\n", TextColor::LightMagenta);
 			char s;
 			std::cin >> s;

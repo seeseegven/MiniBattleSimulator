@@ -163,7 +163,7 @@ void Server::NewThread(SOCKET s, std::string str)
         auto  result = Receive(s);
         if (!result.first) {
             std::cout << "客户端断开连接\n";
-            EndBattle(s);
+            InterruptBattle(s);
             closesocket(s);
             break;
         }
@@ -193,17 +193,8 @@ void Server::ManageBattleThread()
 {
     while (isBattleRunning) {
         auto& characters = battleManager->getManager().GetCharacters();
-        if (characters[0]->IsDead()) {
-            isBattleRunning.store(false);
-            SendMessages(client1Socket, "Dead|\r");
-            SendMessages(client2Socket, "Win|\r");
-            continue;
-        }
-        else if (characters[1]->IsDead()) {
-            isBattleRunning.store(false);
-            SendMessages(client2Socket, "Dead|\r");
-            SendMessages(client1Socket, "Win|\r");
-            continue;
+        if (characters[0]->IsDead() || characters[1]->IsDead()) {
+            EndBattle(characters);
         }
         std::string client1Message;
         std::string client2Message;
@@ -226,7 +217,7 @@ void Server::ManageBattleThread()
     }
 }
 
-void Server::EndBattle(SOCKET disconnected)
+void Server::InterruptBattle(SOCKET disconnected)
 {
     bool isRunning = isBattleRunning.exchange(false);
 
@@ -247,6 +238,22 @@ void Server::EndBattle(SOCKET disconnected)
             client1Socket = client2Socket = INVALID_SOCKET;
         }
     }
+}
+
+void Server::EndBattle(std::vector<std::unique_ptr<Character>>& characters)
+{
+    isBattleRunning.store(false);
+    if (characters[0]->IsDead()) { 
+        SendMessages(client1Socket, "Dead|\r");
+        SendMessages(client2Socket, "Win|\r");
+    }
+    else if (characters[1]->IsDead()) {
+        SendMessages(client2Socket, "Dead|\r");
+        SendMessages(client1Socket, "Win|\r");
+    }
+    closesocket(client1Socket);
+    closesocket(client2Socket);
+    client1Socket = client2Socket = INVALID_SOCKET;
 }
 
 

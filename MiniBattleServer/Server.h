@@ -8,6 +8,7 @@
 #include <Windows.h>
 
 class BattleManager;
+class Character;
 
 struct PlayerMessage {
     int playerId;
@@ -28,7 +29,8 @@ public:
     void JoinBattle();
     void NewThread(SOCKET s, std::string str);
     void ManageBattleThread();
-    void EndBattle(SOCKET disconnected);
+    void InterruptBattle(SOCKET disconnected);
+    void EndBattle(std::vector<std::unique_ptr<Character>>& characters);
 private:
     std::mutex battleMutex;
     std::mutex clientSocketMutex;
