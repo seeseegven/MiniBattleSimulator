@@ -55,7 +55,7 @@ ConnectStatus NetworkClient::Connect(const std::string& ip, int port)
 	}
 	previousCharacterData.clear();
 	shouldHint = false;
-	isWaitingForInput = false;
+	//isWaitingForInput = false;
 	isConnected = true;
 	return ConnectStatus::ConnectSuccess;
 }
@@ -111,9 +111,6 @@ std::string NetworkClient::ReceiveMessage()
 		int received = recv(clientSocket, buffer.data()+messageSize, 
 			static_cast<int>(buffer.size()-messageSize), 0);
 		if (received <= 0) {
-			if (isConnected) {
-				std::cout << "Server disconnected.\n";
-			}
 			isConnected = false;
 			shouldHint = false;
 			return "";
@@ -121,7 +118,7 @@ std::string NetworkClient::ReceiveMessage()
 		messageSize += received;
 	}
 	buffer.resize(buffer.find('\r'));
-	
+	messages.push(buffer);
 	return buffer;
 }
 
@@ -135,30 +132,32 @@ void NetworkClient::ReceiveAndUpdate()
 		if (!isConnected || s.empty()) {
 			break;
 		}
-
-		NetModeState state = NetModeStateCheckReceivedValid(s);
-		if (state == NetModeState::error) {
+		canCin.store(true);
+		battleState = NetModeStateCheckReceivedValid(s);
+		if (battleState == NetModeState::error) {
 			COORD curPos = Render::GetCursorPosition();
 			Render::HintAndResetCursor(curPos.Y-truePos.Y, "当前不是你的回合\n");
-			shouldHint = true;
+			//shouldHint = true;
 			continue;
 		}
-		else if (state == NetModeState::interrupt) {
+		else if (battleState == NetModeState::interrupt) {
 			isConnected = false;
-			shouldHint = false;
+			//shouldHint = false;
 			Render::RenderText("由于玩家退出，对局结束\n");
 			break;
 		}
-		else if (state == NetModeState::Lose) {
-			shouldHint = false;
+		else if (battleState == NetModeState::Lose) {
+			//shouldHint = true;
 			Render::RenderText("你输了，按任意键返回\n");
+			canCin.store(true);
+			SendMessages("End\r");
 			break;
 		}
-		else if (state == NetModeState::Win) {
-			shouldHint = false;
+		else if (battleState == NetModeState::Win) {
+			//shouldHint = true;//这两个false都不能删，删了就直接退出没有胜利结算了。
 			Render::RenderText("恭喜你赢了，按任意键返回\n", TextColor::LightMagenta);
-			char s;
-			std::cin >> s;
+			canCin.store(true);
+			SendMessages("End\r");
 			break;
 		}
 		s = s.substr(s.find('|') + 1);
@@ -193,21 +192,34 @@ void NetworkClient::ReceiveAndUpdate()
 void NetworkClient::ManageNetworkInput()
 {
 	while (1) {
-		if (!isConnected) break;
-		if (shouldHint) {
+		/*if (shouldHint) {
 			std::string message;
 			isWaitingForInput = true;
 			if (!isConnected) {
 				isWaitingForInput = false;
 				break;
 			}
-			if (!(std::cin >> message)) {
+			if (canCin) {
+				std::cin >> message;
 				isWaitingForInput = false;
 				RequestDisconnect();
 				break;
 			}
 			isWaitingForInput = false;
-			if (!isConnected) {
+			
+			
+			SendMessages(message);
+			canCin.store(false);
+			shouldHint = false;
+		}
+		else {
+			
+		}*/
+		if (canCin&&isConnected) {
+			std::string message;
+			std::cin >> message;
+			if (battleState == NetModeState::Lose || battleState == NetModeState::Win) {
+				RequestDisconnect();
 				break;
 			}
 			if (message == "quit") {
@@ -215,13 +227,12 @@ void NetworkClient::ManageNetworkInput()
 				RequestDisconnect();
 				break;
 			}
-			if (!(message > "0" && message < "6")) {
+			else if (!(message > "0" && message < "6")) {
 				COORD curPos = Render::GetCursorPosition();
-				Render::HintAndResetCursor(curPos.Y-truePos.Y, "无效技能\n");
+				Render::HintAndResetCursor(curPos.Y - truePos.Y, "无效技能\n");
 				continue;
 			}
 			SendMessages(message);
-			shouldHint = false;
 		}
 		else {
 			Sleep(10);

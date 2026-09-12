@@ -40,7 +40,7 @@ void Game::Run()
 				&client
 			);
 			client.ReceiveAndUpdate();
-			if (client.IsWaitingForInput()) {
+			if (1) {
 				std::cout
 					<< "联机对局已结束，请输入任意字符并按回车返回菜单\n";
 			}

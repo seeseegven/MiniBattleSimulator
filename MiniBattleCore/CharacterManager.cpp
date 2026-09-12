@@ -12,7 +12,7 @@ std::vector<std::unique_ptr<Character>>& CharacterManager::GetCharacters()
 }
 
 std::string CharacterManager::StringToSend(const std::string& actionMessage)
-{
+{//发送给客户端的数据
 	std::string str;
 	for (auto& c : characters) {//要用引用啊，uniqueptr是独占的，不能复制
 		auto [name, hp, attack, defense] = c->GetInfo();

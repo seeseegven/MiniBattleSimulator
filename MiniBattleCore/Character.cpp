@@ -99,5 +99,5 @@ const std::string& Character::GetLastActionMessage() const
 
 void Character::RecordActionMessage(const std::string& effectMessage)
 {
-	lastActionMessage = Name + "\u4F7F\u7528 " + effectMessage;
+	lastActionMessage = Name + "使用 " + effectMessage;
 }

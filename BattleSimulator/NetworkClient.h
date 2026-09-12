@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <atomic>
+#include <queue>
 #include <WinSock2.h>
 
 enum ConnectStatus {
@@ -29,14 +30,17 @@ public:
 	void ReceiveAndUpdate();
 	void ManageNetworkInput();
 	NetModeState NetModeStateCheckReceivedValid(const std::string& s);
-	bool IsWaitingForInput() const { return isWaitingForInput.load(); }
+	//bool IsWaitingForInput() const { return isWaitingForInput.load(); }
 private:
 	void RequestDisconnect();
 	COORD truePos;
 	SOCKET clientSocket = INVALID_SOCKET;
+	NetModeState battleState;
+	std::queue<std::string> messages;
 	std::atomic_bool isConnected{ false };
-	std::atomic_bool shouldHint{ false };
-	std::atomic_bool isWaitingForInput{ false };
+	std::atomic_bool shouldHint{ false };//提示错误
+	//std::atomic_bool isWaitingForInput{ false };
+	std::atomic_bool canCin{ false };//收到信息后才能输入
 	bool isWsaStarted = false;
 	//多线程访问的变量最好用原子或加锁
 	std::string previousCharacterData;

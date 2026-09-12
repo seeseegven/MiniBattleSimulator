@@ -44,8 +44,7 @@ int BattleManager::GetCurrentRound() const
 
 std::vector<std::pair<std::string, int>> BattleManager::GetSkillInfo(int playerId) const
 {
-	Character* character = playerId == 1 ? static_cast<Character*>(player)
-		: static_cast<Character*>(enemy);
+	Character* character = static_cast<Character*>(player);
 	std::vector<std::pair<std::string, int>> skillInfo;
 	for (const auto& skill : character->GetSkills()) {
 		int roundLeft = skill->GetWhichRoundCanUse() - curRound;

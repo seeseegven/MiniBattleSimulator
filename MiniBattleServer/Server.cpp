@@ -11,7 +11,7 @@ Server::Server():serverAddr(sockaddr_in{})
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(8888);
     serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-}
+}//初始化，端口
 
 Server::~Server()
 {
@@ -251,9 +251,12 @@ void Server::EndBattle(std::vector<std::unique_ptr<Character>>& characters)
         SendMessages(client2Socket, "Dead|\r");
         SendMessages(client1Socket, "Win|\r");
     }
-    closesocket(client1Socket);
-    closesocket(client2Socket);
-    client1Socket = client2Socket = INVALID_SOCKET;
+    if (Receive(client1Socket).first && Receive(client2Socket).first) {
+        closesocket(client1Socket);
+        closesocket(client2Socket);
+        client1Socket = client2Socket = INVALID_SOCKET;
+    }
+    
 }
 
 
