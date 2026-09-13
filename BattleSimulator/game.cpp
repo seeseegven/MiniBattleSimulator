@@ -40,10 +40,8 @@ void Game::Run()
 				&client
 			);
 			client.ReceiveAndUpdate();
-			if (1) {
-				std::cout
-					<< "联机对局已结束，请输入任意字符并按回车返回菜单\n";
-			}
+			std::cout
+				<< "联机对局已结束，请输入任意字符并按回车返回菜单\n";
 			if (inputThread.joinable()) {
 				inputThread.join();
 			}

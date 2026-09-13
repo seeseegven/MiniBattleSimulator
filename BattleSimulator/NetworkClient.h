@@ -38,7 +38,6 @@ private:
 	NetModeState battleState;
 	std::queue<std::string> messages;
 	std::atomic_bool isConnected{ false };
-	std::atomic_bool shouldHint{ false };//提示错误
 	//std::atomic_bool isWaitingForInput{ false };
 	std::atomic_bool canCin{ false };//收到信息后才能输入
 	bool isWsaStarted = false;

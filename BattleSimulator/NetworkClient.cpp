@@ -54,8 +54,6 @@ ConnectStatus NetworkClient::Connect(const std::string& ip, int port)
 		return ConnectStatus::ConnectFail;
 	}
 	previousCharacterData.clear();
-	shouldHint = false;
-	//isWaitingForInput = false;
 	isConnected = true;
 	return ConnectStatus::ConnectSuccess;
 }
@@ -63,7 +61,6 @@ ConnectStatus NetworkClient::Connect(const std::string& ip, int port)
 void NetworkClient::RequestDisconnect()
 {
 	isConnected = false;
-	shouldHint = false;
 	if (clientSocket != INVALID_SOCKET) {
 		shutdown(clientSocket, SD_BOTH);
 	}
@@ -112,7 +109,6 @@ std::string NetworkClient::ReceiveMessage()
 			static_cast<int>(buffer.size()-messageSize), 0);
 		if (received <= 0) {
 			isConnected = false;
-			shouldHint = false;
 			return "";
 		}
 		messageSize += received;
@@ -137,24 +133,20 @@ void NetworkClient::ReceiveAndUpdate()
 		if (battleState == NetModeState::error) {
 			COORD curPos = Render::GetCursorPosition();
 			Render::HintAndResetCursor(curPos.Y-truePos.Y, "当前不是你的回合\n");
-			//shouldHint = true;
 			continue;
 		}
 		else if (battleState == NetModeState::interrupt) {
 			isConnected = false;
-			//shouldHint = false;
 			Render::RenderText("由于玩家退出，对局结束\n");
 			break;
 		}
 		else if (battleState == NetModeState::Lose) {
-			//shouldHint = true;
 			Render::RenderText("你输了，按任意键返回\n");
 			canCin.store(true);
 			SendMessages("End\r");
 			break;
 		}
 		else if (battleState == NetModeState::Win) {
-			//shouldHint = true;//这两个false都不能删，删了就直接退出没有胜利结算了。
 			Render::RenderText("恭喜你赢了，按任意键返回\n", TextColor::LightMagenta);
 			canCin.store(true);
 			SendMessages("End\r");
@@ -183,38 +175,14 @@ void NetworkClient::ReceiveAndUpdate()
 		Render::DisplayCurrentRound(currentRound);
 		Render::DisplaySkillList(skillData);
 		truePos = Render::GetCursorPosition();
-		shouldHint = true;
 	}
 	isConnected = false;
-	shouldHint = false;
 }
 
 void NetworkClient::ManageNetworkInput()
 {
 	while (1) {
-		/*if (shouldHint) {
-			std::string message;
-			isWaitingForInput = true;
-			if (!isConnected) {
-				isWaitingForInput = false;
-				break;
-			}
-			if (canCin) {
-				std::cin >> message;
-				isWaitingForInput = false;
-				RequestDisconnect();
-				break;
-			}
-			isWaitingForInput = false;
-			
-			
-			SendMessages(message);
-			canCin.store(false);
-			shouldHint = false;
-		}
-		else {
-			
-		}*/
+		if (!isConnected) break;
 		if (canCin&&isConnected) {
 			std::string message;
 			std::cin >> message;

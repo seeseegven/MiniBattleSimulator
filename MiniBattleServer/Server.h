@@ -35,6 +35,7 @@ private:
     std::mutex battleMutex;//锁battle
     std::mutex clientSocketMutex;
     std::queue<SOCKET> waitQueue;
+    std::atomic_bool canRecv;
     SOCKET listenSocket = INVALID_SOCKET;
     SOCKET client1Socket = INVALID_SOCKET;
     SOCKET client2Socket = INVALID_SOCKET;

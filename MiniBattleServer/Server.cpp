@@ -159,7 +159,7 @@ void Server::JoinBattle()
 void Server::NewThread(SOCKET s, std::string str)
 {//客户端通信的单独线程
     SendMessages(s, str);
-    while (isBattleRunning.load()) {
+    while (1) {
         auto  result = Receive(s);
         if (!result.first) {
             std::cout << "客户端断开连接\n";
@@ -169,7 +169,17 @@ void Server::NewThread(SOCKET s, std::string str)
         }
         
         std::string& buffer(result.second);
-
+        if (buffer == "End\r") {
+            if (s == client1Socket) {
+                closesocket(client1Socket);
+                client1Socket = INVALID_SOCKET;
+            }
+            else if (s == client2Socket) {
+                closesocket(client2Socket);
+                client2Socket = INVALID_SOCKET;
+            }
+            break;
+        }
         bool accepted = false;
         {
             std::lock_guard<std::mutex> lock(battleMutex);
@@ -251,12 +261,6 @@ void Server::EndBattle(std::vector<std::unique_ptr<Character>>& characters)
         SendMessages(client2Socket, "Dead|\r");
         SendMessages(client1Socket, "Win|\r");
     }
-    if (Receive(client1Socket).first && Receive(client2Socket).first) {
-        closesocket(client1Socket);
-        closesocket(client2Socket);
-        client1Socket = client2Socket = INVALID_SOCKET;
-    }
-    
 }
 
 
