@@ -12,8 +12,7 @@ int SkillFactory::CreateIceSword(Character& caster, Character& target)
 {
 	CharacterInfo casterInfo = caster.GetInfo();
 	CharacterInfo targetInfo = target.GetInfo();
-	return 100;
-		//casterInfo.Attack;
+	return casterInfo.Attack;
 }
 
 int SkillFactory::CreateOneTimeHealHP(Character& caster, Character& target)

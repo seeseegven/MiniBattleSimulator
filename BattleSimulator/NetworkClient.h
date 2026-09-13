@@ -38,7 +38,6 @@ private:
 	NetModeState battleState;
 	std::queue<std::string> messages;
 	std::atomic_bool isConnected{ false };
-	//std::atomic_bool isWaitingForInput{ false };
 	std::atomic_bool canCin{ false };//收到信息后才能输入
 	bool isWsaStarted = false;
 	//多线程访问的变量最好用原子或加锁
