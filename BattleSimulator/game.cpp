@@ -70,7 +70,7 @@ void Game::Input()
 		CurrentState = GameState::Menu;
 	}
 	else if (command == 'n' && CurrentState != GameState::Network) {
-		ConnectStatus state = client.Connect("192.168.5.7", 8888);
+		ConnectStatus state = client.Connect("100.120.101.59", 8888);
 		Render::ClearScreen();
 		client.DisplayConnectStatus(state);
 		if (state == ConnectStatus::ConnectSuccess) {
