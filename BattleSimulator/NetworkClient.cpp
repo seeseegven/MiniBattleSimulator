@@ -186,7 +186,8 @@ void NetworkClient::ManageNetworkInput()
 		if (canCin&&isConnected) {
 			std::string message;
 			std::cin >> message;
-			if (battleState == NetModeState::Lose || battleState == NetModeState::Win) {
+			if (battleState == NetModeState::Lose || battleState == NetModeState::Win
+				|| battleState == NetModeState::interrupt) {
 				RequestDisconnect();
 				break;
 			}
